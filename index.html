@@ -41,7 +41,7 @@
   /* CURRENCY BAR */
   .currency-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; }
   .currency-bar-label { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
-  .currency-btn { background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.06em; padding: 9px 16px; cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
+  .currency-btn { background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.78rem; padding: 9px 16px; cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
   .currency-btn:hover { border-color: var(--lime); color: var(--white); }
   .currency-btn.active { background: var(--lime); border-color: var(--lime); color: var(--black); }
   .rate-note { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.68rem; color: var(--muted); margin-left: auto; }
@@ -74,7 +74,6 @@
   .b-name { font-family: 'GothamMedium', Arial, sans-serif; font-weight: 600; color: var(--white); font-size: clamp(0.82rem, 1.5vw, 0.96rem); margin-bottom: 3px; }
   .b-eg { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.75rem; color: var(--muted); font-style: italic; line-height: 1.45; }
   .b-stops { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.78rem; color: var(--muted); line-height: 1.45; }
-
   .ticks-cell { width: 160px; padding: 10px 8px; }
   .tick-group { display: flex; flex-direction: column; align-items: center; gap: 4px; }
   .wk-label { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.58rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
@@ -83,15 +82,12 @@
   .tick-box:hover { border-color: var(--lime); background: rgba(220,255,79,0.12); }
   .tick-box.on { background: var(--lime); border-color: var(--lime); }
   .tick-box.on::after { content: ''; position: absolute; top: 4px; left: 8px; width: 6px; height: 10px; border-right: 2px solid var(--black); border-bottom: 2px solid var(--black); transform: rotate(45deg); }
-
   .count-col { width: 56px; text-align: center; vertical-align: middle !important; padding: 14px 8px !important; }
   .count-val { font-family: 'GothamMedium', Arial, sans-serif; font-size: 1.2rem; font-weight: 600; color: rgba(255,255,255,0.15); line-height: 1; display: block; text-align: center; }
   .count-val.lit { color: var(--lime); }
-
   tfoot tr td { background: var(--surface); border-top: 2px solid var(--border); padding: 12px 14px; }
   .total-label { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
   .total-count { text-align: center; font-family: 'DrukTextBold', Arial, sans-serif; font-size: 1.6rem; text-transform: uppercase; color: var(--lime); }
-
   @media(max-width:600px) {
     .tally-table { min-width: unset; }
     .tally-table thead th:nth-child(2), .tally-table tbody td:nth-child(2) { display: none; }
@@ -103,8 +99,11 @@
   @media(max-width:560px){ .calc-block{ padding: 20px 16px; } }
   .calc-title { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(1rem, 2vw, 1.3rem); letter-spacing: 0.16em; text-transform: uppercase; color: var(--lime); margin-bottom: 10px; }
   .calc-intro { font-family: 'GothamLight', Arial, sans-serif; font-size: clamp(0.85rem, 1.5vw, 1rem); color: var(--muted); line-height: 1.65; margin-bottom: 24px; }
-  .inputs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .inputs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
   @media(max-width:560px){ .inputs-grid{ grid-template-columns: 1fr; } }
+  .leader-field-wrap { margin-bottom: 20px; }
+  .leader-helper { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.72rem; color: var(--muted); margin-top: 8px; line-height: 1.5; border-left: 2px solid var(--border); padding-left: 10px; }
+  .leader-helper strong { font-family: 'GothamMedium', Arial, sans-serif; color: var(--white); font-weight: 600; }
   .calc-field label { display: block; font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
   .calc-field input {
     width: 100% !important; height: auto !important; min-height: unset !important;
@@ -118,7 +117,6 @@
   .calc-field input::placeholder { color: rgba(187,187,187,0.4) !important; }
   .calc-field input:focus { border-color: var(--lime) !important; box-shadow: none !important; }
   .field-note { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.7rem; color: var(--muted); margin-top: 5px; line-height: 1.45; }
-
   .calc-btn {
     width: 100% !important; background: var(--lime) !important; background-image: none !important;
     color: var(--black) !important; border: none !important;
@@ -132,43 +130,55 @@
   }
   .calc-btn:hover { opacity: 0.88 !important; background: var(--lime) !important; color: var(--black) !important; }
 
-  /* ══ SCREEN 2 ══════════════════════════════ */
-  .back-btn { background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 9px 18px; cursor: pointer; margin-bottom: 36px; transition: all 0.15s; display: inline-block; }
+  /* ══ SCREEN 2 ══ */
+  .back-btn { background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 9px 18px; cursor: pointer; margin-bottom: 24px; transition: all 0.15s; display: inline-block; }
   .back-btn:hover { border-color: var(--white); color: var(--white); }
 
-  /* HEADLINE NUMBERS — top of screen 2 */
-  .headline-block { margin-bottom: 40px; }
+  /* ORG NAME FIELD */
+  .org-name-wrap { margin-bottom: 32px; display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+  .org-name-wrap .calc-field { flex: 1; min-width: 200px; margin: 0; }
+
+  /* HEADLINES */
+  .headline-block { margin-bottom: 36px; }
   .headline-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 1px; }
   .headline-row.single { grid-template-columns: 1fr; }
   @media(max-width:480px){ .headline-row{ grid-template-columns: 1fr; } }
-
-  .headline-panel { background: var(--surface); padding: 28px 28px; }
-  .headline-panel.dark { background: rgba(0,0,0,0.2); }
-  .headline-eyebrow { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
-  .headline-num { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(2.8rem, 7vw, 5rem); line-height: 1; text-transform: uppercase; margin-bottom: 8px; }
+  .headline-panel { background: var(--surface); padding: 26px 26px; }
+  .headline-panel.dark { background: rgba(0,0,0,0.25); }
+  .headline-panel.recovery { border-top: 3px solid var(--lime); }
+  .headline-eyebrow { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
+  .headline-eyebrow.lime { color: var(--lime); }
+  .headline-num { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1; text-transform: uppercase; margin-bottom: 10px; }
   .headline-num.amber { color: var(--amber); }
-  .headline-num.lime  { color: var(--lime);  }
-  .headline-desc { font-family: 'GothamLight', Arial, sans-serif; font-size: clamp(0.85rem, 1.5vw, 1rem); color: var(--muted); line-height: 1.55; }
-  .headline-desc strong { font-family: 'GothamMedium', Arial, sans-serif; color: var(--white); font-weight: 600; }
+  .headline-num.lime  { color: var(--lime); }
+  .headline-desc { font-family: 'GothamLight', Arial, sans-serif; font-size: clamp(0.8rem, 1.4vw, 0.92rem); color: var(--muted); line-height: 1.6; }
+  .headline-context { font-family: 'GothamLight', Arial, sans-serif; font-size: clamp(0.85rem, 1.4vw, 0.96rem); color: var(--white); line-height: 1.6; margin-bottom: 6px; }
 
-  /* DIVIDER */
-  .section-divider { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin: 36px 0 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  /* SECTION DIVIDER */
+  .section-divider { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin: 32px 0 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
 
-  /* WORKING — collapsible detail */
-  .detail-toggle { background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 16px; cursor: pointer; margin-bottom: 12px; transition: all 0.15s; }
+  /* COLLAPSIBLE */
+  .detail-toggle { background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 9px 16px; cursor: pointer; margin-bottom: 8px; transition: all 0.15s; display: block; width: 100%; text-align: left; }
   .detail-toggle:hover { border-color: var(--white); color: var(--white); }
-  .detail-block { display: none; background: var(--surface); border: 1px solid var(--border); padding: 6px 18px; margin-bottom: 16px; }
+  .detail-block { display: none; background: var(--surface); border: 1px solid var(--border); padding: 6px 18px; margin-bottom: 8px; }
   .detail-block.open { display: block; }
-  .working-line { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 12px 0; gap: 16px; }
+  .working-line { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 11px 0; gap: 16px; }
   .working-line:last-child { border-bottom: none; }
-  .w-label { font-family: 'GothamLight', Arial, sans-serif; color: var(--white); flex: 1; line-height: 1.5; font-size: clamp(0.82rem, 1.4vw, 0.95rem); }
+  .w-label { font-family: 'GothamLight', Arial, sans-serif; color: var(--white); flex: 1; line-height: 1.5; font-size: clamp(0.82rem, 1.4vw, 0.92rem); }
   .w-calc { font-family: 'GothamLight', Arial, sans-serif; color: var(--muted); font-size: 0.72rem; text-align: right; white-space: nowrap; flex-shrink: 0; }
-  .w-val { font-family: 'GothamMedium', Arial, sans-serif; font-size: clamp(0.95rem, 1.6vw, 1.05rem); font-weight: 600; color: var(--white); white-space: nowrap; margin-left: 16px; min-width: 80px; text-align: right; flex-shrink: 0; }
+  .w-val { font-family: 'GothamMedium', Arial, sans-serif; font-size: clamp(0.92rem, 1.5vw, 1rem); font-weight: 600; color: var(--white); white-space: nowrap; margin-left: 16px; min-width: 80px; text-align: right; flex-shrink: 0; }
   .w-val.amber { color: var(--amber); }
-  .w-val.lime  { color: var(--lime);  }
+  .w-val.lime  { color: var(--lime); }
+
+  /* ACTION BUTTONS */
+  .action-row { display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; }
+  .action-btn { flex: 1; min-width: 160px; background: var(--surface); border: 1px solid var(--border); color: var(--white); font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 14px 20px; cursor: pointer; transition: all 0.15s; text-align: center; }
+  .action-btn:hover { border-color: var(--lime); color: var(--lime); }
+  .action-btn.primary { background: var(--lime); border-color: var(--lime); color: var(--black); }
+  .action-btn.primary:hover { opacity: 0.88; }
 
   /* CTA */
-  .cta-block { background: var(--lime); padding: 32px 28px; margin-bottom: 28px; margin-top: 40px; }
+  .cta-block { background: var(--lime); padding: 32px 28px; margin-bottom: 28px; margin-top: 36px; }
   .cta-heading { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(1.4rem, 3.5vw, 2.4rem); text-transform: uppercase; color: var(--black); line-height: 1; margin-bottom: 12px; }
   .cta-body { font-family: 'GothamLight', Arial, sans-serif; font-size: clamp(0.88rem, 1.5vw, 1rem); color: var(--black); line-height: 1.65; margin-bottom: 22px; max-width: 580px; }
   .cta-btn { display: inline-block; background: var(--black); color: var(--lime) !important; font-family: 'DrukTextBold', Arial, sans-serif !important; font-size: clamp(0.9rem, 1.8vw, 1.1rem) !important; letter-spacing: 0.12em !important; text-transform: uppercase !important; padding: 16px 32px !important; text-decoration: none !important; border: none !important; cursor: pointer; transition: opacity 0.15s; }
@@ -178,14 +188,92 @@
   .calc-footer { border-top: 1px solid var(--border); padding-top: 20px; margin-top: 36px; }
   .calc-footer-note { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.72rem; color: var(--muted); line-height: 1.7; }
   .calc-footer-note strong { font-family: 'GothamMedium', Arial, sans-serif; font-weight: 600; color: var(--white); }
+
+  /* ══════════════════════════════════════════
+     PRINT STYLES — REPORT (A4)
+  ══════════════════════════════════════════ */
+  @media print {
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    body { background: white !important; color: #111 !important; font-family: Georgia, serif; padding: 0; margin: 0; font-size: 10pt; line-height: 1.5; }
+    .screen { display: none !important; }
+    .screen.active { display: none !important; }
+    #print-report { display: block !important; }
+
+    /* PAGE BREAKS */
+    .pr-page { page-break-after: always; padding: 20mm 18mm; min-height: 267mm; }
+    .pr-page:last-child { page-break-after: avoid; }
+
+    /* COVER */
+    .pr-cover { background: #111 !important; color: #f7f7f7 !important; display: flex; flex-direction: column; justify-content: space-between; }
+    .pr-cover-top { margin-bottom: 40mm; }
+    .pr-logo { font-family: Arial, sans-serif; font-weight: 900; font-size: 28pt; color: #DCFF4F !important; letter-spacing: 0.15em; margin-bottom: 6mm; }
+    .pr-cover-tag { font-family: Arial, sans-serif; font-size: 7pt; letter-spacing: 0.2em; text-transform: uppercase; color: #999 !important; margin-bottom: 30mm; }
+    .pr-cover-org { font-family: Arial, sans-serif; font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; color: #DCFF4F !important; margin-bottom: 4mm; }
+    .pr-cover-title { font-family: Arial, sans-serif; font-weight: 900; font-size: 36pt; line-height: 1; color: #f7f7f7 !important; text-transform: uppercase; margin-bottom: 8mm; }
+    .pr-cover-subtitle { font-family: Georgia, serif; font-size: 12pt; color: #bbbbbb !important; line-height: 1.5; max-width: 120mm; }
+    .pr-cover-date { font-family: Arial, sans-serif; font-size: 7pt; color: #666 !important; letter-spacing: 0.1em; }
+
+    /* SECTION HEADINGS */
+    .pr-section-label { font-family: Arial, sans-serif; font-size: 7pt; letter-spacing: 0.22em; text-transform: uppercase; color: #999 !important; border-bottom: 1px solid #ddd; padding-bottom: 2mm; margin-bottom: 6mm; margin-top: 10mm; }
+    .pr-section-label:first-child { margin-top: 0; }
+
+    /* NUMBERS — report */
+    .pr-num-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin-bottom: 8mm; }
+    .pr-num-cell { border: 1px solid #ddd; padding: 5mm 6mm; }
+    .pr-num-cell.full { grid-column: 1 / -1; }
+    .pr-num-cell.recovery { border-color: #DCFF4F !important; border-width: 2px; }
+    .pr-num-eyebrow { font-family: Arial, sans-serif; font-size: 6.5pt; letter-spacing: 0.14em; text-transform: uppercase; color: #999 !important; margin-bottom: 2mm; }
+    .pr-num-eyebrow.lime { color: #4a7a00 !important; }
+    .pr-big { font-family: Arial, sans-serif; font-weight: 900; font-size: 28pt; line-height: 1; margin-bottom: 2mm; }
+    .pr-big.amber { color: #cc7000 !important; }
+    .pr-big.lime  { color: #4a7a00 !important; }
+    .pr-num-desc { font-family: Georgia, serif; font-size: 8pt; color: #666 !important; line-height: 1.4; }
+
+    /* INPUTS TABLE */
+    .pr-inputs { width: 100%; border-collapse: collapse; margin-bottom: 8mm; font-size: 8.5pt; }
+    .pr-inputs td { padding: 2mm 3mm; border-bottom: 1px solid #eee; }
+    .pr-inputs td:last-child { text-align: right; font-family: Arial, sans-serif; font-weight: 700; }
+
+    /* BODY TEXT */
+    .pr-body { font-family: Georgia, serif; font-size: 9.5pt; color: #222 !important; line-height: 1.7; margin-bottom: 6mm; }
+    .pr-body + .pr-body { margin-top: -2mm; }
+
+    /* RESEARCH PANEL */
+    .pr-research-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm 8mm; }
+    .pr-research-item { padding-bottom: 4mm; border-bottom: 1px solid #eee; }
+    .pr-research-title { font-family: Arial, sans-serif; font-weight: 700; font-size: 7.5pt; color: #111 !important; margin-bottom: 1.5mm; }
+    .pr-research-body { font-family: Georgia, serif; font-size: 7.5pt; color: #555 !important; line-height: 1.5; }
+
+    /* WORKING TABLE */
+    .pr-working { width: 100%; border-collapse: collapse; margin-bottom: 6mm; font-size: 8pt; }
+    .pr-working tr { border-bottom: 1px solid #eee; }
+    .pr-working td { padding: 2mm 3mm; }
+    .pr-working td:nth-child(2) { color: #999 !important; text-align: center; }
+    .pr-working td:last-child { text-align: right; font-family: Arial, sans-serif; font-weight: 700; }
+    .pr-working .amber { color: #cc7000 !important; }
+    .pr-working .lime  { color: #4a7a00 !important; }
+
+    /* NEXT STEP */
+    .pr-cta { background: #111 !important; color: #f7f7f7 !important; padding: 10mm; margin-top: 10mm; }
+    .pr-cta-head { font-family: Arial, sans-serif; font-weight: 900; font-size: 18pt; color: #DCFF4F !important; text-transform: uppercase; margin-bottom: 4mm; }
+    .pr-cta-body { font-family: Georgia, serif; font-size: 9.5pt; color: #ccc !important; line-height: 1.6; margin-bottom: 4mm; }
+    .pr-cta-url { font-family: Arial, sans-serif; font-size: 9pt; color: #DCFF4F !important; }
+  }
+
+  /* Hide print report in screen view */
+  #print-report { display: none; }
+
+  /* ══════════════════════════════════════════
+     PRINT STYLES — SCORECARD (A5)
+  ══════════════════════════════════════════ */
+  /* Scorecard handled via separate window */
 </style>
 </head>
 <body>
 <div class="page">
 
-  <!-- ══ SCREEN 1 ══════════════════════════════ -->
+  <!-- ══ SCREEN 1 ══ -->
   <div class="screen active" id="screen-1">
-
     <div class="currency-bar">
       <span class="currency-bar-label">Your currency</span>
       <button class="currency-btn" data-currency="EUR" data-symbol="€">EUR €</button>
@@ -197,18 +285,24 @@
     </div>
 
     <div class="how-to">
-      <div class="how-step"><div class="how-num">01</div><div class="how-text">Observe for two weeks — 10 working days. Every time a defensive behaviour stops a conversation happening, tick it. One tick = one blocked conversation.</div></div>
-      <div class="how-step"><div class="how-num">02</div><div class="how-text">Enter your ticks, total headcount, and average salary in your chosen currency. The calculator works from what you actually observed.</div></div>
-      <div class="how-step"><div class="how-num">03</div><div class="how-text">Hit calculate. See the invisible number on your P&amp;L — and what SSC estimates it could recover.</div></div>
+      <div class="how-step"><div class="how-num">01</div><div class="how-text">Observe for two weeks — 10 working days. Every time a defensive behaviour stops a conversation, tick it. One tick = one blocked conversation.</div></div>
+      <div class="how-step"><div class="how-num">02</div><div class="how-text">Enter your ticks, headcount, average salary, and approximate number of people leaders. Hit calculate.</div></div>
+      <div class="how-step"><div class="how-num">03</div><div class="how-text">See the estimated invisible number on your P&amp;L — and what SSC estimates it could recover. Download your report.</div></div>
     </div>
 
     <div class="cost-strip">
-      <div class="cost-tag">Cost Per Blocked Conversation</div>
+      <div class="cost-tag">Approximate Cost Per Blocked Conversation</div>
       <div class="cost-items">
         <div class="cost-item"><div class="cost-amount" id="strip-low">$1,500</div><div class="cost-desc">Conservative floor<br>5 independent sources<br>live rate applied</div></div>
         <div class="cost-item"><div class="cost-amount" id="strip-high">$7,500</div><div class="cost-desc">Average per episode<br>Brad Rilatt / Crucial Dimensions<br>n = 1,025 orgs</div></div>
         <div class="cost-item"><div class="cost-amount">75%</div><div class="cost-desc">Of people make reactive decisions<br>Leadership Circle, 2M+ leaders</div></div>
       </div>
+    </div>
+
+    <!-- SCORECARD DOWNLOAD ON SCREEN 1 -->
+    <div style="margin-bottom: 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+      <button class="action-btn" style="flex:none; width:auto;" onclick="printScorecard()">↓ Download Observation Scorecard</button>
+      <span style="font-family:'GothamLight',Arial,sans-serif; font-size:0.72rem; color:var(--muted);">Print this before your two-week observation</span>
     </div>
 
     <div class="tally-wrap">
@@ -234,7 +328,7 @@
 
     <div class="calc-block">
       <div class="calc-title">— Calculate Your Number —</div>
-      <div class="calc-intro">Enter your inputs. Two independent models produce your cost range — then see what SSC estimates could be recovered.</div>
+      <div class="calc-intro">Enter your inputs below. All outputs are estimates based on published research and your observed data.</div>
       <div class="inputs-grid">
         <div class="calc-field">
           <label>Total ticks</label>
@@ -257,83 +351,195 @@
           <div class="field-note">Used for the independent Gallup cross-check</div>
         </div>
       </div>
+      <div class="leader-field-wrap">
+        <div class="calc-field">
+          <label>Approximate number of people leaders</label>
+          <input type="number" id="inp-leaders" placeholder="e.g. 250" min="1" inputmode="numeric">
+          <div class="field-note">Anyone who leads, manages, or influences others' performance — across all tiers</div>
+        </div>
+        <div class="leader-helper"><strong>Not sure?</strong> A typical organisation has one people leader for every 3–5 employees. For <span id="hc-hint">1,000</span> people that's roughly <strong><span id="leader-hint-low">200</span>–<span id="leader-hint-high">333</span></strong>. Include senior leaders, middle managers, and team leads across all tiers.</div>
+      </div>
       <button class="calc-btn" onclick="calculate()">Calculate My Number</button>
     </div>
 
     <div class="calc-footer">
-      <div class="calc-footer-note"><strong>Sources.</strong> Conversation cost: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. 75% reactive: Leadership Circle / Anderson &amp; Adams, 2M+ leaders. Gallup disengagement: 34% of annual salary (State of the Global Workplace, 2024). 220 working days per year. Annualisation ×22. Research figures converted from USD at live rates via Open Exchange Rates.</div>
+      <div class="calc-footer-note"><strong>Sources.</strong> Conversation cost: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. 75% reactive: Leadership Circle / Anderson &amp; Adams, 2M+ leaders. Gallup disengagement: 34% of annual salary (State of the Global Workplace, 2024). 220 working days per year. Annualisation ×22. All figures are estimates. Research figures converted from USD at live rates via Open Exchange Rates.</div>
     </div>
-
   </div>
 
-  <!-- ══ SCREEN 2 ══════════════════════════════ -->
+  <!-- ══ SCREEN 2 ══ -->
   <div class="screen" id="screen-2">
-
     <button class="back-btn" onclick="goBack()">← Adjust inputs</button>
 
-    <!-- HEADLINE NUMBERS FIRST -->
-    <div class="headline-block">
+    <!-- ORG NAME -->
+    <div class="org-name-wrap">
+      <div class="calc-field" style="flex:1; min-width:200px; margin:0;">
+        <label>Enter your organisation name to personalise the report (optional)</label>
+        <input type="text" id="inp-orgname" placeholder="e.g. Acme Corporation" style="font-size:0.95rem !important;">
+      </div>
+    </div>
 
-      <!-- THE COST -->
+    <!-- HEADLINES -->
+    <div class="headline-block">
       <div class="headline-row">
         <div class="headline-panel">
-          <div class="headline-eyebrow">Human behaviour is costing your organisation</div>
+          <div class="headline-eyebrow" id="h-eyebrow-1">In an organisation of approximately — people, we estimate human behaviour is costing your P&amp;L</div>
           <div class="headline-num amber" id="h-cost-low">—</div>
-          <div class="headline-desc">Conservative · <span id="h-cost-low-basis"></span></div>
+          <div class="headline-desc" id="h-cost-low-desc"></div>
         </div>
         <div class="headline-panel">
           <div class="headline-eyebrow">Realistic estimate</div>
           <div class="headline-num amber" id="h-cost-high">—</div>
-          <div class="headline-desc">Based on research average · <span id="h-cost-high-basis"></span></div>
+          <div class="headline-desc" id="h-cost-high-desc"></div>
         </div>
       </div>
-
-      <!-- GALLUP ORG-WIDE -->
       <div class="headline-row single">
         <div class="headline-panel dark">
-          <div class="headline-eyebrow">Independent cross-check — Gallup salary model · Whole organisation</div>
+          <div class="headline-eyebrow">If we look at Gallup's salary model across your whole organisation</div>
           <div class="headline-num amber" id="h-gallup">—</div>
-          <div class="headline-desc"><span id="h-gallup-basis"></span></div>
+          <div class="headline-desc" id="h-gallup-desc"></div>
         </div>
       </div>
-
-      <!-- RECOVERY -->
       <div class="headline-row single">
-        <div class="headline-panel" style="border-top: 2px solid var(--lime);">
-          <div class="headline-eyebrow" style="color: var(--lime);">SSC estimates it could recover</div>
+        <div class="headline-panel recovery">
+          <div class="headline-eyebrow lime">SSC estimates it could recover approximately</div>
           <div class="headline-num lime" id="h-recovery">—</div>
-          <div class="headline-desc"><span id="h-recovery-basis"></span></div>
+          <div class="headline-context" id="h-recovery-context"></div>
+          <div class="headline-desc" id="h-recovery-desc"></div>
         </div>
       </div>
-
     </div>
 
-    <!-- HOW WE GET THERE -->
-    <div class="section-divider">How we get there — the working</div>
+    <!-- ACTION BUTTONS -->
+    <div class="action-row">
+      <button class="action-btn primary" onclick="printReport()">↓ Download Full Report</button>
+      <button class="action-btn" onclick="printScorecard()">↓ Download Observation Scorecard</button>
+    </div>
 
-    <button class="detail-toggle" onclick="toggleDetail('detail-a')">+ Model A — Conversation cost</button>
+    <!-- COLLAPSIBLE WORKING -->
+    <div class="section-divider">How we calculate these estimates</div>
+    <button class="detail-toggle" id="tog-a" onclick="toggleDetail('detail-a','tog-a')">+ Model A — Conversation cost · your observed data annualised</button>
     <div class="detail-block" id="detail-a"></div>
-
-    <button class="detail-toggle" onclick="toggleDetail('detail-b')">+ Model B — Gallup salary model</button>
+    <button class="detail-toggle" id="tog-b" onclick="toggleDetail('detail-b','tog-b')">+ Model B — Gallup salary model · independent cross-check</button>
     <div class="detail-block" id="detail-b"></div>
-
-    <button class="detail-toggle" onclick="toggleDetail('detail-r')">+ Recovery estimate — how SSC calculates it</button>
+    <button class="detail-toggle" id="tog-r" onclick="toggleDetail('detail-r','tog-r')">+ Recovery estimate — how SSC calculates it</button>
     <div class="detail-block" id="detail-r"></div>
 
     <!-- CTA -->
     <div class="cta-block">
       <div class="cta-heading">Let's find your number together.</div>
-      <div class="cta-body">This is a conservative estimate based on published research. A 30-minute scoping conversation with SSC will give you a more precise figure — and show you exactly which leaders to start with.</div>
+      <div class="cta-body">These are conservative estimates based on published research and your observed data. A 30-minute scoping conversation with SSC will give you a more precise figure — and show you exactly which leaders to start with.</div>
       <a href="https://singlesession.online/book" class="cta-btn">Book a Scoping Call</a>
     </div>
 
     <div class="calc-footer">
-      <div class="calc-footer-note"><strong>Methodology.</strong> Cost figures converted from USD at live rates. Research sources: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. Reactive population: 75% of headcount (Leadership Circle / Anderson &amp; Adams). People leader ratio: 1:8. Gallup disengagement cost: 34% of annual salary. All reactive leadership is unconscious and systemic. Recovery = cost attributable to reactive people leaders.</div>
+      <div class="calc-footer-note"><strong>Methodology.</strong> All figures are estimates. Research figures converted from USD at live rates. Sources: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. Reactive population: 75% of headcount (Leadership Circle / Anderson &amp; Adams, 2M+ leaders). Gallup disengagement: 34% of annual salary. All reactive leadership is unconscious and systemic. Recovery estimate = cost attributable to reactive people leaders as a share of the total organisational cost.</div>
     </div>
-
   </div>
 
 </div>
+
+<!-- ══ PRINT REPORT (hidden, rendered on print) ══ -->
+<div id="print-report">
+
+  <!-- PAGE 1: COVER -->
+  <div class="pr-page pr-cover">
+    <div class="pr-cover-top">
+      <div class="pr-logo">SSC</div>
+      <div class="pr-cover-tag">Single Session Coaching · singlesession.online</div>
+      <div class="pr-cover-org" id="pr-org-name"></div>
+      <div class="pr-cover-title">The Hidden Cost<br>of Human<br>Behaviour</div>
+      <div class="pr-cover-subtitle">An estimate of what defensive behaviour is costing your organisation — and what a single session could recover.</div>
+    </div>
+    <div class="pr-cover-date" id="pr-date"></div>
+  </div>
+
+  <!-- PAGE 2: YOUR NUMBERS -->
+  <div class="pr-page">
+    <div class="pr-section-label">Your estimated figures</div>
+
+    <div class="pr-num-grid">
+      <div class="pr-num-cell">
+        <div class="pr-num-eyebrow" id="pr-eyebrow-1"></div>
+        <div class="pr-big amber" id="pr-cost-low">—</div>
+        <div class="pr-num-desc" id="pr-cost-low-desc"></div>
+      </div>
+      <div class="pr-num-cell">
+        <div class="pr-num-eyebrow">Realistic estimate</div>
+        <div class="pr-big amber" id="pr-cost-high">—</div>
+        <div class="pr-num-desc" id="pr-cost-high-desc"></div>
+      </div>
+      <div class="pr-num-cell full">
+        <div class="pr-num-eyebrow">Gallup salary model · whole organisation · independent cross-check</div>
+        <div class="pr-big amber" id="pr-gallup">—</div>
+        <div class="pr-num-desc" id="pr-gallup-desc"></div>
+      </div>
+      <div class="pr-num-cell full recovery">
+        <div class="pr-num-eyebrow lime">SSC estimates it could recover approximately</div>
+        <div class="pr-big lime" id="pr-recovery">—</div>
+        <div class="pr-num-desc" id="pr-recovery-desc"></div>
+      </div>
+    </div>
+
+    <div class="pr-section-label">Your inputs</div>
+    <table class="pr-inputs" id="pr-inputs-table"></table>
+
+    <div class="pr-section-label">How we calculate these estimates</div>
+    <table class="pr-working" id="pr-working-table"></table>
+  </div>
+
+  <!-- PAGE 3: WHAT SSC DOES -->
+  <div class="pr-page">
+    <div class="pr-section-label">What Single Session Coaching does</div>
+    <p class="pr-body">Most leadership behaviour isn't a conscious choice. It's automatic — shaped by patterns formed early, reinforced over decades, and running quietly beneath the surface of every meeting, every decision, every difficult conversation a leader has ever had. This matters because the entire $400 billion global L&D industry is built on a different assumption: that leaders change through knowledge, reflection, and practice. Sometimes they do. But not reliably, and not at the level that counts. McKinsey estimates that around 10% of leadership development investment produces lasting behavioural change. The other 90% produces awareness. And awareness, however hard-won, is not the same as change.</p>
+    <p class="pr-body">You cannot reach an unconscious pattern with a conscious approach. The pattern simply waits you out.</p>
+    <p class="pr-body">Single Session Coaching was built on a different premise. That every pattern a leader carries made sense once — it was learned for a reason, in a context that no longer exists. The work isn't to judge it or dismantle it. It's to make it visible, understand what it was protecting, and give the leader a genuine choice about whether to keep it. That's what Surface / Decode / Resolve does. In 90 minutes. Not through insight alone — through mechanism. The pattern becomes optional. What replaces it belongs to them.</p>
+
+    <div class="pr-section-label" style="margin-top:12mm;">The research behind these numbers</div>
+    <div class="pr-research-grid">
+      <div class="pr-research-item">
+        <div class="pr-research-title">The $400 billion figure</div>
+        <div class="pr-research-body">Global investment in corporate learning and development, reported annually by the World Economic Forum and Statista. The number has grown every year. The return on that investment has not kept pace.</div>
+      </div>
+      <div class="pr-research-item">
+        <div class="pr-research-title">Only 10% produces lasting change</div>
+        <div class="pr-research-body">McKinsey &amp; Company, Losing from Day One (2021). Supported by longitudinal research from Bersin by Deloitte tracking how much of what leaders learn in development programmes translates into sustained behavioural change.</div>
+      </div>
+      <div class="pr-research-item">
+        <div class="pr-research-title">Most behaviour is automatic</div>
+        <div class="pr-research-body">Bargh &amp; Chartrand (1999), The Unbearable Automaticity of Being, American Psychologist. The vast majority of cognitive activity — including the behavioural responses we think of as decisions — operates below conscious awareness.</div>
+      </div>
+      <div class="pr-research-item">
+        <div class="pr-research-title">Conscious approaches can't reach unconscious patterns</div>
+        <div class="pr-research-body">Kahneman (2011), Thinking, Fast and Slow. Van der Kolk (2014), The Body Keeps the Score. Libet et al. (1983) — on the neural activity that precedes conscious awareness of a decision.</div>
+      </div>
+      <div class="pr-research-item">
+        <div class="pr-research-title">Patterns form early and consolidate over time</div>
+        <div class="pr-research-body">Hebb's Law (1949) — repeated neural firing strengthens the pathways that carry a behaviour. LeDoux (2002), Synaptic Self — on how experience shapes the architecture of response.</div>
+      </div>
+      <div class="pr-research-item">
+        <div class="pr-research-title">A single session can produce lasting change</div>
+        <div class="pr-research-body">Hoyt &amp; Talmon (2014), Capturing the Moment — depth of contact matters more than duration. SSC outcome data from client sessions is available on request.</div>
+      </div>
+      <div class="pr-research-item">
+        <div class="pr-research-title">Defensive behaviour cost: $1,500–$7,500 per blocked conversation</div>
+        <div class="pr-research-body">Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. Five independent sources. Same number.</div>
+      </div>
+      <div class="pr-research-item">
+        <div class="pr-research-title">75% of leaders operate reactively</div>
+        <div class="pr-research-body">Leadership Circle / Anderson &amp; Adams, dataset of 2M+ leaders. Reactive leadership is by definition unconscious and systemic — driven by patterns formed outside the leader's awareness.</div>
+      </div>
+    </div>
+
+    <div class="pr-cta">
+      <div class="pr-cta-head">Let's find your number together.</div>
+      <div class="pr-cta-body">A 30-minute scoping conversation with SSC will give you a more precise figure and show you exactly which leaders to start with. One session. One shift. The conversations start happening.</div>
+      <div class="pr-cta-url">singlesession.online/book</div>
+    </div>
+  </div>
+
+</div><!-- end print-report -->
+
 <script>
 const BEHAVIOURS = [
   { name:"Pleasing",                           eg:'"That sounds great" — when it doesn\'t',            stops:"Challenge, honest pushback, strategic friction" },
@@ -354,6 +560,7 @@ const counts = Array(BEHAVIOURS.length).fill(0);
 let rates = {};
 let selectedCurrency = 'USD';
 let selectedSymbol   = '$';
+let lastCalc = {};
 const COST_LOW_USD  = 1500;
 const COST_HIGH_USD = 7500;
 
@@ -391,6 +598,13 @@ document.querySelectorAll('.currency-btn').forEach(btn => {
     document.getElementById('sal-lbl').textContent = selectedSymbol;
     updateCostStrip();
   });
+});
+
+document.getElementById('inp-headcount').addEventListener('input', function() {
+  const hc = parseFloat(this.value) || 1000;
+  document.getElementById('hc-hint').textContent = fmtN(hc);
+  document.getElementById('leader-hint-low').textContent  = fmtN(Math.round(hc / 5));
+  document.getElementById('leader-hint-high').textContent = fmtN(Math.round(hc / 3));
 });
 
 function buildTable() {
@@ -442,41 +656,46 @@ function calculate() {
   const observed  = parseFloat(document.getElementById('inp-observed').value)  || 1;
   const headcount = parseFloat(document.getElementById('inp-headcount').value) || 0;
   const salary    = parseFloat(document.getElementById('inp-salary').value)    || 0;
+  const leaders   = parseFloat(document.getElementById('inp-leaders').value)   || 0;
 
   if (!ticks)     { alert('Please enter your total ticks.'); return; }
   if (!headcount) { alert('Please enter your organisation headcount.'); return; }
   if (!salary)    { alert('Please enter your average annual salary.'); return; }
+  if (!leaders)   { alert('Please enter your approximate number of people leaders.'); return; }
 
-  const sym     = selectedSymbol;
-  const costLow = toLocal(COST_LOW_USD,  selectedCurrency);
-  const costHigh= toLocal(COST_HIGH_USD, selectedCurrency);
+  const sym      = selectedSymbol;
+  const costLow  = toLocal(COST_LOW_USD,  selectedCurrency);
+  const costHigh = toLocal(COST_HIGH_USD, selectedCurrency);
 
-  // Model A
-  const annualised = ticks * 22;
-  const aLow  = annualised * costLow;
-  const aHigh = annualised * costHigh;
-
-  // Model B
-  const reactive = Math.round(headcount * 0.75);
-  const bTotal   = reactive * salary * 0.34;
-
-  // Recovery
-  const peopleLeaders   = Math.round(headcount / 8);
-  const reactiveLeaders = Math.round(peopleLeaders * 0.75);
+  const annualised      = ticks * 22;
+  const aLow            = annualised * costLow;
+  const aHigh           = annualised * costHigh;
+  const reactive        = Math.round(headcount * 0.75);
+  const bTotal          = reactive * salary * 0.34;
+  const reactiveLeaders = Math.round(leaders * 0.75);
   const leaderShare     = reactive > 0 ? reactiveLeaders / reactive : 0;
   const recoverableCost = bTotal * leaderShare;
 
-  // ── HEADLINES ────────────────────────────────
-  s('h-cost-low',        sym + fmtM(aLow));
-  s('h-cost-low-basis',  `${fmtN(annualised)} blocked conversations × ${sym}${fmtN(costLow)} · in the ${Math.round(observed)} people you observed`);
-  s('h-cost-high',       sym + fmtM(aHigh));
-  s('h-cost-high-basis', `${fmtN(annualised)} blocked conversations × ${sym}${fmtN(costHigh)} · in the ${Math.round(observed)} people you observed`);
-  s('h-gallup',          sym + fmtM(bTotal));
-  s('h-gallup-basis',    `${fmtN(reactive)} reactive people × ${sym}${fmtN(salary)} average salary × 34% Gallup disengagement cost`);
-  s('h-recovery',        sym + fmtM(recoverableCost));
-  s('h-recovery-basis',  `Based on ${fmtN(reactiveLeaders)} reactive people leaders — their ${(leaderShare*100).toFixed(1)}% share of the total organisational cost`);
+  // Store for report
+  lastCalc = { ticks, observed, headcount, salary, leaders, sym, costLow, costHigh,
+    annualised, aLow, aHigh, reactive, bTotal, reactiveLeaders, leaderShare, recoverableCost,
+    currency: selectedCurrency };
 
-  // ── WORKING DETAIL (collapsible) ─────────────
+  const eyebrow1 = `In an organisation of approximately ${fmtN(headcount)} people, we estimate human behaviour is costing your P&L`;
+
+  // Screen 2 headlines
+  s('h-eyebrow-1',      eyebrow1);
+  s('h-cost-low',       sym + fmtM(aLow));
+  s('h-cost-low-desc',  `Conservative estimate · ${fmtN(annualised)} blocked conversations × ${sym}${fmtN(costLow)} · based on what you observed in ${Math.round(observed)} people`);
+  s('h-cost-high',      sym + fmtM(aHigh));
+  s('h-cost-high-desc', `Realistic estimate · ${fmtN(annualised)} blocked conversations × ${sym}${fmtN(costHigh)}`);
+  s('h-gallup',         sym + fmtM(bTotal));
+  s('h-gallup-desc',    `${fmtN(reactive)} reactive people × ${sym}${fmtN(salary)} average salary × 34% Gallup disengagement cost`);
+  s('h-recovery',       sym + fmtM(recoverableCost));
+  s('h-recovery-context', `Based on approximately ${fmtN(leaders)} people leaders — ${fmtN(reactiveLeaders)} estimated to be operating reactively.`);
+  s('h-recovery-desc',  `Estimated ${(leaderShare*100).toFixed(0)}% share of the ${sym}${fmtM(bTotal)} whole-organisation cost. One session per leader. One shift per session.`);
+
+  // Collapsible working
   document.getElementById('detail-a').innerHTML =
     wl('Blocked conversations observed over 10 working days', `${ticks} ticks`, ticks, '') +
     wl('Annualised across 220 working days (×22)', `${ticks} × 22`, fmtN(annualised), '') +
@@ -490,16 +709,16 @@ function calculate() {
     wl('× 34% — Gallup cost of an actively disengaged employee', `${fmtN(reactive)} × ${sym}${fmtN(salary)} × 34%`, sym+fmtM(bTotal), 'amber');
 
   document.getElementById('detail-r').innerHTML =
-    wl('People leaders in your organisation (headcount ÷ 8)', `${fmtN(headcount)} ÷ 8`, fmtN(peopleLeaders), '') +
-    wl('Reactive people leaders — 75% (Leadership Circle)', `${fmtN(peopleLeaders)} × 75%`, fmtN(reactiveLeaders), '') +
-    wl('Their share of the whole-organisation cost', `${fmtN(reactiveLeaders)} ÷ ${fmtN(reactive)}`, (leaderShare*100).toFixed(1)+'%', '') +
-    wl('Estimated recoverable cost', `${(leaderShare*100).toFixed(1)}% of ${sym}${fmtM(bTotal)}`, sym+fmtM(recoverableCost), 'lime');
+    wl('People leaders (your input)', '', fmtN(leaders), '') +
+    wl('Reactive people leaders — 75% (Leadership Circle)', `${fmtN(leaders)} × 75%`, fmtN(reactiveLeaders), '') +
+    wl('Their share of the total reactive population', `${fmtN(reactiveLeaders)} ÷ ${fmtN(reactive)}`, (leaderShare*100).toFixed(0)+'%', '') +
+    wl('Estimated recoverable cost', `${(leaderShare*100).toFixed(0)}% of ${sym}${fmtM(bTotal)}`, sym+fmtM(recoverableCost), 'lime');
 
-  // Switch screens — scroll to very top of iframe
   document.getElementById('screen-1').classList.remove('active');
   document.getElementById('screen-2').classList.add('active');
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
+  try { window.parent.scrollTo(0, 0); } catch(e) {}
 }
 
 function goBack() {
@@ -507,13 +726,145 @@ function goBack() {
   document.getElementById('screen-1').classList.add('active');
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
+  try { window.parent.scrollTo(0, 0); } catch(e) {}
 }
 
-function toggleDetail(id) {
+function toggleDetail(id, btnId) {
   const el  = document.getElementById(id);
-  const btn = el.previousElementSibling;
+  const btn = document.getElementById(btnId);
   const open = el.classList.toggle('open');
   btn.textContent = (open ? '− ' : '+ ') + btn.textContent.slice(2);
+}
+
+// ── PRINT REPORT ──────────────────────────────
+function printReport() {
+  if (!lastCalc.aLow) { alert('Please calculate your number first.'); return; }
+  const c = lastCalc;
+  const sym = c.sym;
+  const orgName = document.getElementById('inp-orgname').value.trim();
+  const date = new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+
+  // Populate print elements
+  s('pr-org-name',       orgName ? `Prepared for ${orgName}` : 'Prepared by Single Session Coaching');
+  s('pr-date',           date);
+  s('pr-eyebrow-1',      `In an organisation of approximately ${fmtN(c.headcount)} people, we estimate human behaviour is costing your P&L`);
+  s('pr-cost-low',       sym + fmtM(c.aLow));
+  s('pr-cost-low-desc',  `Conservative · ${fmtN(c.annualised)} blocked conversations × ${sym}${fmtN(c.costLow)}`);
+  s('pr-cost-high',      sym + fmtM(c.aHigh));
+  s('pr-cost-high-desc', `Realistic · ${fmtN(c.annualised)} blocked conversations × ${sym}${fmtN(c.costHigh)}`);
+  s('pr-gallup',         sym + fmtM(c.bTotal));
+  s('pr-gallup-desc',    `${fmtN(c.reactive)} reactive people × ${sym}${fmtN(c.salary)} average salary × 34%`);
+  s('pr-recovery',       sym + fmtM(c.recoverableCost));
+  s('pr-recovery-desc',  `${fmtN(c.reactiveLeaders)} reactive people leaders · ${(c.leaderShare*100).toFixed(0)}% share of the total organisational cost`);
+
+  // Inputs table
+  document.getElementById('pr-inputs-table').innerHTML = `
+    <tr><td>Organisation</td><td>${orgName || '—'}</td></tr>
+    <tr><td>Total headcount</td><td>${fmtN(c.headcount)}</td></tr>
+    <tr><td>People leaders</td><td>${fmtN(c.leaders)}</td></tr>
+    <tr><td>Average annual salary</td><td>${sym}${fmtN(c.salary)}</td></tr>
+    <tr><td>Blocked conversations observed</td><td>${c.ticks} over 10 working days</td></tr>
+    <tr><td>People observed</td><td>${Math.round(c.observed)}</td></tr>
+    <tr><td>Currency</td><td>${c.currency}</td></tr>
+    <tr><td>Date</td><td>${date}</td></tr>
+  `;
+
+  // Working table
+  document.getElementById('pr-working-table').innerHTML = `
+    <tr><td>Blocked conversations annualised (×22)</td><td>${c.ticks} × 22</td><td>${fmtN(c.annualised)}</td></tr>
+    <tr><td>Conservative cost — ${sym}${fmtN(c.costLow)} per conversation</td><td>${fmtN(c.annualised)} × ${sym}${fmtN(c.costLow)}</td><td class="amber">${sym}${fmtM(c.aLow)}</td></tr>
+    <tr><td>Realistic cost — ${sym}${fmtN(c.costHigh)} per conversation</td><td>${fmtN(c.annualised)} × ${sym}${fmtN(c.costHigh)}</td><td class="amber">${sym}${fmtM(c.aHigh)}</td></tr>
+    <tr><td>Reactive population (75% of ${fmtN(c.headcount)})</td><td></td><td>${fmtN(c.reactive)}</td></tr>
+    <tr><td>Gallup model — whole organisation</td><td>${fmtN(c.reactive)} × ${sym}${fmtN(c.salary)} × 34%</td><td class="amber">${sym}${fmtM(c.bTotal)}</td></tr>
+    <tr><td>Reactive people leaders (75% of ${fmtN(c.leaders)})</td><td></td><td>${fmtN(c.reactiveLeaders)}</td></tr>
+    <tr><td>Their share of total cost</td><td>${fmtN(c.reactiveLeaders)} ÷ ${fmtN(c.reactive)}</td><td>${(c.leaderShare*100).toFixed(0)}%</td></tr>
+    <tr><td>Estimated recoverable cost</td><td>${(c.leaderShare*100).toFixed(0)}% of ${sym}${fmtM(c.bTotal)}</td><td class="lime">${sym}${fmtM(c.recoverableCost)}</td></tr>
+  `;
+
+  window.print();
+}
+
+// ── PRINT SCORECARD ───────────────────────────
+function printScorecard() {
+  const orgName = (document.getElementById('inp-orgname') || {}).value || '';
+  const win = window.open('', '_blank', 'width=600,height=850');
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+  <title>SSC Observation Scorecard</title>
+  <style>
+    @page { size: A5 landscape; margin: 8mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; font-size: 7pt; color: #111; background: white; }
+    .header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4mm; padding-bottom: 2mm; border-bottom: 2px solid #111; }
+    .header-left h1 { font-size: 16pt; font-weight: 900; letter-spacing: 0.1em; line-height: 1; }
+    .header-left p { font-size: 6.5pt; color: #666; margin-top: 1mm; }
+    .header-right { text-align: right; font-size: 6.5pt; color: #666; }
+    .header-right strong { font-size: 8pt; color: #111; display: block; }
+    table { width: 100%; border-collapse: collapse; }
+    thead th { background: #111; color: white; font-size: 6pt; letter-spacing: 0.1em; text-transform: uppercase; padding: 2mm 2mm; text-align: center; border: 1px solid #111; }
+    thead th.left { text-align: left; }
+    tbody tr { border-bottom: 1px solid #ddd; }
+    tbody tr:nth-child(even) { background: #f9f9f9; }
+    tbody td { padding: 2mm 2mm; border-right: 1px solid #ddd; font-size: 6.5pt; vertical-align: middle; }
+    tbody td.name { font-weight: 700; font-size: 7pt; }
+    tbody td.day { text-align: center; width: 9mm; }
+    tbody td.total { text-align: center; font-weight: 700; background: #f0f0f0; }
+    .footer { margin-top: 3mm; display: flex; justify-content: space-between; align-items: flex-end; padding-top: 2mm; border-top: 1px solid #ddd; }
+    .footer-left { font-size: 6pt; color: #666; max-width: 120mm; }
+    .footer-right { font-size: 6pt; color: #666; text-align: right; }
+    .cost-ref { background: #DCFF4F; padding: 1mm 3mm; font-weight: 700; font-size: 6.5pt; }
+  </style>
+  </head><body>
+  <div class="header">
+    <div class="header-left">
+      <h1>SSC</h1>
+      <p>Two-Week Defensive Behaviour Observation Scorecard${orgName ? ' · ' + orgName : ''}</p>
+    </div>
+    <div class="header-right">
+      <strong>Observer: ___________________________</strong>
+      Dates: _________________ to _________________
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th class="left" style="width:28%">Behaviour</th>
+        <th style="width:6%">M</th><th style="width:6%">T</th><th style="width:6%">W</th><th style="width:6%">T</th><th style="width:6%">F</th>
+        <th style="width:6%">M</th><th style="width:6%">T</th><th style="width:6%">W</th><th style="width:6%">T</th><th style="width:6%">F</th>
+        <th style="width:8%" class="total">Total</th>
+      </tr>
+      <tr>
+        <th class="left"></th>
+        <th colspan="5" style="background:#333; font-size:5.5pt;">WEEK 1</th>
+        <th colspan="5" style="background:#555; font-size:5.5pt;">WEEK 2</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      ${BEHAVIOURS.map(b => `<tr>
+        <td class="name">${b.name}<br><span style="font-weight:300;font-size:6pt;color:#666;">${b.eg}</span></td>
+        ${Array(10).fill('<td class="day"></td>').join('')}
+        <td class="total"></td>
+      </tr>`).join('')}
+      <tr style="border-top: 2px solid #111;">
+        <td style="font-weight:700; font-size:7pt; text-transform:uppercase; letter-spacing:0.08em;">TOTAL</td>
+        ${Array(10).fill('<td class="day" style="background:#f0f0f0;"></td>').join('')}
+        <td class="total" style="background:#DCFF4F; font-size:9pt;"></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="footer">
+    <div class="footer-left">
+      <strong>How to use:</strong> Each time a defensive behaviour stops a conversation happening, put a mark in that day's column. Count your total marks at the end of two weeks and enter into the SSC calculator at singlesession.online
+    </div>
+    <div class="footer-right">
+      <span class="cost-ref">Each tick = $1,500–$7,500</span><br>
+      singlesession.online
+    </div>
+  </div>
+  </body></html>`);
+  win.document.close();
+  win.focus();
+  setTimeout(() => { win.print(); }, 500);
 }
 
 function wl(label, calc, val, cls) {
@@ -536,7 +887,7 @@ function fmtN(n) {
 }
 function s(id, val) { const el=document.getElementById(id); if(el) el.textContent=val; }
 
-['inp-ticks','inp-observed','inp-headcount','inp-salary'].forEach(id => {
+['inp-ticks','inp-observed','inp-headcount','inp-salary','inp-leaders'].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('keydown', e => { if(e.key==='Enter') calculate(); });
 });
