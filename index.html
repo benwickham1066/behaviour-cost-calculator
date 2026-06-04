@@ -710,8 +710,7 @@ async function submitLead() {
           ticks: c.ticks, people_observed: c.observed,
           cost_minimum: sym + fmtM(c.aLow),
           cost_maximum: sym + fmtM(c.aHigh),
-          gallup_total: sym + fmtM(c.bTotal),
-          ssc_recovery: sym + fmtM(c.recoverableCost),
+                    ssc_recovery: sym + fmtM(c.recoverableCost),
           _subject: `SSC Calculator Lead — ${org || name || email}`
         })
       });
@@ -742,45 +741,30 @@ function generateReport() {
   s('pr-min',           sym + fmtM(c.aLow));
   s('pr-max',           sym + fmtM(c.aHigh));
   s('pr-range-desc',    `Minimum ${sym}${fmtN(c.costLow)} per blocked conversation · Maximum ${sym}${fmtN(c.costHigh)} · ${fmtN(c.annualised)} blocked conversations annualised`);
-  s('pr-gallup',        sym + fmtM(c.bTotal));
-  s('pr-gallup-desc',   `${fmtN(c.reactive)} reactive people × ${sym}${fmtN(c.salary)} average salary × 34%`);
-  s('pr-recovery', sym + fmtM(c.recoverableCost));
-  if (c.recoveryMethod === 'lc') {
-    const revLabel = c.revenueIsEstimated
-      ? `Estimated revenue ${sym}${fmtM(c.revenue)} (${c.revenueSource} benchmark)`
-      : `Annual revenue ${sym}${fmtM(c.revenue)}`;
-    s('pr-recovery-desc', `${revLabel} × 37.6% = ${sym}${fmtM(c.lcAddressableUpside)} of business performance directly sensitive to leadership behaviour (Leadership Circle, n=486). SSC works with your ${fmtN(c.reactiveLeaders)} reactive people leaders — removing the patterns suppressing that performance.`);
-    const eyebrow = document.querySelector('.pr-minmax.lime');
-    if (eyebrow) eyebrow.textContent = 'Leadership Circle — Addressable Performance Upside';
-  } else {
-    s('pr-recovery-desc', `Gallup: managers account for 70% of variance in team engagement. 70% of the ${sym}${fmtM(c.bTotal)} organisational cost is directly attributable to leadership behaviour. SSC removes the reactive pattern in each leader — not one blocked conversation, but all of them.`);
-  }
+   s('pr-gallup',        '');
+   s('pr-gallup-desc',   '');
+   s('pr-recovery', sym + fmtM(c.recoverableCost));
+   s('pr-recovery-desc', `${fmtN(c.reactiveLeaders)} reactive people leaders × ${sym}${fmtN(c.salary)} average salary × 37.6% = ${sym}${fmtM(c.recoverableCost)}. Published research shows leadership effectiveness explains 37.6% of business performance variance. SSC removes the reactive pattern — not one blocked conversation, but all of them.`);
 
-  document.getElementById('pr-inputs-table').innerHTML = `
-    <tr><td>Organisation</td><td>${orgName || '—'}</td></tr>
-    <tr><td>Total headcount</td><td>${fmtN(c.headcount)}</td></tr>
-    <tr><td>People leaders</td><td>${fmtN(c.leaders)}</td></tr>
-    <tr><td>Sector</td><td>${c.sectorName || '—'}</td></tr>
-    <tr><td>Annual revenue</td><td>${c.revenue > 0 ? (sym + fmtM(c.revenue) + (c.revenueIsEstimated ? ' (estimated)' : '')) : '—'}</td></tr>
-    <tr><td>Blocked conversations observed</td><td>${c.ticks} over 10 working days</td></tr>
-    <tr><td>People observed</td><td>${Math.round(c.observed)}</td></tr>
-    <tr><td>Currency</td><td>${c.currency}</td></tr>
-    <tr><td>Date</td><td>${date}</td></tr>
-  `;
+   document.getElementById('pr-inputs-table').innerHTML = `
+     <tr><td>Organisation</td><td>${orgName || '—'}</td></tr>
+     <tr><td>Total headcount</td><td>${fmtN(c.headcount)}</td></tr>
+     <tr><td>People leaders</td><td>${fmtN(c.leaders)}</td></tr>
+     <tr><td>Average annual salary</td><td>${sym}${fmtN(c.salary)}</td></tr>
+     <tr><td>Blocked conversations observed</td><td>${c.ticks} over 10 working days</td></tr>
+     <tr><td>People observed</td><td>${Math.round(c.observed)}</td></tr>
+     <tr><td>Currency</td><td>${c.currency}</td></tr>
+     <tr><td>Date</td><td>${date}</td></tr>
+   `;
 
-  document.getElementById('pr-working-table').innerHTML = `
-    <tr><td>Blocked conversations annualised (×22)</td><td>${c.ticks} × 22</td><td>${fmtN(c.annualised)}</td></tr>
-    <tr><td>Minimum — ${sym}${fmtN(c.costLow)} per conversation</td><td>${fmtN(c.annualised)} × ${sym}${fmtN(c.costLow)}</td><td class="amber">${sym}${fmtM(c.aLow)}</td></tr>
-    <tr><td>Maximum — ${sym}${fmtN(c.costHigh)} per conversation</td><td>${fmtN(c.annualised)} × ${sym}${fmtN(c.costHigh)}</td><td class="amber">${sym}${fmtM(c.aHigh)}</td></tr>
-    <tr><td>Reactive population (75% of ${fmtN(c.headcount)})</td><td></td><td>${fmtN(c.reactive)}</td></tr>
-    <tr><td>Gallup model — whole organisation</td><td>${fmtN(c.reactive)} × ${sym}${fmtN(c.salary)} × 34%</td><td class="amber">${sym}${fmtM(c.bTotal)}</td></tr>
-    <tr><td>Reactive people leaders (75% of ${fmtN(c.leaders)})</td><td></td><td>${fmtN(c.reactiveLeaders)}</td></tr>
-    ${c.recoveryMethod === 'lc'
-      ? `<tr><td>Annual revenue (${c.revenueIsEstimated ? c.revenueSource + ' benchmark' : 'entered'})</td><td></td><td>${sym}${fmtM(c.revenue)}</td></tr>
-         <tr><td>Leadership effectiveness explains 37.6% of business performance variance (Leadership Circle, n=486)</td><td>${sym}${fmtM(c.revenue)} × 37.6%</td><td class="lime">${sym}${fmtM(c.recoverableCost)}</td></tr>`
-      : `<tr><td>Managers' share of engagement variance (Gallup)</td><td>70% of Gallup total</td><td>70%</td></tr>
-         <tr><td>Estimated addressable cost</td><td>70% of ${sym}${fmtM(c.bTotal)}</td><td class="lime">${sym}${fmtM(c.recoverableCost)}</td></tr>`
-    }
+   document.getElementById('pr-working-table').innerHTML = `
+     <tr><td>Blocked conversations annualised (×22)</td><td>${c.ticks} × 22</td><td>${fmtN(c.annualised)}</td></tr>
+     <tr><td>Minimum — ${sym}${fmtN(c.costLow)} per conversation</td><td>${fmtN(c.annualised)} × ${sym}${fmtN(c.costLow)}</td><td class="amber">${sym}${fmtM(c.aLow)}</td></tr>
+     <tr><td>Maximum — ${sym}${fmtN(c.costHigh)} per conversation</td><td>${fmtN(c.annualised)} × ${sym}${fmtN(c.costHigh)}</td><td class="amber">${sym}${fmtM(c.aHigh)}</td></tr>
+     <tr><td>Reactive population (75% of ${fmtN(c.headcount)})</td><td></td><td>${fmtN(c.reactive)}</td></tr>
+     <tr><td>Reactive people leaders (75% of ${fmtN(c.leaders)})</td><td></td><td>${fmtN(c.reactiveLeaders)}</td></tr>
+     <tr><td>Recovery — reactive leaders × salary × 37.6%</td><td>${fmtN(c.reactiveLeaders)} × ${sym}${fmtN(c.salary)} × 37.6%</td><td class="lime">${sym}${fmtM(c.recoverableCost)}</td></tr>
+   `;
   `;
 
   window.print();
