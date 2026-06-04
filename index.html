@@ -510,7 +510,7 @@ let lastCalc = {};
 const COST_LOW_USD = 1500, COST_HIGH_USD = 7500;
 
 // FORMSPREE — replace YOUR_FORM_ID with your actual Formspree form ID
-const FORMSPREE_ID = 'xblgrgyv';
+const FORMSPREE_ID = 'YOUR_FORM_ID';
 
 async function fetchRates() {
   try {
@@ -663,6 +663,7 @@ function calculate() {
     document.body.scrollTop = 0;
     try { window.parent.scrollTo({top:0, behavior:'instant'}); } catch(e){}
     try { window.scrollTo({top:0, behavior:'instant'}); } catch(e){}
+    postHeight();
   }, 50);
 }
 
@@ -674,6 +675,7 @@ function goBack() {
     document.body.scrollTop = 0;
     try { window.parent.scrollTo({top:0, behavior:'instant'}); } catch(e){}
     try { window.scrollTo({top:0, behavior:'instant'}); } catch(e){}
+    postHeight();
   }, 50);
 }
 
@@ -706,9 +708,9 @@ async function submitLead() {
   const sym = c.sym || '$';
 
   // Send to Formspree
-  if (FORMSPREE_ID && FORMSPREE_ID !== 'YOUR_FORM_ID') {
+  if (FORMSPREE_ID && FORMSPREE_ID !== 'xblgrgyv') {
     try {
-      await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      await fetch(`https://formspree.io/f/${xblgrgyv}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -910,8 +912,19 @@ function s(id,val) { const el=document.getElementById(id); if(el) el.textContent
   if(el) el.addEventListener('keydown', e => { if(e.key==='Enter') calculate(); });
 });
 
+function postHeight() {
+  const h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+  try { window.parent.postMessage({ type:'ssc-height', height: h }, '*'); } catch(e){}
+}
+
 buildTable();
 fetchRates();
+postHeight();
+setTimeout(postHeight, 500);
+setTimeout(postHeight, 1500);
+window.addEventListener('resize', postHeight);
+const _obs = new MutationObserver(postHeight);
+_obs.observe(document.body, { childList:true, subtree:true, attributes:true });
 </script>
 </body>
 </html>
