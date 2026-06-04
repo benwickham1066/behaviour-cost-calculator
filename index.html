@@ -4,59 +4,111 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SSC — Behaviour Audit</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
+  @font-face {
+    font-family: 'DrukTextBold';
+    src: url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6a1009cd7aaf840ccfa17f85/1779435981098/Druk-Bold-Web.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'GothamLight';
+    src: url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6830c26fc80e440c041d2ef5/1748025967908/Gotham-Light.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'GothamBook';
+    src: url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/67c16f32ccecbb575ae82d2f/1740730162912/GothamBook.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'GothamMedium';
+    src: url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/67c97a2fa70c204473c1f0c9/1741278511802/GothamMedium.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
   :root {
-    --black: #111111;
-    --surface: #1a1a1a;
-    --surface2: #1e1e1e;
     --lime: #DCFF4F;
     --white: #f7f7f7;
     --muted: #999999;
-    --border: #2a2a2a;
+    --surface: rgba(255,255,255,0.05);
+    --surface2: rgba(255,255,255,0.08);
+    --border: rgba(255,255,255,0.12);
     --amber: #F5A623;
+    --black: #1a1a1a;
   }
-  body { background: transparent; color: var(--white); font-family: 'DM Sans', sans-serif; font-weight: 300; padding: 0 0 80px; }
-  .page { max-width: 100%; margin: 0 auto; }
 
-  /* COST STRIP */
-  .cost-strip { display: flex; border: 1px solid var(--border); margin-bottom: 32px; overflow: hidden; }
-  .cost-tag { background: var(--lime); color: var(--black); font-family: 'Bebas Neue', sans-serif; font-size: 10px; letter-spacing: 0.16em; writing-mode: vertical-rl; transform: rotate(180deg); padding: 12px 8px; flex-shrink: 0; white-space: nowrap; }
-  .cost-items { display: flex; flex: 1; flex-wrap: wrap; }
-  .cost-item { flex: 1; min-width: 100px; padding: 14px 16px; border-right: 1px solid var(--border); }
-  .cost-item:last-child { border-right: none; }
-  .cost-amount { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--lime); line-height: 1; margin-bottom: 4px; }
-  .cost-desc { font-size: 10px; color: var(--muted); line-height: 1.5; }
+  body {
+    background: transparent;
+    color: var(--white);
+    font-family: 'GothamLight', Arial, sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+    line-height: 1.5;
+    padding: 0 0 80px;
+  }
+
+  .page { max-width: 100%; margin: 0 auto; }
 
   /* HOW TO */
   .how-to { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 32px; }
-  .how-step { background: var(--surface); padding: 18px 16px; }
-  .how-num { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--lime); line-height: 1; margin-bottom: 8px; }
-  .how-text { font-size: 12px; color: var(--white); line-height: 1.6; font-weight: 300; }
+  .how-step { background: var(--surface); padding: 22px 18px; }
+  .how-num { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem); color: var(--lime); line-height: 1; margin-bottom: 10px; }
+  .how-text { font-family: 'GothamLight', Arial, sans-serif; font-size: clamp(0.75rem, 1.5vw, 0.9rem); color: var(--white); line-height: 1.6; }
   @media(max-width:560px){ .how-to{ grid-template-columns:1fr; } }
+
+  /* COST STRIP */
+  .cost-strip { display: flex; border: 1px solid var(--border); margin-bottom: 32px; overflow: hidden; }
+  .cost-tag { background: var(--lime); color: var(--black); font-family: 'DrukTextBold', Arial, sans-serif; font-size: 10px; letter-spacing: 0.16em; writing-mode: vertical-rl; transform: rotate(180deg); padding: 12px 9px; flex-shrink: 0; white-space: nowrap; }
+  .cost-items { display: flex; flex: 1; flex-wrap: wrap; }
+  .cost-item { flex: 1; min-width: 100px; padding: 16px 18px; border-right: 1px solid var(--border); }
+  .cost-item:last-child { border-right: none; }
+  .cost-amount { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--lime); line-height: 1; margin-bottom: 6px; }
+  .cost-desc { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.72rem; color: var(--muted); line-height: 1.5; }
 
   /* TABLE */
   .tally-wrap { margin-bottom: 40px; overflow-x: auto; }
   .tally-table { width: 100%; border-collapse: collapse; min-width: 480px; }
-  .tally-table thead th { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); font-weight: 400; text-align: left; padding: 10px 12px; background: var(--surface); border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .tally-table thead th {
+    font-family: 'GothamMedium', Arial, sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
   .tally-table thead th.right { text-align: right; }
   .tally-table tbody tr { border-bottom: 1px solid var(--border); }
   .tally-table tbody tr:hover td { background: var(--surface2); }
-  .tally-table tbody td { padding: 12px 12px; vertical-align: middle; }
-  .b-name { font-weight: 500; color: var(--white); font-size: 13px; margin-bottom: 2px; }
-  .b-eg { font-size: 11px; color: var(--muted); font-style: italic; line-height: 1.4; }
-  .b-stops { font-size: 11px; color: var(--muted); line-height: 1.4; }
+  .tally-table tbody td { padding: 14px 14px; vertical-align: middle; }
+
+  .b-name { font-family: 'GothamMedium', Arial, sans-serif; font-weight: 600; color: var(--white); font-size: clamp(0.8rem, 1.5vw, 0.95rem); margin-bottom: 3px; }
+  .b-eg { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.75rem; color: var(--muted); font-style: italic; line-height: 1.4; }
+  .b-stops { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.78rem; color: var(--muted); line-height: 1.4; }
 
   /* TICK BOXES */
-  .ticks-cell { text-align: center; padding: 10px 6px; }
-  .tick-group { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-  .wk-label { font-size: 9px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
-  .tick-row { display: flex; gap: 3px; }
+  .ticks-cell { text-align: center; padding: 12px 8px; }
+  .tick-group { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .wk-label { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+  .tick-row { display: flex; gap: 4px; }
   .tick-box {
     width: 22px; height: 22px;
-    border: 1px solid var(--border);
-    background: var(--surface);
+    border: 1px solid rgba(247,247,247,0.3);
+    background: rgba(247,247,247,0.1);
     cursor: pointer;
     position: relative;
     transition: background 0.1s, border-color 0.1s;
@@ -64,7 +116,7 @@
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
-  .tick-box:hover { border-color: var(--lime); }
+  .tick-box:hover { border-color: var(--lime); background: rgba(247,247,247,0.15); }
   .tick-box.on { background: var(--lime); border-color: var(--lime); }
   .tick-box.on::after {
     content: '';
@@ -75,46 +127,76 @@
     border-bottom: 2px solid var(--black);
     transform: rotate(45deg);
   }
-  .sub-col { text-align: right; font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--border); padding-right: 12px; min-width: 40px; }
+
+  .sub-col { text-align: right; font-family: 'DrukTextBold', Arial, sans-serif; font-size: 1.2rem; color: var(--border); padding-right: 14px; min-width: 44px; }
   .sub-col.lit { color: var(--lime); }
 
-  tfoot tr td { background: var(--surface); border-top: 2px solid var(--border); padding: 12px 12px; }
-  .total-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
-  .total-count { text-align: right; font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--lime); padding-right: 12px; }
+  tfoot tr td { background: var(--surface); border-top: 2px solid var(--border); padding: 12px 14px; }
+  .total-label { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .total-count { text-align: right; font-family: 'DrukTextBold', Arial, sans-serif; font-size: 1.6rem; color: var(--lime); padding-right: 14px; }
 
-  /* MOBILE TABLE — collapse tick boxes on small screens */
+  /* MOBILE */
   @media(max-width:600px) {
     .tally-table { min-width: unset; }
-    .tally-table thead th:nth-child(2) { display: none; }
+    .tally-table thead th:nth-child(2),
     .tally-table tbody td:nth-child(2) { display: none; }
     .tick-box { width: 26px; height: 26px; }
     .tick-box.on::after { top: 5px; left: 9px; width: 6px; height: 11px; }
   }
 
   /* CALCULATOR */
-  .calc-block { border: 1px solid var(--lime); padding: 28px 24px; margin-bottom: 32px; }
-  .calc-title { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 0.22em; color: var(--lime); margin-bottom: 8px; }
-  .calc-intro { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+  .calc-block { border: 1px solid var(--lime); padding: 30px 28px; margin-bottom: 32px; }
+  @media(max-width:560px){ .calc-block{ padding: 22px 18px; } }
 
-  .inputs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+  .calc-title { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(1rem, 2vw, 1.3rem); letter-spacing: 0.16em; color: var(--lime); margin-bottom: 10px; }
+  .calc-intro { font-family: 'GothamLight', Arial, sans-serif; font-size: clamp(0.85rem, 1.5vw, 1rem); color: var(--muted); line-height: 1.65; margin-bottom: 26px; }
+
+  .inputs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
   @media(max-width:560px){ .inputs-grid{ grid-template-columns: 1fr; } }
 
-  .calc-field label { display: block; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-  .calc-field input {
-    width: 100%; background: var(--surface); border: 1px solid var(--border);
-    color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 16px;
-    font-weight: 300; padding: 12px 12px; outline: none; transition: border-color 0.15s;
-    -webkit-appearance: none; border-radius: 0;
+  .calc-field label {
+    display: block;
+    font-family: 'GothamMedium', Arial, sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 7px;
   }
+  .calc-field input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: 'GothamLight', Arial, sans-serif;
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+    font-weight: 300;
+    padding: 13px 14px;
+    outline: none;
+    transition: border-color 0.15s;
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
+  .calc-field input::placeholder { color: rgba(153,153,153,0.6); }
   .calc-field input:focus { border-color: var(--lime); }
-  .field-note { font-size: 10px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+  .field-note { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.7rem; color: var(--muted); margin-top: 5px; line-height: 1.4; }
 
   .calc-btn {
-    width: 100%; background: var(--lime); color: var(--black); border: none;
-    font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.14em;
-    padding: 20px; cursor: pointer; transition: opacity 0.15s; margin-bottom: 28px;
-    -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    width: 100%;
+    background: var(--lime);
+    color: var(--black);
+    border: none;
+    font-family: 'DrukTextBold', Arial, sans-serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    letter-spacing: 0.1em;
+    padding: 20px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    margin-bottom: 28px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
     border-radius: 0;
+    display: block;
   }
   .calc-btn:hover { opacity: 0.85; }
   .calc-btn:active { opacity: 0.7; }
@@ -122,44 +204,60 @@
   .results-area { display: none; }
   .results-area.visible { display: block; }
 
-  .results-section-title { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; margin-top: 28px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .results-section-title {
+    font-family: 'GothamMedium', Arial, sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    margin-top: 28px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
   .results-section-title:first-child { margin-top: 0; }
 
+  /* OUTPUT PANELS */
   .output-range { border: 1px solid var(--border); margin-bottom: 14px; overflow: hidden; }
-  .output-header { background: var(--surface); padding: 10px 18px; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); }
+  .output-header { background: var(--surface); padding: 10px 18px; font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); }
   .output-cols { display: grid; grid-template-columns: 1fr 1fr; }
   @media(max-width:480px){ .output-cols{ grid-template-columns: 1fr; } }
-  .output-col { padding: 18px 20px; border-right: 1px solid var(--border); }
+  .output-col { padding: 20px 22px; border-right: 1px solid var(--border); }
   .output-col:last-child { border-right: none; }
-  .output-col-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-  .output-col-tag { font-size: 10px; color: var(--muted); margin-bottom: 6px; }
-  .output-num { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 6vw, 56px); line-height: 1; color: var(--lime); }
-  .output-basis { font-size: 11px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+  .output-col-label { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .output-col-tag { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.72rem; color: var(--muted); margin-bottom: 8px; }
+  .output-num { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1; color: var(--lime); }
+  .output-basis { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.72rem; color: var(--muted); margin-top: 6px; line-height: 1.5; }
 
+  /* WORKING */
   .working-block { background: var(--surface); padding: 16px 18px; margin-bottom: 14px; }
-  .working-line { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--border); padding: 6px 0; gap: 12px; }
+  .working-line { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--border); padding: 7px 0; gap: 12px; }
   .working-line:last-child { border-bottom: none; padding-bottom: 0; }
-  .w-label { color: var(--muted); flex: 1; line-height: 1.4; font-size: 12px; }
-  .w-calc { color: #555; font-size: 10px; text-align: right; white-space: nowrap; }
-  .w-val { font-family: 'Bebas Neue', sans-serif; font-size: 16px; color: var(--white); white-space: nowrap; margin-left: 12px; min-width: 70px; text-align: right; }
+  .w-label { font-family: 'GothamLight', Arial, sans-serif; color: var(--muted); flex: 1; line-height: 1.4; font-size: 0.78rem; }
+  .w-calc { font-family: 'GothamLight', Arial, sans-serif; color: #555; font-size: 0.68rem; text-align: right; white-space: nowrap; }
+  .w-val { font-family: 'DrukTextBold', Arial, sans-serif; font-size: 1rem; color: var(--white); white-space: nowrap; margin-left: 12px; min-width: 70px; text-align: right; }
   .w-val.lime { color: var(--lime); }
   .w-val.amber { color: var(--amber); }
 
+  /* CROSS CHECK */
   .crosscheck { border: 1px solid var(--border); margin-bottom: 14px; overflow: hidden; }
   .crosscheck-header { background: var(--surface); padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 8px; }
-  .crosscheck-title { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
-  .crosscheck-source { font-size: 10px; color: var(--muted); font-style: italic; }
-  .crosscheck-body { padding: 18px 20px; }
-  .crosscheck-num { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 6vw, 56px); line-height: 1; color: var(--amber); margin-bottom: 6px; }
-  .crosscheck-logic { font-size: 11px; color: var(--muted); line-height: 1.6; }
+  .crosscheck-title { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .crosscheck-source { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.68rem; color: var(--muted); font-style: italic; }
+  .crosscheck-body { padding: 20px 22px; }
+  .crosscheck-num { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1; color: var(--amber); margin-bottom: 8px; }
+  .crosscheck-logic { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
 
-  .scale-prompt { border-left: 3px solid var(--lime); background: var(--surface); padding: 18px 20px; font-size: 13px; color: var(--white); line-height: 1.7; }
-  .scale-prompt em { color: var(--lime); font-style: normal; }
+  /* PROMPT */
+  .scale-prompt { border-left: 3px solid var(--lime); background: var(--surface); padding: 20px 22px; font-family: 'GothamLight', Arial, sans-serif; font-size: clamp(0.85rem, 1.5vw, 1rem); color: var(--white); line-height: 1.7; }
+  .scale-prompt em { color: var(--lime); font-style: normal; font-family: 'GothamMedium', Arial, sans-serif; }
+  .scale-prompt strong { font-family: 'GothamMedium', Arial, sans-serif; font-weight: 600; }
 
-  .footer { border-top: 1px solid var(--border); padding-top: 20px; margin-top: 40px; }
-  .footer-note { font-size: 11px; color: var(--muted); line-height: 1.65; margin-bottom: 12px; }
-  .footer-note strong { color: #999; font-weight: 400; }
-  .footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 0.14em; color: var(--lime); }
+  /* FOOTER */
+  .calc-footer { border-top: 1px solid var(--border); padding-top: 20px; margin-top: 40px; }
+  .calc-footer-note { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.72rem; color: var(--muted); line-height: 1.65; margin-bottom: 10px; }
+  .calc-footer-note strong { font-family: 'GothamMedium', Arial, sans-serif; font-weight: 600; color: #aaa; }
+  .calc-footer-brand { font-family: 'DrukTextBold', Arial, sans-serif; font-size: 0.9rem; letter-spacing: 0.14em; color: var(--lime); }
 </style>
 </head>
 <body>
@@ -297,11 +395,11 @@
     </div>
   </div>
 
-  <div class="footer">
-    <div class="footer-note">
-      <strong>Sources.</strong> Conversation cost: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. 75% reactive: Leadership Circle / Anderson &amp; Adams, 2M+ leaders. Gallup disengagement: 34% of annual salary (State of the Global Workplace, 2024). Working days: 365 − 104 weekends − 11 public holidays − 30 leave = 220 days. Annualisation: ×22.
+  <div class="calc-footer">
+    <div class="calc-footer-note">
+      <strong>Sources.</strong> Conversation cost: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. 75% reactive: Leadership Circle / Anderson &amp; Adams, 2M+ leaders. Gallup disengagement: 34% of annual salary (State of the Global Workplace, 2024). Working days: 365 − 104 weekends − 11 public holidays − 30 leave = 220 days. Annualisation multiplier: ×22.
     </div>
-    <div class="footer-brand">singlesession.online</div>
+    <div class="calc-footer-brand">singlesession.online</div>
   </div>
 
 </div>
@@ -376,17 +474,14 @@ function calculate() {
   const headcount = parseFloat(document.getElementById('inp-headcount').value) || 0;
   const salary    = parseFloat(document.getElementById('inp-salary').value)    || 0;
 
-  if (ticks === 0) {
-    alert('Please enter your total ticks first.');
-    return;
-  }
+  if (ticks === 0) { alert('Please enter your total ticks first.'); return; }
 
   const annualised = ticks * 22;
   const aLow  = annualised * 1500;
   const aHigh = annualised * 7500;
 
-  s('wa-1c', `${ticks} ticks`);           s('wa-1v', ticks);
-  s('wa-2c', `${ticks} × 22`);            s('wa-2v', annualised.toLocaleString());
+  s('wa-1c', `${ticks} ticks`);                          s('wa-1v', ticks);
+  s('wa-2c', `${ticks} × 22`);                           s('wa-2v', annualised.toLocaleString());
   s('wa-3c', `${annualised.toLocaleString()} × $1,500`); s('wa-3v', fmt(aLow));
   s('wa-4c', `${annualised.toLocaleString()} × $7,500`); s('wa-4v', fmt(aHigh));
   s('out-a-low',    fmt(aLow));
@@ -400,11 +495,9 @@ function calculate() {
     s('wb-1c','');              s('wb-1v', headcount.toLocaleString());
     s('wb-2c', `${headcount.toLocaleString()} × 75%`); s('wb-2v', reactive.toLocaleString());
     s('wb-3c','');              s('wb-3v', '$' + salary.toLocaleString());
-    s('wb-4c', `${reactive.toLocaleString()} × $${salary.toLocaleString()} × 34%`);
-    s('wb-4v', fmt(bTotal));
+    s('wb-4c', `${reactive.toLocaleString()} × $${salary.toLocaleString()} × 34%`); s('wb-4v', fmt(bTotal));
     s('out-b', fmt(bTotal));
     s('out-b-logic', `${reactive.toLocaleString()} reactive decision-makers × $${salary.toLocaleString()} average salary × 34% Gallup disengagement cost`);
-
     const ratePerPerson = (ticks / observed).toFixed(1);
     document.getElementById('scale-prompt').innerHTML = `
       <em>Now ask the question that matters.</em><br><br>
@@ -413,12 +506,10 @@ function calculate() {
       You observed <strong>${ratePerPerson} blocked conversations per person per fortnight</strong>. Is that rate typical of the rest of your organisation? If yes — that gap is the scale of what you haven't yet counted. That number belongs on your P&amp;L.
     `;
   } else {
-    s('wb-1c',''); s('wb-1v','—');
-    s('wb-2c',''); s('wb-2v','—');
-    s('wb-3c',''); s('wb-3v','—');
-    s('wb-4c',''); s('wb-4v','—');
+    s('wb-1c',''); s('wb-1v','—'); s('wb-2c',''); s('wb-2v','—');
+    s('wb-3c',''); s('wb-3v','—'); s('wb-4c',''); s('wb-4v','—');
     s('out-b','—');
-    s('out-b-logic', 'Enter headcount and average salary to see the independent Gallup cross-check.');
+    s('out-b-logic','Enter headcount and average salary to see the independent Gallup cross-check.');
     document.getElementById('scale-prompt').innerHTML =
       `<em>Add your headcount and average salary</em> to unlock the independent Gallup cross-check.`;
   }
