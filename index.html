@@ -356,6 +356,27 @@ const WORDMARK_B64 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUND
         <div class="calc-field"><label>Approximate number of people leaders</label><input type="number" id="inp-leaders" placeholder="e.g. 250" min="1" inputmode="numeric"><div class="field-note">Anyone who leads, manages, or influences others — across all tiers</div></div>
         <div class="leader-helper"><strong>Not sure?</strong> A typical organisation has one people leader for every 3–5 employees. For <span id="hc-hint">1,000</span> people that's roughly <strong><span id="leader-hint-low">200</span>–<span id="leader-hint-high">333</span></strong>.</div>
       </div>
+      <div class="inputs-grid" style="margin-bottom:16px;">
+        <div class="calc-field">
+          <label>Sector</label>
+          <select id="inp-sector" style="width:100% !important;background:var(--surface) !important;border:1px solid var(--border) !important;color:var(--white) !important;font-family:'GothamBook',Arial,sans-serif !important;font-size:1rem !important;padding:13px 14px !important;outline:none !important;border-radius:0 !important;box-shadow:none !important;-webkit-appearance:none !important;cursor:pointer;">
+            <option value="professional" data-rev="200000">Professional services / consulting</option>
+            <option value="financial" data-rev="400000">Financial services</option>
+            <option value="technology" data-rev="350000">Technology</option>
+            <option value="healthcare" data-rev="200000">Healthcare</option>
+            <option value="manufacturing" data-rev="180000">Manufacturing</option>
+            <option value="retail" data-rev="150000">Retail / consumer</option>
+            <option value="public" data-rev="0">Public sector / not-for-profit</option>
+          </select>
+          <div class="field-note">Used to estimate revenue if not entered below</div>
+        </div>
+        <div class="calc-field">
+          <label>Approximate annual revenue (<span id="rev-lbl">$</span>) — optional</label>
+          <input type="number" id="inp-revenue" placeholder="Auto-estimated from sector" min="0" inputmode="numeric">
+          <div class="field-note">If blank, SSC estimates from sector and headcount</div>
+        </div>
+      </div>
+      <div id="rev-note" style="font-family:'GothamBook',Arial,sans-serif;font-size:0.72rem;color:var(--muted);margin-bottom:20px;border-left:2px solid var(--border);padding-left:10px;display:none;line-height:1.5;"></div>
       <button class="calc-btn" onclick="calculate()">Calculate My Number</button>
     </div>
     <div class="calc-footer">
@@ -388,7 +409,7 @@ const WORDMARK_B64 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUND
       </div>
       <div class="headline-row" style="margin-top:1px;">
         <div class="headline-panel recovery">
-          <div class="headline-eyebrow lime">SSC estimates it could recover approximately</div>
+          <div class="headline-eyebrow lime" id="h-recovery-eyebrow">SSC estimates it could recover approximately</div>
           <div class="headline-num lime" id="h-recovery">—</div>
           <div class="headline-context" id="h-recovery-context"></div>
           <div class="headline-desc" id="h-recovery-desc"></div>
@@ -450,7 +471,7 @@ const WORDMARK_B64 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUND
         <div class="pr-num-desc" id="pr-gallup-desc"></div>
       </div>
       <div class="pr-num-cell full recovery">
-        <div class="pr-minmax lime">SSC Estimates It Could Recover Approximately</div>
+        <div class="pr-minmax lime" id="pr-recovery-eyebrow">SSC Estimates It Could Recover Approximately</div>
         <div class="pr-big lime" id="pr-recovery">—</div>
         <div class="pr-num-desc" id="pr-recovery-desc"></div>
       </div>
@@ -510,7 +531,7 @@ let lastCalc = {};
 const COST_LOW_USD = 1500, COST_HIGH_USD = 7500;
 
 // FORMSPREE — replace YOUR_FORM_ID with your actual Formspree form ID
-const FORMSPREE_ID = 'YOUR_FORM_ID';
+const FORMSPREE_ID = 'xblgrgyv';
 
 async function fetchRates() {
   try {
@@ -543,7 +564,10 @@ document.querySelectorAll('.currency-btn').forEach(btn => {
     selectedCurrency = btn.dataset.currency;
     selectedSymbol   = btn.dataset.symbol;
     document.getElementById('sal-lbl').textContent = selectedSymbol;
+    const revLbl = document.getElementById('rev-lbl');
+    if (revLbl) revLbl.textContent = selectedSymbol;
     updateCostStrip();
+    updateRevenueNote();
   });
 });
 
@@ -552,6 +576,33 @@ document.getElementById('inp-headcount').addEventListener('input', function() {
   document.getElementById('hc-hint').textContent = fmtN(hc);
   document.getElementById('leader-hint-low').textContent  = fmtN(Math.round(hc/5));
   document.getElementById('leader-hint-high').textContent = fmtN(Math.round(hc/3));
+  updateRevenueNote();
+});
+
+function updateRevenueNote() {
+  const hc = parseFloat((document.getElementById('inp-headcount')||{}).value) || 0;
+  const rev = parseFloat((document.getElementById('inp-revenue')||{}).value) || 0;
+  const note = document.getElementById('rev-note');
+  if (!note) return;
+  if (!hc || rev > 0) { note.style.display='none'; return; }
+  const sector = document.getElementById('inp-sector');
+  if (!sector) { note.style.display='none'; return; }
+  const opt = sector.options[sector.selectedIndex];
+  const revPerEmployee = parseFloat(opt.dataset.rev) || 0;
+  if (revPerEmployee === 0) {
+    note.textContent = 'Revenue benchmarks are not applicable for public sector / not-for-profit. The Leadership Circle performance model will not be shown — Gallup model will be used instead.';
+    note.style.display = 'block'; return;
+  }
+  const estimated = hc * revPerEmployee;
+  note.textContent = 'Estimated revenue: ' + selectedSymbol + fmtN(estimated) + ' (' + selectedSymbol + fmtN(revPerEmployee) + ' per employee · ' + opt.text.split('/')[0].trim() + ' benchmark). Enter your actual revenue above to override.';
+  note.style.display = 'block';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const sec = document.getElementById('inp-sector');
+  const rev = document.getElementById('inp-revenue');
+  if (sec) sec.addEventListener('change', updateRevenueNote);
+  if (rev) rev.addEventListener('input', updateRevenueNote);
 });
 
 function buildTable() {
@@ -619,18 +670,27 @@ function calculate() {
   const reactive        = Math.round(headcount * 0.75);
   const bTotal          = reactive * salary * 0.34;
   const reactiveLeaders = Math.round(leaders * 0.75);
-  // Recovery model: Gallup states managers account for 70% of variance in
-  // team engagement. Therefore 70% of the Gallup org-wide cost is directly
-  // attributable to leadership behaviour. SSC works with reactive leaders —
-  // so the recoverable cost = 70% of Gallup total.
-  // LC: reactive leadership suppresses not one conversation but all of them.
-  // One session removes the pattern. All conversations start happening.
-  const leaderShare     = 0.70;
-  const recoverableCost = bTotal * leaderShare;
+
+  // Model C — LC 37.6% performance variance
+  const sectorEl = document.getElementById('inp-sector');
+  const sectorOpt = sectorEl ? sectorEl.options[sectorEl.selectedIndex] : null;
+  const revPerEmployee = sectorOpt ? (parseFloat(sectorOpt.dataset.rev) || 0) : 0;
+  const enteredRevenue = parseFloat((document.getElementById('inp-revenue')||{}).value) || 0;
+  const revenue = enteredRevenue > 0 ? enteredRevenue : (revPerEmployee > 0 ? headcount * revPerEmployee : 0);
+  const revenueIsEstimated = enteredRevenue === 0 && revPerEmployee > 0;
+  const revenueSource = enteredRevenue > 0 ? 'entered' : (sectorOpt ? sectorOpt.text.split('/')[0].trim() : 'benchmark');
+  const sectorName = sectorOpt ? sectorOpt.text : '';
+  const lcUpside = revenue * 0.376;
+  const useLCModel = revenue > 0;
+
+  // Recovery: LC if revenue available, else Gallup 70%
+  const recoverableCost = useLCModel ? lcUpside : bTotal * 0.70;
+  const recoveryMethod  = useLCModel ? 'lc' : 'gallup';
 
   lastCalc = { ticks, observed, headcount, salary, leaders, sym, costLow, costHigh,
-    annualised, aLow, aHigh, reactive, bTotal, reactiveLeaders, leaderShare,
-    recoverableCost, currency: selectedCurrency };
+    annualised, aLow, aHigh, reactive, bTotal, reactiveLeaders,
+    recoverableCost, recoveryMethod, revenue, revenueIsEstimated, revenueSource,
+    sectorName, lcUpside, currency: selectedCurrency };
 
   s('range-eyebrow', `In an organisation of approximately ${fmtN(headcount)} people, we estimate human behaviour is costing your P&L`);
   s('r-min',  sym + fmtM(aLow));
@@ -639,8 +699,19 @@ function calculate() {
   s('h-gallup',      sym + fmtM(bTotal));
   s('h-gallup-desc', `${fmtN(reactive)} reactive people × ${sym}${fmtN(salary)} average salary × 34% Gallup disengagement cost`);
   s('h-recovery',    sym + fmtM(recoverableCost));
-  s('h-recovery-context', `Based on ${fmtN(reactiveLeaders)} reactive people leaders in your organisation. Gallup research shows managers account for 70% of variance in team engagement — meaning 70% of your organisational cost is directly attributable to leadership behaviour.`);
-  s('h-recovery-desc', `SSC works with your reactive people leaders. Each session removes an unconscious pattern — not one blocked conversation, but all of them. One session per leader. One shift per session.`);
+  const eyebrowEl = document.getElementById('h-recovery-eyebrow');
+  if (useLCModel) {
+    if (eyebrowEl) eyebrowEl.textContent = 'Leadership Circle — Addressable Performance Upside';
+    const revLabel = revenueIsEstimated
+      ? `Based on estimated revenue of ${sym}${fmtM(revenue)} (${revenueSource} benchmark, ${fmtN(headcount)} employees)`
+      : `Based on your annual revenue of ${sym}${fmtM(revenue)}`;
+    s('h-recovery-context', `${revLabel}. The Leadership Circle, across 486 organisations, found leadership effectiveness explains 37.6% of business performance variance — representing ${sym}${fmtM(lcUpside)} of performance directly sensitive to leadership behaviour.`);
+    s('h-recovery-desc', `SSC works with your ${fmtN(reactiveLeaders)} reactive people leaders — removing the unconscious patterns that are suppressing that performance. Not one blocked conversation, but all of them. One session per leader. One shift per session.`);
+  } else {
+    if (eyebrowEl) eyebrowEl.textContent = 'SSC estimates it could recover approximately';
+    s('h-recovery-context', `Based on ${fmtN(reactiveLeaders)} reactive people leaders. Gallup research shows managers account for 70% of variance in team engagement — meaning 70% of your organisational cost is directly attributable to leadership behaviour.`);
+    s('h-recovery-desc', `SSC works with your reactive people leaders. Each session removes an unconscious pattern — not one blocked conversation, but all of them. One session per leader. One shift per session.`);
+  }
 
   document.getElementById('detail-a').innerHTML =
     wl('Blocked conversations observed over 10 working days', `${ticks} ticks`, ticks, '') +
@@ -657,8 +728,12 @@ function calculate() {
   document.getElementById('detail-r').innerHTML =
     wl('People leaders (your input)', '', fmtN(leaders), '') +
     wl('Reactive people leaders — 75% (Leadership Circle)', `${fmtN(leaders)} × 75%`, fmtN(reactiveLeaders), '') +
-    wl('Managers account for 70% of variance in team engagement (Gallup)', '70% of Gallup total', '70%', '') +
-    wl('Estimated recoverable cost', `70% of ${sym}${fmtM(bTotal)}`, sym+fmtM(recoverableCost), 'lime');
+    (useLCModel
+      ? wl(`Revenue — ${revenueIsEstimated ? 'estimated (' + revenueSource + ' benchmark)' : 'entered'}`, '', sym+fmtM(revenue), '') +
+        wl('Leadership effectiveness explains 37.6% of business performance variance (Leadership Circle, n=486)', sym+fmtM(revenue)+' × 37.6%', sym+fmtM(lcUpside), 'lime')
+      : wl('Managers account for 70% of variance in team engagement (Gallup)', '70% of Gallup total', '70%', '') +
+        wl('Estimated addressable cost', '70% of '+sym+fmtM(bTotal), sym+fmtM(recoverableCost), 'lime')
+    );
 
   // Switch screen — scroll to top
   document.getElementById('screen-1').classList.remove('active');
@@ -714,9 +789,9 @@ async function submitLead() {
   const sym = c.sym || '$';
 
   // Send to Formspree
-  if (FORMSPREE_ID && FORMSPREE_ID !== 'xblgrgyv') {
+  if (FORMSPREE_ID && FORMSPREE_ID !== 'YOUR_FORM_ID') {
     try {
-      await fetch(`https://formspree.io/f/${xblgrgyv}`, {
+      await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -760,13 +835,24 @@ function generateReport() {
   s('pr-range-desc',    `Minimum ${sym}${fmtN(c.costLow)} per blocked conversation · Maximum ${sym}${fmtN(c.costHigh)} · ${fmtN(c.annualised)} blocked conversations annualised`);
   s('pr-gallup',        sym + fmtM(c.bTotal));
   s('pr-gallup-desc',   `${fmtN(c.reactive)} reactive people × ${sym}${fmtN(c.salary)} average salary × 34%`);
-  s('pr-recovery',      sym + fmtM(c.recoverableCost));
-  s('pr-recovery-desc', `Gallup: managers account for 70% of variance in team engagement. 70% of the ${sym}${fmtM(c.bTotal)} organisational cost is directly attributable to leadership behaviour. SSC removes the reactive pattern in each leader — not one blocked conversation, but all of them.`);
+  s('pr-recovery', sym + fmtM(c.recoverableCost));
+  if (c.recoveryMethod === 'lc') {
+    const revLabel = c.revenueIsEstimated
+      ? `Estimated revenue ${sym}${fmtM(c.revenue)} (${c.revenueSource} benchmark)`
+      : `Annual revenue ${sym}${fmtM(c.revenue)}`;
+    s('pr-recovery-desc', `${revLabel} × 37.6% = ${sym}${fmtM(c.lcAddressableUpside)} of business performance directly sensitive to leadership behaviour (Leadership Circle, n=486). SSC works with your ${fmtN(c.reactiveLeaders)} reactive people leaders — removing the patterns suppressing that performance.`);
+    const eyebrow = document.querySelector('.pr-minmax.lime');
+    if (eyebrow) eyebrow.textContent = 'Leadership Circle — Addressable Performance Upside';
+  } else {
+    s('pr-recovery-desc', `Gallup: managers account for 70% of variance in team engagement. 70% of the ${sym}${fmtM(c.bTotal)} organisational cost is directly attributable to leadership behaviour. SSC removes the reactive pattern in each leader — not one blocked conversation, but all of them.`);
+  }
 
   document.getElementById('pr-inputs-table').innerHTML = `
     <tr><td>Organisation</td><td>${orgName || '—'}</td></tr>
     <tr><td>Total headcount</td><td>${fmtN(c.headcount)}</td></tr>
     <tr><td>People leaders</td><td>${fmtN(c.leaders)}</td></tr>
+    <tr><td>Sector</td><td>${c.sectorName || '—'}</td></tr>
+    <tr><td>Annual revenue</td><td>${c.revenue > 0 ? (sym + fmtM(c.revenue) + (c.revenueIsEstimated ? ' (estimated)' : '')) : '—'}</td></tr>
     <tr><td>Average annual salary</td><td>${sym}${fmtN(c.salary)}</td></tr>
     <tr><td>Blocked conversations observed</td><td>${c.ticks} over 10 working days</td></tr>
     <tr><td>People observed</td><td>${Math.round(c.observed)}</td></tr>
@@ -781,8 +867,12 @@ function generateReport() {
     <tr><td>Reactive population (75% of ${fmtN(c.headcount)})</td><td></td><td>${fmtN(c.reactive)}</td></tr>
     <tr><td>Gallup model — whole organisation</td><td>${fmtN(c.reactive)} × ${sym}${fmtN(c.salary)} × 34%</td><td class="amber">${sym}${fmtM(c.bTotal)}</td></tr>
     <tr><td>Reactive people leaders (75% of ${fmtN(c.leaders)})</td><td></td><td>${fmtN(c.reactiveLeaders)}</td></tr>
-    <tr><td>Managers' share of engagement variance (Gallup)</td><td>70% of Gallup total</td><td>70%</td></tr>
-    <tr><td>Estimated recoverable cost</td><td>70% of ${sym}${fmtM(c.bTotal)}</td><td class="lime">${sym}${fmtM(c.recoverableCost)}</td></tr>
+    ${c.recoveryMethod === 'lc'
+      ? `<tr><td>Annual revenue (${c.revenueIsEstimated ? c.revenueSource + ' benchmark' : 'entered'})</td><td></td><td>${sym}${fmtM(c.revenue)}</td></tr>
+         <tr><td>Leadership effectiveness explains 37.6% of business performance variance (Leadership Circle, n=486)</td><td>${sym}${fmtM(c.revenue)} × 37.6%</td><td class="lime">${sym}${fmtM(c.recoverableCost)}</td></tr>`
+      : `<tr><td>Managers' share of engagement variance (Gallup)</td><td>70% of Gallup total</td><td>70%</td></tr>
+         <tr><td>Estimated addressable cost</td><td>70% of ${sym}${fmtM(c.bTotal)}</td><td class="lime">${sym}${fmtM(c.recoverableCost)}</td></tr>`
+    }
   `;
 
   window.print();
