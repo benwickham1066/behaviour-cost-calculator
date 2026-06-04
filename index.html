@@ -667,10 +667,10 @@ function calculate() {
   // Switch screen — scroll to top
   const s2 = document.getElementById('screen-2');
   s2.style.display = 'block';
-  setTimeout(() => {
-    s2.scrollIntoView({behavior: 'smooth', block: 'start'});
-  }, 100);
-}
+setTimeout(() => {
+  s2.scrollIntoView({behavior:'smooth', block:'start'});
+  try { window.parent.postMessage({ type:'ssc-scroll-top' }, '*'); } catch(e){}
+}, 100);
 
 function goBack() {
   document.getElementById('screen-1').scrollIntoView({behavior:'smooth'});
