@@ -22,12 +22,11 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --lime: #DCFF4F;       /* GAIN / RECOVERY / POSITIVE */
-    --amber: #F5A623;      /* COST / LOSS / NEGATIVE */
+    --lime: #DCFF4F;
+    --amber: #F5A623;
     --white: #f7f7f7;
-    --muted: #bbbbbb;      /* Lightened from #999 for legibility */
+    --muted: #bbbbbb;
     --surface: rgba(255,255,255,0.06);
     --surface2: rgba(255,255,255,0.10);
     --border: rgba(255,255,255,0.15);
@@ -36,14 +35,8 @@
 
   body { background: transparent; color: var(--white); font-family: 'GothamLight', Arial, sans-serif; font-weight: 300; font-size: clamp(0.95rem, 2vw, 1.05rem); line-height: 1.6; padding: 0 0 80px; }
   .page { max-width: 100%; margin: 0 auto; }
-
   .screen { display: none; }
   .screen.active { display: block; }
-
-  /* ── COLOUR LEGEND ───────────────────────────
-     AMBER  = what defensive behaviour is COSTING you
-     LIME   = what SSC could RECOVER / ROI
-  ─────────────────────────────────────────────── */
 
   /* CURRENCY BAR */
   .currency-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; }
@@ -51,7 +44,7 @@
   .currency-btn { background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.06em; padding: 9px 16px; cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
   .currency-btn:hover { border-color: var(--lime); color: var(--white); }
   .currency-btn.active { background: var(--lime); border-color: var(--lime); color: var(--black); }
-  .rate-note { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.7rem; color: var(--muted); margin-left: auto; }
+  .rate-note { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.68rem; color: var(--muted); margin-left: auto; }
 
   /* HOW TO */
   .how-to { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 28px; }
@@ -66,7 +59,7 @@
   .cost-items { display: flex; flex: 1; flex-wrap: wrap; }
   .cost-item { flex: 1; min-width: 110px; padding: 16px 18px; border-right: 1px solid var(--border); }
   .cost-item:last-child { border-right: none; }
-  .cost-amount { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(1.5rem, 2.8vw, 2rem); color: var(--lime); line-height: 1; margin-bottom: 5px; text-transform: uppercase; }
+  .cost-amount { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(1.4rem, 2.5vw, 2rem); color: var(--lime); line-height: 1; margin-bottom: 5px; text-transform: uppercase; }
   .cost-desc { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.72rem; color: var(--muted); line-height: 1.55; }
 
   /* TABLE */
@@ -78,12 +71,10 @@
   .tally-table tbody tr { border-bottom: 1px solid var(--border); }
   .tally-table tbody tr:hover td { background: var(--surface2); }
   .tally-table tbody td { padding: 14px 14px; vertical-align: middle; }
-
   .b-name { font-family: 'GothamMedium', Arial, sans-serif; font-weight: 600; color: var(--white); font-size: clamp(0.82rem, 1.5vw, 0.96rem); margin-bottom: 3px; }
   .b-eg { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.75rem; color: var(--muted); font-style: italic; line-height: 1.45; }
   .b-stops { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.78rem; color: var(--muted); line-height: 1.45; }
 
-  /* TICKS — fixed layout so boxes and count align */
   .ticks-cell { width: 160px; padding: 10px 8px; }
   .tick-group { display: flex; flex-direction: column; align-items: center; gap: 4px; }
   .wk-label { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.58rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
@@ -93,9 +84,8 @@
   .tick-box.on { background: var(--lime); border-color: var(--lime); }
   .tick-box.on::after { content: ''; position: absolute; top: 4px; left: 8px; width: 6px; height: 10px; border-right: 2px solid var(--black); border-bottom: 2px solid var(--black); transform: rotate(45deg); }
 
-  /* Count column — vertically centred, fixed width */
   .count-col { width: 56px; text-align: center; vertical-align: middle !important; padding: 14px 8px !important; }
-  .count-val { font-family: 'DrukTextBold', Arial, sans-serif; font-size: 1.4rem; text-transform: uppercase; color: rgba(255,255,255,0.15); line-height: 1; display: block; text-align: center; }
+  .count-val { font-family: 'GothamMedium', Arial, sans-serif; font-size: 1.2rem; font-weight: 600; color: rgba(255,255,255,0.15); line-height: 1; display: block; text-align: center; }
   .count-val.lit { color: var(--lime); }
 
   tfoot tr td { background: var(--surface); border-top: 2px solid var(--border); padding: 12px 14px; }
@@ -106,7 +96,6 @@
     .tally-table { min-width: unset; }
     .tally-table thead th:nth-child(2), .tally-table tbody td:nth-child(2) { display: none; }
     .ticks-cell { width: 130px; }
-    .tick-box { width: 22px; height: 22px; }
   }
 
   /* CALCULATOR */
@@ -116,7 +105,6 @@
   .calc-intro { font-family: 'GothamLight', Arial, sans-serif; font-size: clamp(0.85rem, 1.5vw, 1rem); color: var(--muted); line-height: 1.65; margin-bottom: 24px; }
   .inputs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
   @media(max-width:560px){ .inputs-grid{ grid-template-columns: 1fr; } }
-
   .calc-field label { display: block; font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
   .calc-field input {
     width: 100% !important; height: auto !important; min-height: unset !important;
@@ -144,68 +132,52 @@
   }
   .calc-btn:hover { opacity: 0.88 !important; background: var(--lime) !important; color: var(--black) !important; }
 
-  /* ── SCREEN 2 ─────────────────────────────── */
-  .back-btn { background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 9px 18px; cursor: pointer; margin-bottom: 32px; transition: all 0.15s; }
+  /* ══ SCREEN 2 ══════════════════════════════ */
+  .back-btn { background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 9px 18px; cursor: pointer; margin-bottom: 36px; transition: all 0.15s; display: inline-block; }
   .back-btn:hover { border-color: var(--white); color: var(--white); }
 
-  /* Section titles */
-  .section-title { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; margin-top: 32px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-  .section-title:first-of-type { margin-top: 0; }
+  /* HEADLINE NUMBERS — top of screen 2 */
+  .headline-block { margin-bottom: 40px; }
+  .headline-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 1px; }
+  .headline-row.single { grid-template-columns: 1fr; }
+  @media(max-width:480px){ .headline-row{ grid-template-columns: 1fr; } }
 
-  /* Working lines */
-  .working-block { background: var(--surface); padding: 6px 18px; margin-bottom: 12px; border: 1px solid var(--border); }
+  .headline-panel { background: var(--surface); padding: 28px 28px; }
+  .headline-panel.dark { background: rgba(0,0,0,0.2); }
+  .headline-eyebrow { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .headline-num { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(2.8rem, 7vw, 5rem); line-height: 1; text-transform: uppercase; margin-bottom: 8px; }
+  .headline-num.amber { color: var(--amber); }
+  .headline-num.lime  { color: var(--lime);  }
+  .headline-desc { font-family: 'GothamLight', Arial, sans-serif; font-size: clamp(0.85rem, 1.5vw, 1rem); color: var(--muted); line-height: 1.55; }
+  .headline-desc strong { font-family: 'GothamMedium', Arial, sans-serif; color: var(--white); font-weight: 600; }
+
+  /* DIVIDER */
+  .section-divider { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin: 36px 0 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+
+  /* WORKING — collapsible detail */
+  .detail-toggle { background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 16px; cursor: pointer; margin-bottom: 12px; transition: all 0.15s; }
+  .detail-toggle:hover { border-color: var(--white); color: var(--white); }
+  .detail-block { display: none; background: var(--surface); border: 1px solid var(--border); padding: 6px 18px; margin-bottom: 16px; }
+  .detail-block.open { display: block; }
   .working-line { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 12px 0; gap: 16px; }
   .working-line:last-child { border-bottom: none; }
   .w-label { font-family: 'GothamLight', Arial, sans-serif; color: var(--white); flex: 1; line-height: 1.5; font-size: clamp(0.82rem, 1.4vw, 0.95rem); }
   .w-calc { font-family: 'GothamLight', Arial, sans-serif; color: var(--muted); font-size: 0.72rem; text-align: right; white-space: nowrap; flex-shrink: 0; }
-  .w-val { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(1rem, 1.8vw, 1.2rem); text-transform: uppercase; color: var(--white); white-space: nowrap; margin-left: 16px; min-width: 80px; text-align: right; flex-shrink: 0; }
-  .w-val.amber { color: var(--amber); }  /* cost — what you're losing */
-  .w-val.lime  { color: var(--lime);  }  /* recovery — what SSC returns */
-
-  /* Output panels */
-  .output-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 12px; }
-  .output-grid.single { grid-template-columns: 1fr; }
-  @media(max-width:480px){ .output-grid{ grid-template-columns: 1fr; } }
-  .output-panel { background: var(--surface); padding: 22px 24px; }
-  .output-panel-label { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
-  .output-panel-tag { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.78rem; color: var(--muted); margin-bottom: 10px; line-height: 1.45; }
-  .output-num { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1; text-transform: uppercase; color: var(--amber); }  /* cost = amber */
-  .output-num.lime { color: var(--lime); } /* recovery = lime */
-  .output-basis { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.78rem; color: var(--muted); margin-top: 8px; line-height: 1.5; }
-
-  /* ROI block */
-  .roi-block { border: 1px solid var(--lime); padding: 28px 26px; margin-bottom: 28px; }
-  .roi-title { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(1rem, 2vw, 1.3rem); letter-spacing: 0.16em; text-transform: uppercase; color: var(--lime); margin-bottom: 10px; }
-  .roi-intro { font-family: 'GothamLight', Arial, sans-serif; font-size: clamp(0.88rem, 1.5vw, 1rem); color: var(--white); line-height: 1.7; margin-bottom: 24px; }
-  .roi-intro strong { font-family: 'GothamMedium', Arial, sans-serif; color: var(--lime); font-weight: 600; }
-
-  .roi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
-  @media(max-width:560px){ .roi-grid{ grid-template-columns: 1fr; } }
-  .roi-cell { background: var(--surface); padding: 22px 20px; }
-  .roi-cell-label { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-  .roi-cell-num { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1; text-transform: uppercase; margin-bottom: 6px; }
-  .roi-cell-num.amber { color: var(--amber); }
-  .roi-cell-num.lime  { color: var(--lime);  }
-  .roi-cell-sub { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+  .w-val { font-family: 'GothamMedium', Arial, sans-serif; font-size: clamp(0.95rem, 1.6vw, 1.05rem); font-weight: 600; color: var(--white); white-space: nowrap; margin-left: 16px; min-width: 80px; text-align: right; flex-shrink: 0; }
+  .w-val.amber { color: var(--amber); }
+  .w-val.lime  { color: var(--lime);  }
 
   /* CTA */
-  .cta-block { background: var(--lime); padding: 32px 28px; margin-bottom: 28px; }
-  .cta-heading { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(1.3rem, 3.5vw, 2.2rem); text-transform: uppercase; color: var(--black); line-height: 1; margin-bottom: 12px; }
+  .cta-block { background: var(--lime); padding: 32px 28px; margin-bottom: 28px; margin-top: 40px; }
+  .cta-heading { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(1.4rem, 3.5vw, 2.4rem); text-transform: uppercase; color: var(--black); line-height: 1; margin-bottom: 12px; }
   .cta-body { font-family: 'GothamLight', Arial, sans-serif; font-size: clamp(0.88rem, 1.5vw, 1rem); color: var(--black); line-height: 1.65; margin-bottom: 22px; max-width: 580px; }
   .cta-btn { display: inline-block; background: var(--black); color: var(--lime) !important; font-family: 'DrukTextBold', Arial, sans-serif !important; font-size: clamp(0.9rem, 1.8vw, 1.1rem) !important; letter-spacing: 0.12em !important; text-transform: uppercase !important; padding: 16px 32px !important; text-decoration: none !important; border: none !important; cursor: pointer; transition: opacity 0.15s; }
   .cta-btn:hover { opacity: 0.85; }
 
-  /* Footer */
+  /* FOOTER */
   .calc-footer { border-top: 1px solid var(--border); padding-top: 20px; margin-top: 36px; }
   .calc-footer-note { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.72rem; color: var(--muted); line-height: 1.7; }
   .calc-footer-note strong { font-family: 'GothamMedium', Arial, sans-serif; font-weight: 600; color: var(--white); }
-
-  /* Colour key */
-  .colour-key { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
-  .colour-key-item { display: flex; align-items: center; gap: 8px; font-family: 'GothamLight', Arial, sans-serif; font-size: 0.72rem; color: var(--muted); }
-  .colour-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-  .colour-dot.amber { background: var(--amber); }
-  .colour-dot.lime  { background: var(--lime);  }
 </style>
 </head>
 <body>
@@ -226,8 +198,8 @@
 
     <div class="how-to">
       <div class="how-step"><div class="how-num">01</div><div class="how-text">Observe for two weeks — 10 working days. Every time a defensive behaviour stops a conversation happening, tick it. One tick = one blocked conversation.</div></div>
-      <div class="how-step"><div class="how-num">02</div><div class="how-text">Enter your ticks, headcount, and average salary in your chosen currency. The calculator works from what you actually observed.</div></div>
-      <div class="how-step"><div class="how-num">03</div><div class="how-text">Two independent models produce your cost range. Then see what SSC estimates it could recover — and the potential return.</div></div>
+      <div class="how-step"><div class="how-num">02</div><div class="how-text">Enter your ticks, total headcount, and average salary in your chosen currency. The calculator works from what you actually observed.</div></div>
+      <div class="how-step"><div class="how-num">03</div><div class="how-text">Hit calculate. See the invisible number on your P&amp;L — and what SSC estimates it could recover.</div></div>
     </div>
 
     <div class="cost-strip">
@@ -262,7 +234,7 @@
 
     <div class="calc-block">
       <div class="calc-title">— Calculate Your Number —</div>
-      <div class="calc-intro">Enter your inputs. Two independent models produce your cost range — then see what SSC estimates could be recovered and the potential return on that.</div>
+      <div class="calc-intro">Enter your inputs. Two independent models produce your cost range — then see what SSC estimates could be recovered.</div>
       <div class="inputs-grid">
         <div class="calc-field">
           <label>Total ticks</label>
@@ -289,7 +261,7 @@
     </div>
 
     <div class="calc-footer">
-      <div class="calc-footer-note"><strong>Sources.</strong> Conversation cost: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. 75% reactive: Leadership Circle / Anderson &amp; Adams, 2M+ leaders. Gallup disengagement: 34% of annual salary (State of the Global Workplace, 2024). Working days: 220 per year. Annualisation ×22. Research figures converted from USD at live rates via Open Exchange Rates.</div>
+      <div class="calc-footer-note"><strong>Sources.</strong> Conversation cost: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. 75% reactive: Leadership Circle / Anderson &amp; Adams, 2M+ leaders. Gallup disengagement: 34% of annual salary (State of the Global Workplace, 2024). 220 working days per year. Annualisation ×22. Research figures converted from USD at live rates via Open Exchange Rates.</div>
     </div>
 
   </div>
@@ -299,49 +271,54 @@
 
     <button class="back-btn" onclick="goBack()">← Adjust inputs</button>
 
-    <!-- Colour key -->
-    <div class="colour-key">
-      <div class="colour-key-item"><div class="colour-dot amber"></div>What defensive behaviour is costing you</div>
-      <div class="colour-key-item"><div class="colour-dot lime"></div>What SSC estimates it could recover</div>
+    <!-- HEADLINE NUMBERS FIRST -->
+    <div class="headline-block">
+
+      <!-- THE COST -->
+      <div class="headline-row">
+        <div class="headline-panel">
+          <div class="headline-eyebrow">Human behaviour is costing your organisation</div>
+          <div class="headline-num amber" id="h-cost-low">—</div>
+          <div class="headline-desc">Conservative · <span id="h-cost-low-basis"></span></div>
+        </div>
+        <div class="headline-panel">
+          <div class="headline-eyebrow">Realistic estimate</div>
+          <div class="headline-num amber" id="h-cost-high">—</div>
+          <div class="headline-desc">Based on research average · <span id="h-cost-high-basis"></span></div>
+        </div>
+      </div>
+
+      <!-- GALLUP ORG-WIDE -->
+      <div class="headline-row single">
+        <div class="headline-panel dark">
+          <div class="headline-eyebrow">Independent cross-check — Gallup salary model · Whole organisation</div>
+          <div class="headline-num amber" id="h-gallup">—</div>
+          <div class="headline-desc"><span id="h-gallup-basis"></span></div>
+        </div>
+      </div>
+
+      <!-- RECOVERY -->
+      <div class="headline-row single">
+        <div class="headline-panel" style="border-top: 2px solid var(--lime);">
+          <div class="headline-eyebrow" style="color: var(--lime);">SSC estimates it could recover</div>
+          <div class="headline-num lime" id="h-recovery">—</div>
+          <div class="headline-desc"><span id="h-recovery-basis"></span></div>
+        </div>
+      </div>
+
     </div>
 
-    <!-- MODEL A -->
-    <div class="section-title">Your Cost · Model A — Conversation cost · What you observed, annualised</div>
-    <div class="working-block" id="res-working-a"></div>
-    <div class="output-grid">
-      <div class="output-panel">
-        <div class="output-panel-label">Conservative</div>
-        <div class="output-panel-tag" id="res-a-low-tag"></div>
-        <div class="output-num" id="res-a-low">—</div>
-        <div class="output-basis" id="res-a-low-basis"></div>
-      </div>
-      <div class="output-panel">
-        <div class="output-panel-label">Realistic</div>
-        <div class="output-panel-tag" id="res-a-high-tag"></div>
-        <div class="output-num" id="res-a-high">—</div>
-        <div class="output-basis" id="res-a-high-basis"></div>
-      </div>
-    </div>
+    <!-- HOW WE GET THERE -->
+    <div class="section-divider">How we get there — the working</div>
 
-    <!-- MODEL B -->
-    <div class="section-title">Your Cost · Model B — Gallup salary model · Whole organisation · Independent cross-check</div>
-    <div class="working-block" id="res-working-b"></div>
-    <div class="output-grid single">
-      <div class="output-panel">
-        <div class="output-panel-label">Model B · Gallup · Annual organisational cost</div>
-        <div class="output-panel-tag">Reactive population × average salary × 34% disengagement cost</div>
-        <div class="output-num" id="res-b">—</div>
-        <div class="output-basis" id="res-b-basis"></div>
-      </div>
-    </div>
+    <button class="detail-toggle" onclick="toggleDetail('detail-a')">+ Model A — Conversation cost</button>
+    <div class="detail-block" id="detail-a"></div>
 
-    <!-- ROI -->
-    <div class="roi-block">
-      <div class="roi-title">— What SSC Estimates It Could Recover —</div>
-      <div class="roi-intro" id="roi-intro"></div>
-      <div class="working-block" id="roi-working"></div>
-      <div class="roi-grid" id="roi-grid"></div>
-    </div>
+    <button class="detail-toggle" onclick="toggleDetail('detail-b')">+ Model B — Gallup salary model</button>
+    <div class="detail-block" id="detail-b"></div>
+
+    <button class="detail-toggle" onclick="toggleDetail('detail-r')">+ Recovery estimate — how SSC calculates it</button>
+    <div class="detail-block" id="detail-r"></div>
 
     <!-- CTA -->
     <div class="cta-block">
@@ -351,14 +328,13 @@
     </div>
 
     <div class="calc-footer">
-      <div class="calc-footer-note"><strong>Methodology.</strong> Cost of defensive behaviour: five independent sources all converge at <span id="footer-low"></span>–<span id="footer-high"></span> per blocked conversation. People leader ratio: 1 per 8 employees (standard benchmark). Reactive population: 75% of people leaders (Leadership Circle / Anderson &amp; Adams, 2M+ leaders). All reactive leadership is unconscious and systemic (Leadership Circle). Recovery estimate: cost attributable to reactive people leaders. Research figures converted from USD at live rates via Open Exchange Rates.</div>
+      <div class="calc-footer-note"><strong>Methodology.</strong> Cost figures converted from USD at live rates. Research sources: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. Reactive population: 75% of headcount (Leadership Circle / Anderson &amp; Adams). People leader ratio: 1:8. Gallup disengagement cost: 34% of annual salary. All reactive leadership is unconscious and systemic. Recovery = cost attributable to reactive people leaders.</div>
     </div>
 
   </div>
 
 </div>
 <script>
-// ─── BEHAVIOURS ───────────────────────────────
 const BEHAVIOURS = [
   { name:"Pleasing",                           eg:'"That sounds great" — when it doesn\'t',            stops:"Challenge, honest pushback, strategic friction" },
   { name:"Softening feedback",                 eg:"Diluting the message until it carries no weight",   stops:"Growth, behavioural change, standards" },
@@ -374,7 +350,6 @@ const BEHAVIOURS = [
   { name:"Reactive firefighting",              eg:"Using urgency to avoid the strategic conversation", stops:"Long-term thinking, strategic dialogue" },
 ];
 
-// ─── STATE ────────────────────────────────────
 const counts = Array(BEHAVIOURS.length).fill(0);
 let rates = {};
 let selectedCurrency = 'USD';
@@ -382,7 +357,6 @@ let selectedSymbol   = '$';
 const COST_LOW_USD  = 1500;
 const COST_HIGH_USD = 7500;
 
-// ─── LIVE RATES ───────────────────────────────
 async function fetchRates() {
   try {
     const res  = await fetch('https://open.er-api.com/v6/latest/USD');
@@ -401,20 +375,13 @@ async function fetchRates() {
   }
 }
 
-function toLocal(usd, currency) {
-  return usd * (rates[currency] || 1);
-}
-function eurToLocal(eur, currency) {
-  const usd = eur / (rates['EUR'] || 0.92);
-  return usd * (rates[currency] || 1);
-}
+function toLocal(usd, cur) { return usd * (rates[cur] || 1); }
 
 function updateCostStrip() {
   document.getElementById('strip-low').textContent  = selectedSymbol + fmtN(toLocal(COST_LOW_USD,  selectedCurrency));
   document.getElementById('strip-high').textContent = selectedSymbol + fmtN(toLocal(COST_HIGH_USD, selectedCurrency));
 }
 
-// ─── CURRENCY BUTTONS ─────────────────────────
 document.querySelectorAll('.currency-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
@@ -426,7 +393,6 @@ document.querySelectorAll('.currency-btn').forEach(btn => {
   });
 });
 
-// ─── TABLE ────────────────────────────────────
 function buildTable() {
   const tbody = document.getElementById('tally-body');
   BEHAVIOURS.forEach((b, i) => {
@@ -436,10 +402,8 @@ function buildTable() {
       <td><div class="b-stops">${b.stops}</div></td>
       <td class="ticks-cell">
         <div class="tick-group">
-          <div class="wk-label">Wk 1</div>
-          <div class="tick-row" id="w1-${i}"></div>
-          <div class="wk-label">Wk 2</div>
-          <div class="tick-row" id="w2-${i}"></div>
+          <div class="wk-label">Wk 1</div><div class="tick-row" id="w1-${i}"></div>
+          <div class="wk-label">Wk 2</div><div class="tick-row" id="w2-${i}"></div>
         </div>
       </td>
       <td class="count-col"><span class="count-val" id="sub-${i}">—</span></td>
@@ -453,8 +417,7 @@ function buildTable() {
         box.addEventListener('click', () => {
           box.classList.toggle('on');
           counts[i] = document.querySelectorAll(`#w1-${i} .on, #w2-${i} .on`).length;
-          refreshSub(i);
-          refreshTotal();
+          refreshSub(i); refreshTotal();
         });
         row.appendChild(box);
       }
@@ -474,7 +437,6 @@ function refreshTotal() {
   if (total > 0) document.getElementById('inp-ticks').value = total;
 }
 
-// ─── CALCULATE ────────────────────────────────
 function calculate() {
   const ticks     = parseFloat(document.getElementById('inp-ticks').value)    || 0;
   const observed  = parseFloat(document.getElementById('inp-observed').value)  || 1;
@@ -485,104 +447,80 @@ function calculate() {
   if (!headcount) { alert('Please enter your organisation headcount.'); return; }
   if (!salary)    { alert('Please enter your average annual salary.'); return; }
 
-  const sym      = selectedSymbol;
-  const costLow  = toLocal(COST_LOW_USD,  selectedCurrency);
-  const costHigh = toLocal(COST_HIGH_USD, selectedCurrency);
+  const sym     = selectedSymbol;
+  const costLow = toLocal(COST_LOW_USD,  selectedCurrency);
+  const costHigh= toLocal(COST_HIGH_USD, selectedCurrency);
 
-  // ── MODEL A — observed sample annualised ──
+  // Model A
   const annualised = ticks * 22;
   const aLow  = annualised * costLow;
   const aHigh = annualised * costHigh;
 
-  // ── MODEL B — Gallup org-wide ─────────────
+  // Model B
   const reactive = Math.round(headcount * 0.75);
   const bTotal   = reactive * salary * 0.34;
 
-  // ── RECOVERY ESTIMATE ─────────────────────
-  // People leaders = headcount ÷ 8
+  // Recovery
   const peopleLeaders   = Math.round(headcount / 8);
-  // Reactive people leaders = 75% of people leaders
   const reactiveLeaders = Math.round(peopleLeaders * 0.75);
-  // SSC works with all reactive people leaders
-  const sscLeaders = reactiveLeaders;
-  // Their share of the org-wide cost
-  const leaderShare     = reactive > 0 ? sscLeaders / reactive : 0;
+  const leaderShare     = reactive > 0 ? reactiveLeaders / reactive : 0;
   const recoverableCost = bTotal * leaderShare;
 
-  // ── POPULATE SCREEN 2 ─────────────────────
+  // ── HEADLINES ────────────────────────────────
+  s('h-cost-low',        sym + fmtM(aLow));
+  s('h-cost-low-basis',  `${fmtN(annualised)} blocked conversations × ${sym}${fmtN(costLow)} · in the ${Math.round(observed)} people you observed`);
+  s('h-cost-high',       sym + fmtM(aHigh));
+  s('h-cost-high-basis', `${fmtN(annualised)} blocked conversations × ${sym}${fmtN(costHigh)} · in the ${Math.round(observed)} people you observed`);
+  s('h-gallup',          sym + fmtM(bTotal));
+  s('h-gallup-basis',    `${fmtN(reactive)} reactive people × ${sym}${fmtN(salary)} average salary × 34% Gallup disengagement cost`);
+  s('h-recovery',        sym + fmtM(recoverableCost));
+  s('h-recovery-basis',  `Based on ${fmtN(reactiveLeaders)} reactive people leaders — their ${(leaderShare*100).toFixed(1)}% share of the total organisational cost`);
 
-  // Model A working
-  document.getElementById('res-working-a').innerHTML =
-    wl('Blocked conversations you observed over 10 working days', `${ticks} ticks`, ticks, '') +
+  // ── WORKING DETAIL (collapsible) ─────────────
+  document.getElementById('detail-a').innerHTML =
+    wl('Blocked conversations observed over 10 working days', `${ticks} ticks`, ticks, '') +
     wl('Annualised across 220 working days (×22)', `${ticks} × 22`, fmtN(annualised), '') +
-    wl(`At ${sym}${fmtN(costLow)} per blocked conversation — conservative floor`, `${fmtN(annualised)} × ${sym}${fmtN(costLow)}`, sym + fmtM(aLow), 'amber') +
-    wl(`At ${sym}${fmtN(costHigh)} per blocked conversation — research average`, `${fmtN(annualised)} × ${sym}${fmtN(costHigh)}`, sym + fmtM(aHigh), 'amber');
+    wl(`Conservative — ${sym}${fmtN(costLow)} per blocked conversation`, `${fmtN(annualised)} × ${sym}${fmtN(costLow)}`, sym+fmtM(aLow), 'amber') +
+    wl(`Realistic — ${sym}${fmtN(costHigh)} per blocked conversation`, `${fmtN(annualised)} × ${sym}${fmtN(costHigh)}`, sym+fmtM(aHigh), 'amber');
 
-  document.getElementById('res-a-low-tag').textContent   = `${sym}${fmtN(costLow)} per blocked conversation · ${fmtN(annualised)} annualised`;
-  document.getElementById('res-a-high-tag').textContent  = `${sym}${fmtN(costHigh)} per blocked conversation · ${fmtN(annualised)} annualised`;
-  document.getElementById('res-a-low').textContent       = sym + fmtM(aLow);
-  document.getElementById('res-a-high').textContent      = sym + fmtM(aHigh);
-  document.getElementById('res-a-low-basis').textContent = `In the ${Math.round(observed)} people you observed · annualised`;
-  document.getElementById('res-a-high-basis').textContent= `In the ${Math.round(observed)} people you observed · annualised`;
-
-  // Model B working
-  document.getElementById('res-working-b').innerHTML =
+  document.getElementById('detail-b').innerHTML =
     wl('Total org headcount', '', fmtN(headcount), '') +
     wl('Reactive decision-makers — 75% of headcount (Leadership Circle, 2M+ leaders)', `${fmtN(headcount)} × 75%`, fmtN(reactive), '') +
-    wl('Average annual salary', '', sym + fmtN(salary), '') +
-    wl('× 34% — Gallup cost of an actively disengaged employee', `${fmtN(reactive)} × ${sym}${fmtN(salary)} × 34%`, sym + fmtM(bTotal), 'amber');
+    wl('Average annual salary', '', sym+fmtN(salary), '') +
+    wl('× 34% — Gallup cost of an actively disengaged employee', `${fmtN(reactive)} × ${sym}${fmtN(salary)} × 34%`, sym+fmtM(bTotal), 'amber');
 
-  document.getElementById('res-b').textContent       = sym + fmtM(bTotal);
-  document.getElementById('res-b-basis').textContent = `${fmtN(reactive)} reactive people × ${sym}${fmtN(salary)} average salary × 34%`;
-
-  // ROI intro
-  document.getElementById('roi-intro').innerHTML =
-    `Your organisation has approximately <strong>${fmtN(peopleLeaders)} people leaders</strong> (one per eight employees). Of those, <strong>${fmtN(reactiveLeaders)}</strong> are operating from a reactive mindset — making unconscious, systemic decisions that stop conversations happening. These are the <strong>${fmtN(sscLeaders)} leaders SSC would work with</strong>. Based on their share of the total organisational cost, here is what SSC estimates it could recover.`;
-
-  // ROI working
-  document.getElementById('roi-working').innerHTML =
+  document.getElementById('detail-r').innerHTML =
     wl('People leaders in your organisation (headcount ÷ 8)', `${fmtN(headcount)} ÷ 8`, fmtN(peopleLeaders), '') +
     wl('Reactive people leaders — 75% (Leadership Circle)', `${fmtN(peopleLeaders)} × 75%`, fmtN(reactiveLeaders), '') +
-    wl('SSC works with all reactive people leaders (all reactive = unconscious, systemic)', '', fmtN(sscLeaders), '') +
-    wl('Their share of the whole-organisation cost (Model B)', `${fmtN(sscLeaders)} ÷ ${fmtN(reactive)}`, (leaderShare*100).toFixed(1)+'%', '') +
-    wl('Estimated recoverable cost', `${(leaderShare*100).toFixed(1)}% of ${sym}${fmtM(bTotal)}`, sym + fmtM(recoverableCost), 'lime');
+    wl('Their share of the whole-organisation cost', `${fmtN(reactiveLeaders)} ÷ ${fmtN(reactive)}`, (leaderShare*100).toFixed(1)+'%', '') +
+    wl('Estimated recoverable cost', `${(leaderShare*100).toFixed(1)}% of ${sym}${fmtM(bTotal)}`, sym+fmtM(recoverableCost), 'lime');
 
-  // ROI grid — no pricing, show recoverable and context
-  document.getElementById('roi-grid').innerHTML = `
-    <div class="roi-cell">
-      <div class="roi-cell-label">Annual cost attributable to your people leaders</div>
-      <div class="roi-cell-num amber">${sym}${fmtM(recoverableCost)}</div>
-      <div class="roi-cell-sub">${fmtN(sscLeaders)} reactive people leaders · their share of ${sym}${fmtM(bTotal)} total</div>
-    </div>
-    <div class="roi-cell">
-      <div class="roi-cell-label">SSC's estimated recovery potential</div>
-      <div class="roi-cell-num lime">${sym}${fmtM(recoverableCost)}</div>
-      <div class="roi-cell-sub">One session per leader. One shift per session. The conversations start happening.</div>
-    </div>
-  `;
-
-  // Footer spans
-  document.getElementById('footer-low').textContent  = sym + fmtN(costLow);
-  document.getElementById('footer-high').textContent = sym + fmtN(costHigh);
-
-  // Switch screens
+  // Switch screens — scroll to very top of iframe
   document.getElementById('screen-1').classList.remove('active');
   document.getElementById('screen-2').classList.add('active');
-  window.scrollTo({ top:0, behavior:'smooth' });
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
 }
 
 function goBack() {
   document.getElementById('screen-2').classList.remove('active');
   document.getElementById('screen-1').classList.add('active');
-  window.scrollTo({ top:0, behavior:'smooth' });
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
 }
 
-// ─── HELPERS ──────────────────────────────────
+function toggleDetail(id) {
+  const el  = document.getElementById(id);
+  const btn = el.previousElementSibling;
+  const open = el.classList.toggle('open');
+  btn.textContent = (open ? '− ' : '+ ') + btn.textContent.slice(2);
+}
+
 function wl(label, calc, val, cls) {
   return `<div class="working-line">
     <span class="w-label">${label}</span>
     <span class="w-calc">${calc}</span>
-    <span class="w-val${cls ? ' '+cls : ''}">${val}</span>
+    <span class="w-val${cls?' '+cls:''}">${val}</span>
   </div>`;
 }
 function fmtM(n) {
@@ -596,6 +534,7 @@ function fmtN(n) {
   if (typeof n === 'number') return Math.round(n).toLocaleString();
   return n;
 }
+function s(id, val) { const el=document.getElementById(id); if(el) el.textContent=val; }
 
 ['inp-ticks','inp-observed','inp-headcount','inp-salary'].forEach(id => {
   const el = document.getElementById(id);
