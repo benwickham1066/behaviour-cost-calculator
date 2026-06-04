@@ -345,42 +345,22 @@ const WORDMARK_B64 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUND
     </div>
     <div class="calc-block">
       <div class="calc-title">— Calculate Your Number —</div>
-      <div class="calc-intro">Enter your inputs below. All outputs are estimates based on published research and your observed data.</div>
+      <div class="calc-intro">Enter your inputs below. All outputs are estimates based on published research and your observed data. No salary or revenue data required.</div>
       <div class="inputs-grid">
         <div class="calc-field"><label>Total ticks</label><input type="number" id="inp-ticks" placeholder="e.g. 18" min="0" inputmode="numeric"><div class="field-note">Auto-fills as you tick above, or enter manually</div></div>
         <div class="calc-field"><label>People you observed</label><input type="number" id="inp-observed" placeholder="e.g. 8" min="1" inputmode="numeric"><div class="field-note">How many people did you watch over two weeks?</div></div>
         <div class="calc-field"><label>Total org headcount</label><input type="number" id="inp-headcount" placeholder="e.g. 1000" min="1" inputmode="numeric"><div class="field-note">Total number of people in your organisation</div></div>
-        <div class="calc-field"><label>Average annual salary (<span id="sal-lbl">$</span>)</label><input type="number" id="inp-salary" placeholder="e.g. 65000" min="1" inputmode="numeric"><div class="field-note">Used for the independent Gallup cross-check</div></div>
+
       </div>
       <div class="leader-field-wrap">
         <div class="calc-field"><label>Approximate number of people leaders</label><input type="number" id="inp-leaders" placeholder="e.g. 250" min="1" inputmode="numeric"><div class="field-note">Anyone who leads, manages, or influences others — across all tiers</div></div>
         <div class="leader-helper"><strong>Not sure?</strong> A typical organisation has one people leader for every 3–5 employees. For <span id="hc-hint">1,000</span> people that's roughly <strong><span id="leader-hint-low">200</span>–<span id="leader-hint-high">333</span></strong>.</div>
       </div>
-      <div class="inputs-grid" style="margin-bottom:16px;">
-        <div class="calc-field">
-          <label>Sector</label>
-          <select id="inp-sector" style="width:100% !important;background:var(--surface) !important;border:1px solid var(--border) !important;color:var(--white) !important;font-family:'GothamBook',Arial,sans-serif !important;font-size:1rem !important;padding:13px 14px !important;outline:none !important;border-radius:0 !important;box-shadow:none !important;-webkit-appearance:none !important;cursor:pointer;">
-            <option value="professional" data-rev="200000">Professional services / consulting</option>
-            <option value="financial" data-rev="400000">Financial services</option>
-            <option value="technology" data-rev="350000">Technology</option>
-            <option value="healthcare" data-rev="200000">Healthcare</option>
-            <option value="manufacturing" data-rev="180000">Manufacturing</option>
-            <option value="retail" data-rev="150000">Retail / consumer</option>
-            <option value="public" data-rev="0">Public sector / not-for-profit</option>
-          </select>
-          <div class="field-note">Used to estimate revenue if not entered below</div>
-        </div>
-        <div class="calc-field">
-          <label>Approximate annual revenue (<span id="rev-lbl">$</span>) — optional</label>
-          <input type="number" id="inp-revenue" placeholder="Auto-estimated from sector" min="0" inputmode="numeric">
-          <div class="field-note">If blank, SSC estimates from sector and headcount</div>
-        </div>
-      </div>
-      <div id="rev-note" style="font-family:'GothamBook',Arial,sans-serif;font-size:0.72rem;color:var(--muted);margin-bottom:20px;border-left:2px solid var(--border);padding-left:10px;display:none;line-height:1.5;"></div>
+
       <button class="calc-btn" onclick="calculate()">Calculate My Number</button>
     </div>
     <div class="calc-footer">
-      <div class="calc-footer-note"><strong>Sources.</strong> Conversation cost: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. 75% reactive: Leadership Circle / Anderson &amp; Adams, 2M+ leaders. Gallup disengagement: 34% of annual salary (2024). 220 working days per year. Annualisation ×22. All figures are estimates. Research figures converted from USD at live rates via Open Exchange Rates.</div>
+      <div class="calc-footer-note"><strong>Sources.</strong> Conversation cost: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. 75% reactive: Leadership Circle / Anderson &amp; Adams, 2M+ leaders. 220 working days per year. Annualisation ×22. All figures are estimates. Research figures converted from USD at live rates via Open Exchange Rates.</div>
     </div>
   </div>
 
@@ -400,17 +380,11 @@ const WORDMARK_B64 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUND
         </div>
         <div class="range-desc" id="r-range-desc"></div>
       </div>
-      <div class="headline-row" style="margin-top:1px;">
-        <div class="headline-panel dark">
-          <div class="headline-eyebrow">If we look at Gallup's salary model across your whole organisation</div>
-          <div class="headline-num amber" id="h-gallup">—</div>
-          <div class="headline-desc" id="h-gallup-desc"></div>
-        </div>
-      </div>
+
       <div class="headline-row" style="margin-top:1px;">
         <div class="headline-panel recovery">
-          <div class="headline-eyebrow lime" id="h-recovery-eyebrow">SSC estimates it could recover approximately</div>
-          <div class="headline-num lime" id="h-recovery">—</div>
+          <div class="headline-eyebrow lime">SSC works with your reactive people leaders</div>
+          <div class="headline-num lime" id="h-recovery-leaders">—</div>
           <div class="headline-context" id="h-recovery-context"></div>
           <div class="headline-desc" id="h-recovery-desc"></div>
         </div>
@@ -420,20 +394,18 @@ const WORDMARK_B64 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUND
       <button class="action-btn primary" onclick="openLeadGate()">↓ Download Full Report</button>
       <button class="action-btn" onclick="printScorecard()">↓ Download Observation Scorecard</button>
     </div>
-    <div class="section-divider">How we calculate these estimates</div>
+    <div class="section-divider">How we calculate this estimate</div>
     <button class="detail-toggle" id="tog-a" onclick="toggleDetail('detail-a','tog-a')">+ Model A — Conversation cost · your observed data annualised</button>
     <div class="detail-block" id="detail-a"></div>
-    <button class="detail-toggle" id="tog-b" onclick="toggleDetail('detail-b','tog-b')">+ Model B — Gallup salary model · independent cross-check</button>
-    <div class="detail-block" id="detail-b"></div>
-    <button class="detail-toggle" id="tog-r" onclick="toggleDetail('detail-r','tog-r')">+ Recovery estimate — how SSC calculates it</button>
-    <div class="detail-block" id="detail-r"></div>
+
+
     <div class="cta-block">
       <div class="cta-heading">Let's find your number together.</div>
       <div class="cta-body">These are conservative estimates based on published research and your observed data. A 30-minute scoping conversation with SSC will give you a more precise figure — and show you exactly which leaders to start with.</div>
       <a href="https://singlesession.online/schedule" class="cta-btn" target="_blank" rel="noopener">Book a Scoping Call</a>
     </div>
     <div class="calc-footer">
-      <div class="calc-footer-note"><strong>Methodology.</strong> All figures are estimates. Research figures converted from USD at live rates. Sources: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. Reactive population: 75% of headcount. Gallup disengagement: 34% of annual salary. Recovery = cost attributable to reactive people leaders.</div>
+      <div class="calc-footer-note"><strong>Methodology.</strong> All figures are estimates. Research figures converted from USD at live rates. Sources: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486 organisations). Reactive population: 75% of headcount (Leadership Circle, Anderson &amp; Adams, 2M+ leaders). Leadership effectiveness explains 37.6% of business performance variance (Leadership Circle, Anderson, n=486).</div>
     </div>
   </div>
 </div>
@@ -564,10 +536,7 @@ document.querySelectorAll('.currency-btn').forEach(btn => {
     selectedCurrency = btn.dataset.currency;
     selectedSymbol   = btn.dataset.symbol;
     document.getElementById('sal-lbl').textContent = selectedSymbol;
-    const revLbl = document.getElementById('rev-lbl');
-    if (revLbl) revLbl.textContent = selectedSymbol;
     updateCostStrip();
-    updateRevenueNote();
   });
 });
 
@@ -579,31 +548,7 @@ document.getElementById('inp-headcount').addEventListener('input', function() {
   updateRevenueNote();
 });
 
-function updateRevenueNote() {
-  const hc = parseFloat((document.getElementById('inp-headcount')||{}).value) || 0;
-  const rev = parseFloat((document.getElementById('inp-revenue')||{}).value) || 0;
-  const note = document.getElementById('rev-note');
-  if (!note) return;
-  if (!hc || rev > 0) { note.style.display='none'; return; }
-  const sector = document.getElementById('inp-sector');
-  if (!sector) { note.style.display='none'; return; }
-  const opt = sector.options[sector.selectedIndex];
-  const revPerEmployee = parseFloat(opt.dataset.rev) || 0;
-  if (revPerEmployee === 0) {
-    note.textContent = 'Revenue benchmarks are not applicable for public sector / not-for-profit. The Leadership Circle performance model will not be shown — Gallup model will be used instead.';
-    note.style.display = 'block'; return;
-  }
-  const estimated = hc * revPerEmployee;
-  note.textContent = 'Estimated revenue: ' + selectedSymbol + fmtN(estimated) + ' (' + selectedSymbol + fmtN(revPerEmployee) + ' per employee · ' + opt.text.split('/')[0].trim() + ' benchmark). Enter your actual revenue above to override.';
-  note.style.display = 'block';
-}
 
-document.addEventListener('DOMContentLoaded', function() {
-  const sec = document.getElementById('inp-sector');
-  const rev = document.getElementById('inp-revenue');
-  if (sec) sec.addEventListener('change', updateRevenueNote);
-  if (rev) rev.addEventListener('input', updateRevenueNote);
-});
 
 function buildTable() {
   const tbody = document.getElementById('tally-body');
@@ -653,12 +598,11 @@ function calculate() {
   const ticks     = parseFloat(document.getElementById('inp-ticks').value)    || 0;
   const observed  = parseFloat(document.getElementById('inp-observed').value)  || 1;
   const headcount = parseFloat(document.getElementById('inp-headcount').value) || 0;
-  const salary    = parseFloat(document.getElementById('inp-salary').value)    || 0;
+  const salary = 0; // removed
   const leaders   = parseFloat(document.getElementById('inp-leaders').value)   || 0;
 
   if (!ticks)     { alert('Please enter your total ticks.'); return; }
   if (!headcount) { alert('Please enter your organisation headcount.'); return; }
-  if (!salary)    { alert('Please enter your average annual salary.'); return; }
   if (!leaders)   { alert('Please enter your approximate number of people leaders.'); return; }
 
   const sym      = selectedSymbol;
@@ -671,47 +615,23 @@ function calculate() {
   const bTotal          = reactive * salary * 0.34;
   const reactiveLeaders = Math.round(leaders * 0.75);
 
-  // Model C — LC 37.6% performance variance
-  const sectorEl = document.getElementById('inp-sector');
-  const sectorOpt = sectorEl ? sectorEl.options[sectorEl.selectedIndex] : null;
-  const revPerEmployee = sectorOpt ? (parseFloat(sectorOpt.dataset.rev) || 0) : 0;
-  const enteredRevenue = parseFloat((document.getElementById('inp-revenue')||{}).value) || 0;
-  const revenue = enteredRevenue > 0 ? enteredRevenue : (revPerEmployee > 0 ? headcount * revPerEmployee : 0);
-  const revenueIsEstimated = enteredRevenue === 0 && revPerEmployee > 0;
-  const revenueSource = enteredRevenue > 0 ? 'entered' : (sectorOpt ? sectorOpt.text.split('/')[0].trim() : 'benchmark');
-  const sectorName = sectorOpt ? sectorOpt.text : '';
-  const lcUpside = revenue * 0.376;
-  const useLCModel = revenue > 0;
+  // Recovery — LC framing, no calculated number
+  // Leadership Circle: leadership effectiveness explains 37.6% of business performance variance
+  const reactiveLeadersCount = reactiveLeaders; // alias for clarity
 
-  // Recovery: LC if revenue available, else Gallup 70%
-  const recoverableCost = useLCModel ? lcUpside : bTotal * 0.70;
-  const recoveryMethod  = useLCModel ? 'lc' : 'gallup';
-
-  lastCalc = { ticks, observed, headcount, salary, leaders, sym, costLow, costHigh,
-    annualised, aLow, aHigh, reactive, bTotal, reactiveLeaders,
-    recoverableCost, recoveryMethod, revenue, revenueIsEstimated, revenueSource,
-    sectorName, lcUpside, currency: selectedCurrency };
+  lastCalc = { ticks, observed, headcount, leaders, sym, costLow, costHigh,
+    annualised, aLow, aHigh, reactive, reactiveLeaders,
+    currency: selectedCurrency };
 
   s('range-eyebrow', `In an organisation of approximately ${fmtN(headcount)} people, we estimate human behaviour is costing your P&L`);
   s('r-min',  sym + fmtM(aLow));
   s('r-max',  sym + fmtM(aHigh));
   s('r-range-desc', `Minimum: ${sym}${fmtN(costLow)} per blocked conversation · Maximum: ${sym}${fmtN(costHigh)} · ${fmtN(annualised)} blocked conversations annualised · based on ${Math.round(observed)} people observed`);
-  s('h-gallup',      sym + fmtM(bTotal));
-  s('h-gallup-desc', `${fmtN(reactive)} reactive people × ${sym}${fmtN(salary)} average salary × 34% Gallup disengagement cost`);
-  s('h-recovery',    sym + fmtM(recoverableCost));
-  const eyebrowEl = document.getElementById('h-recovery-eyebrow');
-  if (useLCModel) {
-    if (eyebrowEl) eyebrowEl.textContent = 'Leadership Circle — Addressable Performance Upside';
-    const revLabel = revenueIsEstimated
-      ? `Based on estimated revenue of ${sym}${fmtM(revenue)} (${revenueSource} benchmark, ${fmtN(headcount)} employees)`
-      : `Based on your annual revenue of ${sym}${fmtM(revenue)}`;
-    s('h-recovery-context', `${revLabel}. The Leadership Circle, across 486 organisations, found leadership effectiveness explains 37.6% of business performance variance — representing ${sym}${fmtM(lcUpside)} of performance directly sensitive to leadership behaviour.`);
-    s('h-recovery-desc', `SSC works with your ${fmtN(reactiveLeaders)} reactive people leaders — removing the unconscious patterns that are suppressing that performance. Not one blocked conversation, but all of them. One session per leader. One shift per session.`);
-  } else {
-    if (eyebrowEl) eyebrowEl.textContent = 'SSC estimates it could recover approximately';
-    s('h-recovery-context', `Based on ${fmtN(reactiveLeaders)} reactive people leaders. Gallup research shows managers account for 70% of variance in team engagement — meaning 70% of your organisational cost is directly attributable to leadership behaviour.`);
-    s('h-recovery-desc', `SSC works with your reactive people leaders. Each session removes an unconscious pattern — not one blocked conversation, but all of them. One session per leader. One shift per session.`);
-  }
+
+  // Recovery — LC framing as statement, no calculated number
+  s('h-recovery-leaders', fmtN(reactiveLeaders));
+  s('h-recovery-context', `Your organisation has approximately ${fmtN(leaders)} people leaders. ${fmtN(reactiveLeaders)} of them are estimated to be operating from a reactive mindset.`);
+  s('h-recovery-desc', `The Leadership Circle, across 486 organisations, found that leadership effectiveness explains 37.6% of business performance variance. SSC works with each of your reactive leaders — removing the unconscious pattern, not one blocked conversation at a time, but all of them. One session per leader. One shift per session.`);
 
   document.getElementById('detail-a').innerHTML =
     wl('Blocked conversations observed over 10 working days', `${ticks} ticks`, ticks, '') +
@@ -719,21 +639,9 @@ function calculate() {
     wl(`Minimum — ${sym}${fmtN(costLow)} per blocked conversation`, `${fmtN(annualised)} × ${sym}${fmtN(costLow)}`, sym+fmtM(aLow), 'amber') +
     wl(`Maximum — ${sym}${fmtN(costHigh)} per blocked conversation`, `${fmtN(annualised)} × ${sym}${fmtN(costHigh)}`, sym+fmtM(aHigh), 'amber');
 
-  document.getElementById('detail-b').innerHTML =
-    wl('Total org headcount', '', fmtN(headcount), '') +
-    wl('Reactive decision-makers — 75% of headcount (Leadership Circle, 2M+ leaders)', `${fmtN(headcount)} × 75%`, fmtN(reactive), '') +
-    wl('Average annual salary', '', sym+fmtN(salary), '') +
-    wl('× 34% — Gallup cost of an actively disengaged employee', `${fmtN(reactive)} × ${sym}${fmtN(salary)} × 34%`, sym+fmtM(bTotal), 'amber');
 
-  document.getElementById('detail-r').innerHTML =
-    wl('People leaders (your input)', '', fmtN(leaders), '') +
-    wl('Reactive people leaders — 75% (Leadership Circle)', `${fmtN(leaders)} × 75%`, fmtN(reactiveLeaders), '') +
-    (useLCModel
-      ? wl(`Revenue — ${revenueIsEstimated ? 'estimated (' + revenueSource + ' benchmark)' : 'entered'}`, '', sym+fmtM(revenue), '') +
-        wl('Leadership effectiveness explains 37.6% of business performance variance (Leadership Circle, n=486)', sym+fmtM(revenue)+' × 37.6%', sym+fmtM(lcUpside), 'lime')
-      : wl('Managers account for 70% of variance in team engagement (Gallup)', '70% of Gallup total', '70%', '') +
-        wl('Estimated addressable cost', '70% of '+sym+fmtM(bTotal), sym+fmtM(recoverableCost), 'lime')
-    );
+
+
 
   // Switch screen — scroll to top
   document.getElementById('screen-1').classList.remove('active');
@@ -797,7 +705,7 @@ async function submitLead() {
         body: JSON.stringify({
           name, email, organisation: org || (document.getElementById('inp-orgname') || {}).value || '—',
           headcount: c.headcount, people_leaders: c.leaders,
-          avg_salary: sym + fmtN(c.salary), currency: c.currency,
+          currency: c.currency,
           ticks: c.ticks, people_observed: c.observed,
           cost_minimum: sym + fmtM(c.aLow),
           cost_maximum: sym + fmtM(c.aHigh),
@@ -853,7 +761,6 @@ function generateReport() {
     <tr><td>People leaders</td><td>${fmtN(c.leaders)}</td></tr>
     <tr><td>Sector</td><td>${c.sectorName || '—'}</td></tr>
     <tr><td>Annual revenue</td><td>${c.revenue > 0 ? (sym + fmtM(c.revenue) + (c.revenueIsEstimated ? ' (estimated)' : '')) : '—'}</td></tr>
-    <tr><td>Average annual salary</td><td>${sym}${fmtN(c.salary)}</td></tr>
     <tr><td>Blocked conversations observed</td><td>${c.ticks} over 10 working days</td></tr>
     <tr><td>People observed</td><td>${Math.round(c.observed)}</td></tr>
     <tr><td>Currency</td><td>${c.currency}</td></tr>
