@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SSC — Behaviour Audit</title>
+<script>const LOGO_B64 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAM0AzQDASIAAhEBAxEB/8QAGwABAAMBAQEBAAAAAAAAAAAAAAIDBAUGAQj/xAA7EAEAAgEBBAYGCAYDAQEAAAAAAQIDBAURMXIhMzRRcbESEzJBU2EUIlKBkaLB0RUjQ2KCoUJzkuHw/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/APxkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACVaXt7NLT4QCItjTaieGDL/wCZSjR6qf6F/wAAUDR9C1fwLK82HLhm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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf/Z";</script>
 <style>
   @font-face {
     font-family: 'DrukTextBold';
@@ -14,6 +15,11 @@
     font-family: 'GothamLight';
     src: url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6830c26fc80e440c041d2ef5/1748025967908/Gotham-Light.otf') format('opentype');
     font-weight: 300; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'GothamBook';
+    src: url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/67c16f32ccecbb575ae82d2f/1740730162912/GothamBook.ttf') format('truetype');
+    font-weight: 400; font-style: normal; font-display: swap;
   }
   @font-face {
     font-family: 'GothamMedium';
@@ -33,7 +39,7 @@
     --black: #1a1a1a;
   }
 
-  body { background: transparent; color: var(--white); font-family: 'GothamLight', Arial, sans-serif; font-weight: 300; font-size: clamp(0.95rem, 2vw, 1.05rem); line-height: 1.6; padding: 0 0 80px; }
+  body { background: transparent; color: var(--white); font-family: 'GothamBook', Arial, sans-serif; font-weight: 400; font-size: clamp(0.95rem, 2vw, 1.05rem); line-height: 1.6; padding: 0 0 80px; }
   .page { max-width: 100%; margin: 0 auto; }
   .screen { display: none; }
   .screen.active { display: block; }
@@ -50,7 +56,7 @@
   .how-to { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 28px; }
   .how-step { background: var(--surface); padding: 22px 18px; }
   .how-num { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(1.6rem, 3.5vw, 2.2rem); color: var(--lime); line-height: 1; margin-bottom: 10px; text-transform: uppercase; }
-  .how-text { font-family: 'GothamLight', Arial, sans-serif; font-size: clamp(0.78rem, 1.5vw, 0.92rem); color: var(--white); line-height: 1.65; }
+  .how-text { font-family: 'GothamBook', Arial, sans-serif; font-size: clamp(0.78rem, 1.5vw, 0.92rem); color: var(--white); line-height: 1.65; }
   @media(max-width:560px){ .how-to{ grid-template-columns:1fr; } }
 
   /* COST STRIP */
@@ -59,8 +65,9 @@
   .cost-items { display: flex; flex: 1; flex-wrap: wrap; }
   .cost-item { flex: 1; min-width: 110px; padding: 16px 18px; border-right: 1px solid var(--border); }
   .cost-item:last-child { border-right: none; }
+  .cost-item-label { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
   .cost-amount { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(1.4rem, 2.5vw, 2rem); color: var(--lime); line-height: 1; margin-bottom: 5px; text-transform: uppercase; }
-  .cost-desc { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.72rem; color: var(--muted); line-height: 1.55; }
+  .cost-desc { font-family: 'GothamBook', Arial, sans-serif; font-size: 0.72rem; color: var(--muted); line-height: 1.55; }
 
   /* TABLE */
   .tally-wrap { margin-bottom: 36px; overflow-x: auto; }
@@ -72,8 +79,8 @@
   .tally-table tbody tr:hover td { background: var(--surface2); }
   .tally-table tbody td { padding: 14px 14px; vertical-align: middle; }
   .b-name { font-family: 'GothamMedium', Arial, sans-serif; font-weight: 600; color: var(--white); font-size: clamp(0.82rem, 1.5vw, 0.96rem); margin-bottom: 3px; }
-  .b-eg { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.75rem; color: var(--muted); font-style: italic; line-height: 1.45; }
-  .b-stops { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.78rem; color: var(--muted); line-height: 1.45; }
+  .b-eg { font-family: 'GothamBook', Arial, sans-serif; font-size: 0.75rem; color: var(--muted); font-style: italic; line-height: 1.45; }
+  .b-stops { font-family: 'GothamBook', Arial, sans-serif; font-size: 0.78rem; color: var(--muted); line-height: 1.45; }
   .ticks-cell { width: 160px; padding: 10px 8px; }
   .tick-group { display: flex; flex-direction: column; align-items: center; gap: 4px; }
   .wk-label { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.58rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
@@ -98,25 +105,25 @@
   .calc-block { border: 1px solid var(--lime); padding: 28px 26px; margin-bottom: 28px; }
   @media(max-width:560px){ .calc-block{ padding: 20px 16px; } }
   .calc-title { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(1rem, 2vw, 1.3rem); letter-spacing: 0.16em; text-transform: uppercase; color: var(--lime); margin-bottom: 10px; }
-  .calc-intro { font-family: 'GothamLight', Arial, sans-serif; font-size: clamp(0.85rem, 1.5vw, 1rem); color: var(--muted); line-height: 1.65; margin-bottom: 24px; }
+  .calc-intro { font-family: 'GothamBook', Arial, sans-serif; font-size: clamp(0.85rem, 1.5vw, 1rem); color: var(--muted); line-height: 1.65; margin-bottom: 24px; }
   .inputs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
   @media(max-width:560px){ .inputs-grid{ grid-template-columns: 1fr; } }
   .leader-field-wrap { margin-bottom: 20px; }
-  .leader-helper { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.72rem; color: var(--muted); margin-top: 8px; line-height: 1.5; border-left: 2px solid var(--border); padding-left: 10px; }
+  .leader-helper { font-family: 'GothamBook', Arial, sans-serif; font-size: 0.72rem; color: var(--muted); margin-top: 8px; line-height: 1.5; border-left: 2px solid var(--border); padding-left: 10px; }
   .leader-helper strong { font-family: 'GothamMedium', Arial, sans-serif; color: var(--white); font-weight: 600; }
   .calc-field label { display: block; font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
   .calc-field input {
     width: 100% !important; height: auto !important; min-height: unset !important;
     background: var(--surface) !important; border: 1px solid var(--border) !important;
-    color: var(--white) !important; font-family: 'GothamLight', Arial, sans-serif !important;
-    font-size: 1rem !important; font-weight: 300 !important; padding: 13px 14px !important;
+    color: var(--white) !important; font-family: 'GothamBook', Arial, sans-serif !important;
+    font-size: 1rem !important; font-weight: 400 !important; padding: 13px 14px !important;
     outline: none !important; -webkit-appearance: none !important; border-radius: 0 !important;
     box-shadow: none !important; box-sizing: border-box !important; display: block !important;
     transition: border-color 0.15s !important;
   }
   .calc-field input::placeholder { color: rgba(187,187,187,0.4) !important; }
   .calc-field input:focus { border-color: var(--lime) !important; box-shadow: none !important; }
-  .field-note { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.7rem; color: var(--muted); margin-top: 5px; line-height: 1.45; }
+  .field-note { font-family: 'GothamBook', Arial, sans-serif; font-size: 0.7rem; color: var(--muted); margin-top: 5px; line-height: 1.45; }
   .calc-btn {
     width: 100% !important; background: var(--lime) !important; background-image: none !important;
     color: var(--black) !important; border: none !important;
@@ -130,32 +137,40 @@
   }
   .calc-btn:hover { opacity: 0.88 !important; background: var(--lime) !important; color: var(--black) !important; }
 
-  /* ══ SCREEN 2 ══ */
+  /* SCREEN 2 */
   .back-btn { background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 9px 18px; cursor: pointer; margin-bottom: 24px; transition: all 0.15s; display: inline-block; }
   .back-btn:hover { border-color: var(--white); color: var(--white); }
-
-  /* ORG NAME FIELD */
-  .org-name-wrap { margin-bottom: 32px; display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
-  .org-name-wrap .calc-field { flex: 1; min-width: 200px; margin: 0; }
+  .org-name-wrap { margin-bottom: 28px; }
 
   /* HEADLINES */
-  .headline-block { margin-bottom: 36px; }
+  .headline-block { margin-bottom: 32px; }
   .headline-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 1px; }
   .headline-row.single { grid-template-columns: 1fr; }
   @media(max-width:480px){ .headline-row{ grid-template-columns: 1fr; } }
-  .headline-panel { background: var(--surface); padding: 26px 26px; }
+  .headline-panel { background: var(--surface); padding: 24px 24px; }
   .headline-panel.dark { background: rgba(0,0,0,0.25); }
   .headline-panel.recovery { border-top: 3px solid var(--lime); }
-  .headline-eyebrow { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
+  .headline-eyebrow { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; line-height: 1.5; }
   .headline-eyebrow.lime { color: var(--lime); }
+  /* MIN/MAX label */
+  .minmax-label { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .minmax-label.lime { color: var(--lime); }
   .headline-num { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1; text-transform: uppercase; margin-bottom: 10px; }
   .headline-num.amber { color: var(--amber); }
   .headline-num.lime  { color: var(--lime); }
-  .headline-desc { font-family: 'GothamLight', Arial, sans-serif; font-size: clamp(0.8rem, 1.4vw, 0.92rem); color: var(--muted); line-height: 1.6; }
-  .headline-context { font-family: 'GothamLight', Arial, sans-serif; font-size: clamp(0.85rem, 1.4vw, 0.96rem); color: var(--white); line-height: 1.6; margin-bottom: 6px; }
+  .headline-desc { font-family: 'GothamBook', Arial, sans-serif; font-size: clamp(0.78rem, 1.4vw, 0.9rem); color: var(--muted); line-height: 1.6; }
+  .headline-context { font-family: 'GothamBook', Arial, sans-serif; font-size: clamp(0.85rem, 1.4vw, 0.96rem); color: var(--white); line-height: 1.6; margin-bottom: 6px; }
+
+  /* COST RANGE PANEL — min to max */
+  .range-panel { background: var(--surface); border: 1px solid var(--border); margin-bottom: 1px; padding: 24px 24px; }
+  .range-label { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .range-nums { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .range-num { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(2.4rem, 5vw, 4rem); line-height: 1; text-transform: uppercase; color: var(--amber); }
+  .range-sep { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(1.4rem, 3vw, 2.2rem); color: var(--muted); }
+  .range-desc { font-family: 'GothamBook', Arial, sans-serif; font-size: 0.82rem; color: var(--muted); margin-top: 8px; line-height: 1.5; }
 
   /* SECTION DIVIDER */
-  .section-divider { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin: 32px 0 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .section-divider { font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin: 28px 0 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
 
   /* COLLAPSIBLE */
   .detail-toggle { background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 9px 16px; cursor: pointer; margin-bottom: 8px; transition: all 0.15s; display: block; width: 100%; text-align: left; }
@@ -164,109 +179,112 @@
   .detail-block.open { display: block; }
   .working-line { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 11px 0; gap: 16px; }
   .working-line:last-child { border-bottom: none; }
-  .w-label { font-family: 'GothamLight', Arial, sans-serif; color: var(--white); flex: 1; line-height: 1.5; font-size: clamp(0.82rem, 1.4vw, 0.92rem); }
-  .w-calc { font-family: 'GothamLight', Arial, sans-serif; color: var(--muted); font-size: 0.72rem; text-align: right; white-space: nowrap; flex-shrink: 0; }
+  .w-label { font-family: 'GothamBook', Arial, sans-serif; color: var(--white); flex: 1; line-height: 1.5; font-size: clamp(0.82rem, 1.4vw, 0.92rem); }
+  .w-calc { font-family: 'GothamBook', Arial, sans-serif; color: var(--muted); font-size: 0.72rem; text-align: right; white-space: nowrap; flex-shrink: 0; }
   .w-val { font-family: 'GothamMedium', Arial, sans-serif; font-size: clamp(0.92rem, 1.5vw, 1rem); font-weight: 600; color: var(--white); white-space: nowrap; margin-left: 16px; min-width: 80px; text-align: right; flex-shrink: 0; }
   .w-val.amber { color: var(--amber); }
   .w-val.lime  { color: var(--lime); }
 
   /* ACTION BUTTONS */
-  .action-row { display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; }
-  .action-btn { flex: 1; min-width: 160px; background: var(--surface); border: 1px solid var(--border); color: var(--white); font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 14px 20px; cursor: pointer; transition: all 0.15s; text-align: center; }
+  .action-row { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+  .action-btn { flex: 1; min-width: 160px; background: var(--surface); border: 1px solid var(--border); color: var(--white); font-family: 'GothamMedium', Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 14px 20px; cursor: pointer; transition: all 0.15s; text-align: center; }
   .action-btn:hover { border-color: var(--lime); color: var(--lime); }
-  .action-btn.primary { background: var(--lime); border-color: var(--lime); color: var(--black); }
-  .action-btn.primary:hover { opacity: 0.88; }
+  .action-btn.primary { background: var(--lime); border-color: var(--lime); color: var(--black); font-family: 'DrukTextBold', Arial, sans-serif; font-size: 0.9rem; letter-spacing: 0.1em; }
+  .action-btn.primary:hover { opacity: 0.88; color: var(--black); }
 
   /* CTA */
-  .cta-block { background: var(--lime); padding: 32px 28px; margin-bottom: 28px; margin-top: 36px; }
+  .cta-block { background: var(--lime); padding: 32px 28px; margin-bottom: 28px; margin-top: 32px; }
   .cta-heading { font-family: 'DrukTextBold', Arial, sans-serif; font-size: clamp(1.4rem, 3.5vw, 2.4rem); text-transform: uppercase; color: var(--black); line-height: 1; margin-bottom: 12px; }
-  .cta-body { font-family: 'GothamLight', Arial, sans-serif; font-size: clamp(0.88rem, 1.5vw, 1rem); color: var(--black); line-height: 1.65; margin-bottom: 22px; max-width: 580px; }
+  .cta-body { font-family: 'GothamBook', Arial, sans-serif; font-size: clamp(0.88rem, 1.5vw, 1rem); color: var(--black); line-height: 1.65; margin-bottom: 22px; max-width: 580px; }
   .cta-btn { display: inline-block; background: var(--black); color: var(--lime) !important; font-family: 'DrukTextBold', Arial, sans-serif !important; font-size: clamp(0.9rem, 1.8vw, 1.1rem) !important; letter-spacing: 0.12em !important; text-transform: uppercase !important; padding: 16px 32px !important; text-decoration: none !important; border: none !important; cursor: pointer; transition: opacity 0.15s; }
   .cta-btn:hover { opacity: 0.85; }
 
   /* FOOTER */
-  .calc-footer { border-top: 1px solid var(--border); padding-top: 20px; margin-top: 36px; }
-  .calc-footer-note { font-family: 'GothamLight', Arial, sans-serif; font-size: 0.72rem; color: var(--muted); line-height: 1.7; }
+  .calc-footer { border-top: 1px solid var(--border); padding-top: 20px; margin-top: 32px; }
+  .calc-footer-note { font-family: 'GothamBook', Arial, sans-serif; font-size: 0.7rem; color: var(--muted); line-height: 1.7; }
   .calc-footer-note strong { font-family: 'GothamMedium', Arial, sans-serif; font-weight: 600; color: var(--white); }
 
   /* ══════════════════════════════════════════
-     PRINT STYLES — REPORT (A4)
+     PRINT — REPORT (A4)
   ══════════════════════════════════════════ */
   @media print {
+    @page { size: A4 portrait; margin: 14mm 14mm 14mm 14mm; }
     * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-    body { background: white !important; color: #111 !important; font-family: Georgia, serif; padding: 0; margin: 0; font-size: 10pt; line-height: 1.5; }
-    .screen { display: none !important; }
-    .screen.active { display: none !important; }
+    body { background: white !important; color: #111 !important; font-family: 'GothamBook', Georgia, serif; padding: 0; margin: 0; font-size: 9pt; line-height: 1.5; }
+    .screen, #print-scorecard { display: none !important; }
     #print-report { display: block !important; }
 
-    /* PAGE BREAKS */
-    .pr-page { page-break-after: always; padding: 20mm 18mm; min-height: 267mm; }
+    .pr-page { page-break-after: always; }
     .pr-page:last-child { page-break-after: avoid; }
 
     /* COVER */
-    .pr-cover { background: #111 !important; color: #f7f7f7 !important; display: flex; flex-direction: column; justify-content: space-between; }
-    .pr-cover-top { margin-bottom: 40mm; }
-    .pr-logo { font-family: Arial, sans-serif; font-weight: 900; font-size: 28pt; color: #DCFF4F !important; letter-spacing: 0.15em; margin-bottom: 6mm; }
-    .pr-cover-tag { font-family: Arial, sans-serif; font-size: 7pt; letter-spacing: 0.2em; text-transform: uppercase; color: #999 !important; margin-bottom: 30mm; }
-    .pr-cover-org { font-family: Arial, sans-serif; font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; color: #DCFF4F !important; margin-bottom: 4mm; }
-    .pr-cover-title { font-family: Arial, sans-serif; font-weight: 900; font-size: 36pt; line-height: 1; color: #f7f7f7 !important; text-transform: uppercase; margin-bottom: 8mm; }
-    .pr-cover-subtitle { font-family: Georgia, serif; font-size: 12pt; color: #bbbbbb !important; line-height: 1.5; max-width: 120mm; }
-    .pr-cover-date { font-family: Arial, sans-serif; font-size: 7pt; color: #666 !important; letter-spacing: 0.1em; }
+    .pr-cover { background: #111111 !important; min-height: 267mm; display: flex; flex-direction: column; justify-content: space-between; padding: 16mm; margin: -14mm; }
+    .pr-cover-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 32mm; }
+    .pr-logo-img { width: 18mm; height: auto; filter: invert(1) brightness(2); }
+    .pr-logo-wordmark { font-family: Arial, sans-serif; font-weight: 900; font-size: 11pt; color: #DCFF4F !important; letter-spacing: 0.2em; margin-top: 2mm; }
+    .pr-cover-tag { font-family: Arial, sans-serif; font-size: 6.5pt; letter-spacing: 0.18em; text-transform: uppercase; color: #666 !important; text-align: right; }
+    .pr-cover-org { font-family: Arial, sans-serif; font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; color: #DCFF4F !important; margin-bottom: 5mm; }
+    .pr-cover-title { font-family: Arial, sans-serif; font-weight: 900; font-size: 42pt; line-height: 0.95; color: #f7f7f7 !important; text-transform: uppercase; margin-bottom: 8mm; letter-spacing: 0.02em; }
+    .pr-cover-sub { font-family: Georgia, serif; font-size: 11pt; color: #aaaaaa !important; line-height: 1.55; max-width: 130mm; }
+    .pr-cover-date { font-family: Arial, sans-serif; font-size: 7pt; color: #555 !important; letter-spacing: 0.08em; margin-top: 12mm; }
 
-    /* SECTION HEADINGS */
-    .pr-section-label { font-family: Arial, sans-serif; font-size: 7pt; letter-spacing: 0.22em; text-transform: uppercase; color: #999 !important; border-bottom: 1px solid #ddd; padding-bottom: 2mm; margin-bottom: 6mm; margin-top: 10mm; }
+    /* PAGE 2 */
+    .pr-page2 { padding-top: 0; }
+    .pr-section-label { font-family: Arial, sans-serif; font-weight: 900; font-size: 7pt; letter-spacing: 0.22em; text-transform: uppercase; color: #999 !important; border-bottom: 1px solid #e0e0e0; padding-bottom: 2.5mm; margin-bottom: 5mm; margin-top: 8mm; }
     .pr-section-label:first-child { margin-top: 0; }
 
-    /* NUMBERS — report */
-    .pr-num-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin-bottom: 8mm; }
+    /* NUMBER GRID */
+    .pr-num-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; margin-bottom: 6mm; }
     .pr-num-cell { border: 1px solid #ddd; padding: 5mm 6mm; }
     .pr-num-cell.full { grid-column: 1 / -1; }
-    .pr-num-cell.recovery { border-color: #DCFF4F !important; border-width: 2px; }
-    .pr-num-eyebrow { font-family: Arial, sans-serif; font-size: 6.5pt; letter-spacing: 0.14em; text-transform: uppercase; color: #999 !important; margin-bottom: 2mm; }
-    .pr-num-eyebrow.lime { color: #4a7a00 !important; }
-    .pr-big { font-family: Arial, sans-serif; font-weight: 900; font-size: 28pt; line-height: 1; margin-bottom: 2mm; }
-    .pr-big.amber { color: #cc7000 !important; }
+    .pr-num-cell.recovery { border-left: 3px solid #4a7a00; }
+    .pr-minmax { font-family: Arial, sans-serif; font-size: 6pt; letter-spacing: 0.18em; text-transform: uppercase; color: #999 !important; margin-bottom: 1.5mm; }
+    .pr-minmax.lime { color: #4a7a00 !important; }
+    .pr-num-eyebrow { font-family: Arial, sans-serif; font-size: 6.5pt; letter-spacing: 0.12em; text-transform: uppercase; color: #888 !important; margin-bottom: 2mm; line-height: 1.4; }
+    .pr-big { font-family: Arial, sans-serif; font-weight: 900; font-size: 26pt; line-height: 1; text-transform: uppercase; margin-bottom: 2mm; }
+    .pr-big.amber { color: #b85c00 !important; }
     .pr-big.lime  { color: #4a7a00 !important; }
-    .pr-num-desc { font-family: Georgia, serif; font-size: 8pt; color: #666 !important; line-height: 1.4; }
+    .pr-num-desc { font-family: Georgia, serif; font-size: 7.5pt; color: #666 !important; line-height: 1.45; }
+    /* Range display for min→max */
+    .pr-range { display: flex; align-items: baseline; gap: 3mm; }
+    .pr-range-num { font-family: Arial, sans-serif; font-weight: 900; font-size: 22pt; color: #b85c00 !important; text-transform: uppercase; }
+    .pr-range-sep { font-family: Arial, sans-serif; font-weight: 900; font-size: 14pt; color: #bbb !important; }
 
     /* INPUTS TABLE */
-    .pr-inputs { width: 100%; border-collapse: collapse; margin-bottom: 8mm; font-size: 8.5pt; }
-    .pr-inputs td { padding: 2mm 3mm; border-bottom: 1px solid #eee; }
+    .pr-inputs { width: 100%; border-collapse: collapse; margin-bottom: 6mm; font-size: 8pt; }
+    .pr-inputs tr { border-bottom: 1px solid #eeeeee; }
+    .pr-inputs td { padding: 1.8mm 3mm; }
     .pr-inputs td:last-child { text-align: right; font-family: Arial, sans-serif; font-weight: 700; }
 
-    /* BODY TEXT */
-    .pr-body { font-family: Georgia, serif; font-size: 9.5pt; color: #222 !important; line-height: 1.7; margin-bottom: 6mm; }
-    .pr-body + .pr-body { margin-top: -2mm; }
+    /* WORKING TABLE */
+    .pr-working { width: 100%; border-collapse: collapse; margin-bottom: 5mm; font-size: 8pt; }
+    .pr-working tr { border-bottom: 1px solid #eeeeee; }
+    .pr-working td { padding: 1.8mm 3mm; }
+    .pr-working td:nth-child(2) { color: #aaa !important; text-align: center; font-size: 7.5pt; }
+    .pr-working td:last-child { text-align: right; font-family: Arial, sans-serif; font-weight: 700; }
+    .pr-working .amber { color: #b85c00 !important; }
+    .pr-working .lime  { color: #4a7a00 !important; }
 
-    /* RESEARCH PANEL */
-    .pr-research-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm 8mm; }
-    .pr-research-item { padding-bottom: 4mm; border-bottom: 1px solid #eee; }
+    /* PAGE 3 — BODY TEXT */
+    .pr-body { font-family: Georgia, serif; font-size: 9.5pt; color: #1a1a1a !important; line-height: 1.72; margin-bottom: 5mm; }
+
+    /* RESEARCH GRID */
+    .pr-research-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 8mm; margin-top: 2mm; }
+    .pr-research-item { padding-bottom: 3.5mm; border-bottom: 1px solid #eeeeee; }
     .pr-research-title { font-family: Arial, sans-serif; font-weight: 700; font-size: 7.5pt; color: #111 !important; margin-bottom: 1.5mm; }
     .pr-research-body { font-family: Georgia, serif; font-size: 7.5pt; color: #555 !important; line-height: 1.5; }
 
-    /* WORKING TABLE */
-    .pr-working { width: 100%; border-collapse: collapse; margin-bottom: 6mm; font-size: 8pt; }
-    .pr-working tr { border-bottom: 1px solid #eee; }
-    .pr-working td { padding: 2mm 3mm; }
-    .pr-working td:nth-child(2) { color: #999 !important; text-align: center; }
-    .pr-working td:last-child { text-align: right; font-family: Arial, sans-serif; font-weight: 700; }
-    .pr-working .amber { color: #cc7000 !important; }
-    .pr-working .lime  { color: #4a7a00 !important; }
-
-    /* NEXT STEP */
-    .pr-cta { background: #111 !important; color: #f7f7f7 !important; padding: 10mm; margin-top: 10mm; }
-    .pr-cta-head { font-family: Arial, sans-serif; font-weight: 900; font-size: 18pt; color: #DCFF4F !important; text-transform: uppercase; margin-bottom: 4mm; }
-    .pr-cta-body { font-family: Georgia, serif; font-size: 9.5pt; color: #ccc !important; line-height: 1.6; margin-bottom: 4mm; }
-    .pr-cta-url { font-family: Arial, sans-serif; font-size: 9pt; color: #DCFF4F !important; }
+    /* CTA BLOCK */
+    .pr-cta { background: #111111 !important; padding: 9mm 10mm; margin-top: 8mm; }
+    .pr-cta-logo { display: flex; align-items: center; gap: 4mm; margin-bottom: 5mm; }
+    .pr-cta-logo img { width: 8mm; height: auto; filter: invert(1) brightness(2); }
+    .pr-cta-head { font-family: Arial, sans-serif; font-weight: 900; font-size: 18pt; color: #DCFF4F !important; text-transform: uppercase; line-height: 1; margin-bottom: 4mm; }
+    .pr-cta-body { font-family: Georgia, serif; font-size: 9pt; color: #cccccc !important; line-height: 1.6; margin-bottom: 4mm; max-width: 140mm; }
+    .pr-cta-url { font-family: Arial, sans-serif; font-size: 9pt; color: #DCFF4F !important; letter-spacing: 0.06em; }
   }
 
-  /* Hide print report in screen view */
   #print-report { display: none; }
-
-  /* ══════════════════════════════════════════
-     PRINT STYLES — SCORECARD (A5)
-  ══════════════════════════════════════════ */
-  /* Scorecard handled via separate window */
+  #print-scorecard { display: none; }
 </style>
 </head>
 <body>
@@ -287,22 +305,32 @@
     <div class="how-to">
       <div class="how-step"><div class="how-num">01</div><div class="how-text">Observe for two weeks — 10 working days. Every time a defensive behaviour stops a conversation, tick it. One tick = one blocked conversation.</div></div>
       <div class="how-step"><div class="how-num">02</div><div class="how-text">Enter your ticks, headcount, average salary, and approximate number of people leaders. Hit calculate.</div></div>
-      <div class="how-step"><div class="how-num">03</div><div class="how-text">See the estimated invisible number on your P&amp;L — and what SSC estimates it could recover. Download your report.</div></div>
+      <div class="how-step"><div class="how-num">03</div><div class="how-text">See the estimated invisible number on your P&amp;L — and what SSC estimates it could recover. Download your personalised report.</div></div>
     </div>
 
     <div class="cost-strip">
       <div class="cost-tag">Approximate Cost Per Blocked Conversation</div>
       <div class="cost-items">
-        <div class="cost-item"><div class="cost-amount" id="strip-low">$1,500</div><div class="cost-desc">Conservative floor<br>5 independent sources<br>live rate applied</div></div>
-        <div class="cost-item"><div class="cost-amount" id="strip-high">$7,500</div><div class="cost-desc">Average per episode<br>Brad Rilatt / Crucial Dimensions<br>n = 1,025 orgs</div></div>
-        <div class="cost-item"><div class="cost-amount">75%</div><div class="cost-desc">Of people make reactive decisions<br>Leadership Circle, 2M+ leaders</div></div>
+        <div class="cost-item">
+          <div class="cost-item-label">Minimum</div>
+          <div class="cost-amount" id="strip-low">$1,500</div>
+          <div class="cost-desc">Conservative floor<br>5 independent sources<br>live rate applied</div>
+        </div>
+        <div class="cost-item">
+          <div class="cost-item-label">Maximum</div>
+          <div class="cost-amount" id="strip-high">$7,500</div>
+          <div class="cost-desc">Average per episode<br>Brad Rilatt / Crucial Dimensions<br>n = 1,025 orgs</div>
+        </div>
+        <div class="cost-item">
+          <div class="cost-amount">75%</div>
+          <div class="cost-desc">Of people make reactive decisions<br>Leadership Circle, 2M+ leaders</div>
+        </div>
       </div>
     </div>
 
-    <!-- SCORECARD DOWNLOAD ON SCREEN 1 -->
     <div style="margin-bottom: 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
       <button class="action-btn" style="flex:none; width:auto;" onclick="printScorecard()">↓ Download Observation Scorecard</button>
-      <span style="font-family:'GothamLight',Arial,sans-serif; font-size:0.72rem; color:var(--muted);">Print this before your two-week observation</span>
+      <span style="font-family:'GothamBook',Arial,sans-serif; font-size:0.72rem; color:var(--muted);">Print before your two-week observation</span>
     </div>
 
     <div class="tally-wrap">
@@ -355,15 +383,15 @@
         <div class="calc-field">
           <label>Approximate number of people leaders</label>
           <input type="number" id="inp-leaders" placeholder="e.g. 250" min="1" inputmode="numeric">
-          <div class="field-note">Anyone who leads, manages, or influences others' performance — across all tiers</div>
+          <div class="field-note">Anyone who leads, manages, or influences others — across all tiers</div>
         </div>
-        <div class="leader-helper"><strong>Not sure?</strong> A typical organisation has one people leader for every 3–5 employees. For <span id="hc-hint">1,000</span> people that's roughly <strong><span id="leader-hint-low">200</span>–<span id="leader-hint-high">333</span></strong>. Include senior leaders, middle managers, and team leads across all tiers.</div>
+        <div class="leader-helper"><strong>Not sure?</strong> A typical organisation has one people leader for every 3–5 employees. For <span id="hc-hint">1,000</span> people that's roughly <strong><span id="leader-hint-low">200</span>–<span id="leader-hint-high">333</span></strong>.</div>
       </div>
       <button class="calc-btn" onclick="calculate()">Calculate My Number</button>
     </div>
 
     <div class="calc-footer">
-      <div class="calc-footer-note"><strong>Sources.</strong> Conversation cost: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. 75% reactive: Leadership Circle / Anderson &amp; Adams, 2M+ leaders. Gallup disengagement: 34% of annual salary (State of the Global Workplace, 2024). 220 working days per year. Annualisation ×22. All figures are estimates. Research figures converted from USD at live rates via Open Exchange Rates.</div>
+      <div class="calc-footer-note"><strong>Sources.</strong> Conversation cost: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. 75% reactive: Leadership Circle / Anderson &amp; Adams, 2M+ leaders. Gallup disengagement: 34% of annual salary (2024). 220 working days per year. Annualisation ×22. All figures are estimates. Research figures converted from USD at live rates via Open Exchange Rates.</div>
     </div>
   </div>
 
@@ -371,28 +399,33 @@
   <div class="screen" id="screen-2">
     <button class="back-btn" onclick="goBack()">← Adjust inputs</button>
 
-    <!-- ORG NAME -->
     <div class="org-name-wrap">
-      <div class="calc-field" style="flex:1; min-width:200px; margin:0;">
+      <div class="calc-field">
         <label>Enter your organisation name to personalise the report (optional)</label>
         <input type="text" id="inp-orgname" placeholder="e.g. Acme Corporation" style="font-size:0.95rem !important;">
       </div>
     </div>
 
-    <!-- HEADLINES -->
+    <!-- COST RANGE — min to max -->
     <div class="headline-block">
-      <div class="headline-row">
-        <div class="headline-panel">
-          <div class="headline-eyebrow" id="h-eyebrow-1">In an organisation of approximately — people, we estimate human behaviour is costing your P&amp;L</div>
-          <div class="headline-num amber" id="h-cost-low">—</div>
-          <div class="headline-desc" id="h-cost-low-desc"></div>
-        </div>
-        <div class="headline-panel">
-          <div class="headline-eyebrow">Realistic estimate</div>
-          <div class="headline-num amber" id="h-cost-high">—</div>
-          <div class="headline-desc" id="h-cost-high-desc"></div>
+      <div class="range-panel">
+        <div class="range-label" id="range-eyebrow">In an organisation of approximately — people, we estimate human behaviour is costing your P&amp;L</div>
+        <div class="range-nums">
+          <div>
+            <div class="minmax-label">Minimum</div>
+            <div class="range-num" id="r-min">—</div>
+          </div>
+          <div class="range-sep">→</div>
+          <div>
+            <div class="minmax-label">Maximum</div>
+            <div class="range-num" id="r-max">—</div>
+          </div>
+          <div style="margin-left:8px; align-self:flex-end; padding-bottom:6px;">
+            <div style="font-family:'GothamBook',Arial,sans-serif; font-size:0.72rem; color:var(--muted); line-height:1.5;" id="r-range-desc"></div>
+          </div>
         </div>
       </div>
+
       <div class="headline-row single">
         <div class="headline-panel dark">
           <div class="headline-eyebrow">If we look at Gallup's salary model across your whole organisation</div>
@@ -400,6 +433,7 @@
           <div class="headline-desc" id="h-gallup-desc"></div>
         </div>
       </div>
+
       <div class="headline-row single">
         <div class="headline-panel recovery">
           <div class="headline-eyebrow lime">SSC estimates it could recover approximately</div>
@@ -425,7 +459,6 @@
     <button class="detail-toggle" id="tog-r" onclick="toggleDetail('detail-r','tog-r')">+ Recovery estimate — how SSC calculates it</button>
     <div class="detail-block" id="detail-r"></div>
 
-    <!-- CTA -->
     <div class="cta-block">
       <div class="cta-heading">Let's find your number together.</div>
       <div class="cta-body">These are conservative estimates based on published research and your observed data. A 30-minute scoping conversation with SSC will give you a more precise figure — and show you exactly which leaders to start with.</div>
@@ -433,41 +466,47 @@
     </div>
 
     <div class="calc-footer">
-      <div class="calc-footer-note"><strong>Methodology.</strong> All figures are estimates. Research figures converted from USD at live rates. Sources: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. Reactive population: 75% of headcount (Leadership Circle / Anderson &amp; Adams, 2M+ leaders). Gallup disengagement: 34% of annual salary. All reactive leadership is unconscious and systemic. Recovery estimate = cost attributable to reactive people leaders as a share of the total organisational cost.</div>
+      <div class="calc-footer-note"><strong>Methodology.</strong> All figures are estimates. Research figures converted from USD at live rates. Sources: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. Reactive population: 75% of headcount. Gallup disengagement: 34% of annual salary. Recovery = cost attributable to reactive people leaders.</div>
     </div>
   </div>
 
 </div>
 
-<!-- ══ PRINT REPORT (hidden, rendered on print) ══ -->
+<!-- ══ PRINT REPORT ══ -->
 <div id="print-report">
-
-  <!-- PAGE 1: COVER -->
   <div class="pr-page pr-cover">
-    <div class="pr-cover-top">
-      <div class="pr-logo">SSC</div>
-      <div class="pr-cover-tag">Single Session Coaching · singlesession.online</div>
+    <div class="pr-cover-head">
+      <div>
+        <img class="pr-logo-img" id="pr-logo-cover" src="" alt="SSC">
+        <div class="pr-logo-wordmark">SSC</div>
+      </div>
+      <div class="pr-cover-tag">SINGLE SESSION COACHING<br>SINGLESESSION.ONLINE</div>
+    </div>
+    <div>
       <div class="pr-cover-org" id="pr-org-name"></div>
-      <div class="pr-cover-title">The Hidden Cost<br>of Human<br>Behaviour</div>
-      <div class="pr-cover-subtitle">An estimate of what defensive behaviour is costing your organisation — and what a single session could recover.</div>
+      <div class="pr-cover-title">THE HIDDEN<br>COST OF<br>HUMAN<br>BEHAVIOUR</div>
+      <div class="pr-cover-sub">An estimate of what defensive behaviour is costing your organisation — and what a single session could recover.</div>
     </div>
     <div class="pr-cover-date" id="pr-date"></div>
   </div>
 
-  <!-- PAGE 2: YOUR NUMBERS -->
-  <div class="pr-page">
+  <div class="pr-page pr-page2">
     <div class="pr-section-label">Your estimated figures</div>
-
     <div class="pr-num-grid">
-      <div class="pr-num-cell">
-        <div class="pr-num-eyebrow" id="pr-eyebrow-1"></div>
-        <div class="pr-big amber" id="pr-cost-low">—</div>
-        <div class="pr-num-desc" id="pr-cost-low-desc"></div>
-      </div>
-      <div class="pr-num-cell">
-        <div class="pr-num-eyebrow">Realistic estimate</div>
-        <div class="pr-big amber" id="pr-cost-high">—</div>
-        <div class="pr-num-desc" id="pr-cost-high-desc"></div>
+      <div class="pr-num-cell full">
+        <div class="pr-num-eyebrow" id="pr-eyebrow-range"></div>
+        <div class="pr-range">
+          <div>
+            <div class="pr-minmax">Minimum</div>
+            <div class="pr-range-num" id="pr-min">—</div>
+          </div>
+          <div class="pr-range-sep">→</div>
+          <div>
+            <div class="pr-minmax">Maximum</div>
+            <div class="pr-range-num" id="pr-max">—</div>
+          </div>
+        </div>
+        <div class="pr-num-desc" id="pr-range-desc"></div>
       </div>
       <div class="pr-num-cell full">
         <div class="pr-num-eyebrow">Gallup salary model · whole organisation · independent cross-check</div>
@@ -475,7 +514,7 @@
         <div class="pr-num-desc" id="pr-gallup-desc"></div>
       </div>
       <div class="pr-num-cell full recovery">
-        <div class="pr-num-eyebrow lime">SSC estimates it could recover approximately</div>
+        <div class="pr-minmax lime">SSC estimates it could recover approximately</div>
         <div class="pr-big lime" id="pr-recovery">—</div>
         <div class="pr-num-desc" id="pr-recovery-desc"></div>
       </div>
@@ -488,57 +527,32 @@
     <table class="pr-working" id="pr-working-table"></table>
   </div>
 
-  <!-- PAGE 3: WHAT SSC DOES -->
   <div class="pr-page">
-    <div class="pr-section-label">What Single Session Coaching does</div>
+    <div class="pr-section-label">What Single Session Coaching Does</div>
     <p class="pr-body">Most leadership behaviour isn't a conscious choice. It's automatic — shaped by patterns formed early, reinforced over decades, and running quietly beneath the surface of every meeting, every decision, every difficult conversation a leader has ever had. This matters because the entire $400 billion global L&D industry is built on a different assumption: that leaders change through knowledge, reflection, and practice. Sometimes they do. But not reliably, and not at the level that counts. McKinsey estimates that around 10% of leadership development investment produces lasting behavioural change. The other 90% produces awareness. And awareness, however hard-won, is not the same as change.</p>
     <p class="pr-body">You cannot reach an unconscious pattern with a conscious approach. The pattern simply waits you out.</p>
     <p class="pr-body">Single Session Coaching was built on a different premise. That every pattern a leader carries made sense once — it was learned for a reason, in a context that no longer exists. The work isn't to judge it or dismantle it. It's to make it visible, understand what it was protecting, and give the leader a genuine choice about whether to keep it. That's what Surface / Decode / Resolve does. In 90 minutes. Not through insight alone — through mechanism. The pattern becomes optional. What replaces it belongs to them.</p>
 
-    <div class="pr-section-label" style="margin-top:12mm;">The research behind these numbers</div>
+    <div class="pr-section-label" style="margin-top:8mm;">The Research Behind These Numbers</div>
     <div class="pr-research-grid">
-      <div class="pr-research-item">
-        <div class="pr-research-title">The $400 billion figure</div>
-        <div class="pr-research-body">Global investment in corporate learning and development, reported annually by the World Economic Forum and Statista. The number has grown every year. The return on that investment has not kept pace.</div>
-      </div>
-      <div class="pr-research-item">
-        <div class="pr-research-title">Only 10% produces lasting change</div>
-        <div class="pr-research-body">McKinsey &amp; Company, Losing from Day One (2021). Supported by longitudinal research from Bersin by Deloitte tracking how much of what leaders learn in development programmes translates into sustained behavioural change.</div>
-      </div>
-      <div class="pr-research-item">
-        <div class="pr-research-title">Most behaviour is automatic</div>
-        <div class="pr-research-body">Bargh &amp; Chartrand (1999), The Unbearable Automaticity of Being, American Psychologist. The vast majority of cognitive activity — including the behavioural responses we think of as decisions — operates below conscious awareness.</div>
-      </div>
-      <div class="pr-research-item">
-        <div class="pr-research-title">Conscious approaches can't reach unconscious patterns</div>
-        <div class="pr-research-body">Kahneman (2011), Thinking, Fast and Slow. Van der Kolk (2014), The Body Keeps the Score. Libet et al. (1983) — on the neural activity that precedes conscious awareness of a decision.</div>
-      </div>
-      <div class="pr-research-item">
-        <div class="pr-research-title">Patterns form early and consolidate over time</div>
-        <div class="pr-research-body">Hebb's Law (1949) — repeated neural firing strengthens the pathways that carry a behaviour. LeDoux (2002), Synaptic Self — on how experience shapes the architecture of response.</div>
-      </div>
-      <div class="pr-research-item">
-        <div class="pr-research-title">A single session can produce lasting change</div>
-        <div class="pr-research-body">Hoyt &amp; Talmon (2014), Capturing the Moment — depth of contact matters more than duration. SSC outcome data from client sessions is available on request.</div>
-      </div>
-      <div class="pr-research-item">
-        <div class="pr-research-title">Defensive behaviour cost: $1,500–$7,500 per blocked conversation</div>
-        <div class="pr-research-body">Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. Five independent sources. Same number.</div>
-      </div>
-      <div class="pr-research-item">
-        <div class="pr-research-title">75% of leaders operate reactively</div>
-        <div class="pr-research-body">Leadership Circle / Anderson &amp; Adams, dataset of 2M+ leaders. Reactive leadership is by definition unconscious and systemic — driven by patterns formed outside the leader's awareness.</div>
-      </div>
+      <div class="pr-research-item"><div class="pr-research-title">The $400 billion figure</div><div class="pr-research-body">Global investment in corporate learning and development, reported annually by the World Economic Forum and Statista. The number has grown every year. The return on that investment has not kept pace.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">Only 10% produces lasting change</div><div class="pr-research-body">McKinsey &amp; Company, Losing from Day One (2021). Supported by longitudinal research from Bersin by Deloitte tracking how much of what leaders learn in development programmes translates into sustained behavioural change.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">Most behaviour is automatic</div><div class="pr-research-body">Bargh &amp; Chartrand (1999), The Unbearable Automaticity of Being, American Psychologist. The vast majority of cognitive activity — including the behavioural responses we think of as decisions — operates below conscious awareness.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">Conscious approaches can't reach unconscious patterns</div><div class="pr-research-body">Kahneman (2011), Thinking, Fast and Slow. Van der Kolk (2014), The Body Keeps the Score. Libet et al. (1983) — on the neural activity that precedes conscious awareness of a decision.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">Patterns form early and consolidate over time</div><div class="pr-research-body">Hebb's Law (1949) — repeated neural firing strengthens the pathways that carry a behaviour. LeDoux (2002), Synaptic Self — on how experience shapes the architecture of response.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">A single session can produce lasting change</div><div class="pr-research-body">Hoyt &amp; Talmon (2014), Capturing the Moment — depth of contact matters more than duration. SSC outcome data from client sessions is available on request.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">Defensive behaviour cost: Min–Max per blocked conversation</div><div class="pr-research-body">Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. Five independent sources. Same number.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">75% of leaders operate reactively</div><div class="pr-research-body">Leadership Circle / Anderson &amp; Adams, 2M+ leaders. Reactive leadership is by definition unconscious and systemic — driven by patterns formed outside the leader's awareness.</div></div>
     </div>
 
     <div class="pr-cta">
-      <div class="pr-cta-head">Let's find your number together.</div>
+      <div class="pr-cta-logo"><img id="pr-logo-cta" src="" alt="SSC" style="width:8mm; filter:invert(1) brightness(2);"><span style="font-family:Arial,sans-serif;font-weight:900;font-size:9pt;color:#DCFF4F;letter-spacing:0.18em;">SSC</span></div>
+      <div class="pr-cta-head">Let's Find Your Number Together.</div>
       <div class="pr-cta-body">A 30-minute scoping conversation with SSC will give you a more precise figure and show you exactly which leaders to start with. One session. One shift. The conversations start happening.</div>
       <div class="pr-cta-url">singlesession.online/book</div>
     </div>
   </div>
-
-</div><!-- end print-report -->
+</div>
 
 <script>
 const BEHAVIOURS = [
@@ -676,31 +690,26 @@ function calculate() {
   const leaderShare     = reactive > 0 ? reactiveLeaders / reactive : 0;
   const recoverableCost = bTotal * leaderShare;
 
-  // Store for report
   lastCalc = { ticks, observed, headcount, salary, leaders, sym, costLow, costHigh,
-    annualised, aLow, aHigh, reactive, bTotal, reactiveLeaders, leaderShare, recoverableCost,
-    currency: selectedCurrency };
+    annualised, aLow, aHigh, reactive, bTotal, reactiveLeaders, leaderShare,
+    recoverableCost, currency: selectedCurrency };
 
-  const eyebrow1 = `In an organisation of approximately ${fmtN(headcount)} people, we estimate human behaviour is costing your P&L`;
-
-  // Screen 2 headlines
-  s('h-eyebrow-1',      eyebrow1);
-  s('h-cost-low',       sym + fmtM(aLow));
-  s('h-cost-low-desc',  `Conservative estimate · ${fmtN(annualised)} blocked conversations × ${sym}${fmtN(costLow)} · based on what you observed in ${Math.round(observed)} people`);
-  s('h-cost-high',      sym + fmtM(aHigh));
-  s('h-cost-high-desc', `Realistic estimate · ${fmtN(annualised)} blocked conversations × ${sym}${fmtN(costHigh)}`);
-  s('h-gallup',         sym + fmtM(bTotal));
-  s('h-gallup-desc',    `${fmtN(reactive)} reactive people × ${sym}${fmtN(salary)} average salary × 34% Gallup disengagement cost`);
-  s('h-recovery',       sym + fmtM(recoverableCost));
+  // Screen 2 — range display
+  s('range-eyebrow', `In an organisation of approximately ${fmtN(headcount)} people, we estimate human behaviour is costing your P&L`);
+  s('r-min',  sym + fmtM(aLow));
+  s('r-max',  sym + fmtM(aHigh));
+  s('r-range-desc', `Min: ${sym}${fmtN(costLow)} per blocked conversation · Max: ${sym}${fmtN(costHigh)} · ${fmtN(annualised)} blocked conversations annualised · based on ${Math.round(observed)} people observed`);
+  s('h-gallup',      sym + fmtM(bTotal));
+  s('h-gallup-desc', `${fmtN(reactive)} reactive people × ${sym}${fmtN(salary)} average salary × 34% Gallup disengagement cost`);
+  s('h-recovery',    sym + fmtM(recoverableCost));
   s('h-recovery-context', `Based on approximately ${fmtN(leaders)} people leaders — ${fmtN(reactiveLeaders)} estimated to be operating reactively.`);
-  s('h-recovery-desc',  `Estimated ${(leaderShare*100).toFixed(0)}% share of the ${sym}${fmtM(bTotal)} whole-organisation cost. One session per leader. One shift per session.`);
+  s('h-recovery-desc', `Estimated ${(leaderShare*100).toFixed(0)}% share of the ${sym}${fmtM(bTotal)} whole-organisation cost. One session per leader. One shift per session.`);
 
-  // Collapsible working
   document.getElementById('detail-a').innerHTML =
     wl('Blocked conversations observed over 10 working days', `${ticks} ticks`, ticks, '') +
     wl('Annualised across 220 working days (×22)', `${ticks} × 22`, fmtN(annualised), '') +
-    wl(`Conservative — ${sym}${fmtN(costLow)} per blocked conversation`, `${fmtN(annualised)} × ${sym}${fmtN(costLow)}`, sym+fmtM(aLow), 'amber') +
-    wl(`Realistic — ${sym}${fmtN(costHigh)} per blocked conversation`, `${fmtN(annualised)} × ${sym}${fmtN(costHigh)}`, sym+fmtM(aHigh), 'amber');
+    wl(`Minimum — ${sym}${fmtN(costLow)} per blocked conversation`, `${fmtN(annualised)} × ${sym}${fmtN(costLow)}`, sym+fmtM(aLow), 'amber') +
+    wl(`Maximum — ${sym}${fmtN(costHigh)} per blocked conversation`, `${fmtN(annualised)} × ${sym}${fmtN(costHigh)}`, sym+fmtM(aHigh), 'amber');
 
   document.getElementById('detail-b').innerHTML =
     wl('Total org headcount', '', fmtN(headcount), '') +
@@ -741,23 +750,23 @@ function printReport() {
   if (!lastCalc.aLow) { alert('Please calculate your number first.'); return; }
   const c = lastCalc;
   const sym = c.sym;
-  const orgName = document.getElementById('inp-orgname').value.trim();
+  const orgName = (document.getElementById('inp-orgname').value || '').trim();
   const date = new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
 
-  // Populate print elements
-  s('pr-org-name',       orgName ? `Prepared for ${orgName}` : 'Prepared by Single Session Coaching');
-  s('pr-date',           date);
-  s('pr-eyebrow-1',      `In an organisation of approximately ${fmtN(c.headcount)} people, we estimate human behaviour is costing your P&L`);
-  s('pr-cost-low',       sym + fmtM(c.aLow));
-  s('pr-cost-low-desc',  `Conservative · ${fmtN(c.annualised)} blocked conversations × ${sym}${fmtN(c.costLow)}`);
-  s('pr-cost-high',      sym + fmtM(c.aHigh));
-  s('pr-cost-high-desc', `Realistic · ${fmtN(c.annualised)} blocked conversations × ${sym}${fmtN(c.costHigh)}`);
-  s('pr-gallup',         sym + fmtM(c.bTotal));
-  s('pr-gallup-desc',    `${fmtN(c.reactive)} reactive people × ${sym}${fmtN(c.salary)} average salary × 34%`);
-  s('pr-recovery',       sym + fmtM(c.recoverableCost));
-  s('pr-recovery-desc',  `${fmtN(c.reactiveLeaders)} reactive people leaders · ${(c.leaderShare*100).toFixed(0)}% share of the total organisational cost`);
+  // Logo
+  document.querySelectorAll('.pr-logo-img, #pr-logo-cta').forEach(img => img.src = LOGO_B64);
 
-  // Inputs table
+  s('pr-org-name',      orgName ? `Prepared for ${orgName}` : '');
+  s('pr-date',          date);
+  s('pr-eyebrow-range', `In an organisation of approximately ${fmtN(c.headcount)} people, we estimate human behaviour is costing your P&L`);
+  s('pr-min',           sym + fmtM(c.aLow));
+  s('pr-max',           sym + fmtM(c.aHigh));
+  s('pr-range-desc',    `Min ${sym}${fmtN(c.costLow)} per blocked conversation · Max ${sym}${fmtN(c.costHigh)} · ${fmtN(c.annualised)} blocked conversations annualised`);
+  s('pr-gallup',        sym + fmtM(c.bTotal));
+  s('pr-gallup-desc',   `${fmtN(c.reactive)} reactive people × ${sym}${fmtN(c.salary)} average salary × 34%`);
+  s('pr-recovery',      sym + fmtM(c.recoverableCost));
+  s('pr-recovery-desc', `${fmtN(c.reactiveLeaders)} reactive people leaders · ${(c.leaderShare*100).toFixed(0)}% share of the ${sym}${fmtM(c.bTotal)} total`);
+
   document.getElementById('pr-inputs-table').innerHTML = `
     <tr><td>Organisation</td><td>${orgName || '—'}</td></tr>
     <tr><td>Total headcount</td><td>${fmtN(c.headcount)}</td></tr>
@@ -769,11 +778,10 @@ function printReport() {
     <tr><td>Date</td><td>${date}</td></tr>
   `;
 
-  // Working table
   document.getElementById('pr-working-table').innerHTML = `
     <tr><td>Blocked conversations annualised (×22)</td><td>${c.ticks} × 22</td><td>${fmtN(c.annualised)}</td></tr>
-    <tr><td>Conservative cost — ${sym}${fmtN(c.costLow)} per conversation</td><td>${fmtN(c.annualised)} × ${sym}${fmtN(c.costLow)}</td><td class="amber">${sym}${fmtM(c.aLow)}</td></tr>
-    <tr><td>Realistic cost — ${sym}${fmtN(c.costHigh)} per conversation</td><td>${fmtN(c.annualised)} × ${sym}${fmtN(c.costHigh)}</td><td class="amber">${sym}${fmtM(c.aHigh)}</td></tr>
+    <tr><td>Minimum cost — ${sym}${fmtN(c.costLow)} per conversation</td><td>${fmtN(c.annualised)} × ${sym}${fmtN(c.costLow)}</td><td class="amber">${sym}${fmtM(c.aLow)}</td></tr>
+    <tr><td>Maximum cost — ${sym}${fmtN(c.costHigh)} per conversation</td><td>${fmtN(c.annualised)} × ${sym}${fmtN(c.costHigh)}</td><td class="amber">${sym}${fmtM(c.aHigh)}</td></tr>
     <tr><td>Reactive population (75% of ${fmtN(c.headcount)})</td><td></td><td>${fmtN(c.reactive)}</td></tr>
     <tr><td>Gallup model — whole organisation</td><td>${fmtN(c.reactive)} × ${sym}${fmtN(c.salary)} × 34%</td><td class="amber">${sym}${fmtM(c.bTotal)}</td></tr>
     <tr><td>Reactive people leaders (75% of ${fmtN(c.leaders)})</td><td></td><td>${fmtN(c.reactiveLeaders)}</td></tr>
@@ -786,85 +794,143 @@ function printReport() {
 
 // ── PRINT SCORECARD ───────────────────────────
 function printScorecard() {
+  const c = lastCalc;
+  const sym = c.sym || '$';
   const orgName = (document.getElementById('inp-orgname') || {}).value || '';
-  const win = window.open('', '_blank', 'width=600,height=850');
+  const hc      = c.headcount ? fmtN(c.headcount) : '___________';
+  const sal     = c.salary    ? sym + fmtN(c.salary) : '___________';
+  const leaders = c.leaders   ? fmtN(c.leaders)   : '___________';
+  const cur     = c.currency  || 'USD';
+  const minCost = c.costLow   ? sym + fmtN(c.costLow)  : '$1,500';
+  const maxCost = c.costHigh  ? sym + fmtN(c.costHigh) : '$7,500';
+
+  const win = window.open('', '_blank', 'width=900,height=650');
   win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
   <title>SSC Observation Scorecard</title>
   <style>
-    @page { size: A5 landscape; margin: 8mm; }
+    @page { size: A5 landscape; margin: 10mm 10mm 10mm 10mm; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Arial, sans-serif; font-size: 7pt; color: #111; background: white; }
-    .header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4mm; padding-bottom: 2mm; border-bottom: 2px solid #111; }
-    .header-left h1 { font-size: 16pt; font-weight: 900; letter-spacing: 0.1em; line-height: 1; }
-    .header-left p { font-size: 6.5pt; color: #666; margin-top: 1mm; }
-    .header-right { text-align: right; font-size: 6.5pt; color: #666; }
-    .header-right strong { font-size: 8pt; color: #111; display: block; }
+
+    /* HEADER */
+    .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4mm; padding-bottom: 3mm; border-bottom: 2px solid #111; }
+    .header-logo { display: flex; align-items: center; gap: 3mm; }
+    .header-logo img { width: 10mm; height: auto; }
+    .header-logo-text { font-weight: 900; font-size: 14pt; letter-spacing: 0.12em; line-height: 1; }
+    .header-title { font-size: 6.5pt; color: #666; margin-top: 1mm; }
+    .header-right { text-align: right; }
+    .header-right .org { font-weight: 700; font-size: 8pt; margin-bottom: 2mm; }
+
+    /* ORG DETAILS STRIP */
+    .details-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2mm; margin-bottom: 3mm; border: 1px solid #ddd; }
+    .detail-cell { padding: 2mm 2.5mm; border-right: 1px solid #ddd; }
+    .detail-cell:last-child { border-right: none; }
+    .detail-label { font-size: 5.5pt; letter-spacing: 0.12em; text-transform: uppercase; color: #999; margin-bottom: 1mm; }
+    .detail-val { font-weight: 700; font-size: 7.5pt; }
+
+    /* TABLE */
     table { width: 100%; border-collapse: collapse; }
-    thead th { background: #111; color: white; font-size: 6pt; letter-spacing: 0.1em; text-transform: uppercase; padding: 2mm 2mm; text-align: center; border: 1px solid #111; }
+    thead th { background: #111; color: white; font-size: 5.5pt; letter-spacing: 0.1em; text-transform: uppercase; padding: 2mm 2mm; text-align: center; border: 1px solid #111; }
     thead th.left { text-align: left; }
-    tbody tr { border-bottom: 1px solid #ddd; }
+    .wk-row th { background: #333; font-size: 5pt; }
+    .wk-row th.wk2 { background: #555; }
+    tbody tr { border-bottom: 1px solid #e0e0e0; }
     tbody tr:nth-child(even) { background: #f9f9f9; }
-    tbody td { padding: 2mm 2mm; border-right: 1px solid #ddd; font-size: 6.5pt; vertical-align: middle; }
-    tbody td.name { font-weight: 700; font-size: 7pt; }
-    tbody td.day { text-align: center; width: 9mm; }
-    tbody td.total { text-align: center; font-weight: 700; background: #f0f0f0; }
-    .footer { margin-top: 3mm; display: flex; justify-content: space-between; align-items: flex-end; padding-top: 2mm; border-top: 1px solid #ddd; }
-    .footer-left { font-size: 6pt; color: #666; max-width: 120mm; }
-    .footer-right { font-size: 6pt; color: #666; text-align: right; }
-    .cost-ref { background: #DCFF4F; padding: 1mm 3mm; font-weight: 700; font-size: 6.5pt; }
+    tbody td { padding: 1.8mm 2mm; border-right: 1px solid #e8e8e8; vertical-align: middle; }
+    tbody td.name { font-weight: 700; font-size: 7pt; min-width: 35mm; }
+    tbody td.name span { font-weight: 400; font-size: 5.5pt; color: #777; display: block; margin-top: 0.5mm; }
+    tbody td.day { text-align: center; width: 8mm; }
+    tbody td.total { text-align: center; font-weight: 700; background: #f0f0f0; width: 10mm; }
+    .total-row td { border-top: 2px solid #111; font-weight: 700; font-size: 7.5pt; background: #f5f5f5; }
+    .total-row td.total-final { background: #DCFF4F; font-size: 10pt; text-align: center; }
+
+    /* FOOTER */
+    .footer { margin-top: 3mm; display: flex; justify-content: space-between; align-items: flex-start; padding-top: 2.5mm; border-top: 1px solid #ccc; gap: 6mm; }
+    .footer-left { font-size: 5.5pt; color: #555; max-width: 110mm; line-height: 1.5; }
+    .footer-left strong { color: #111; }
+    .footer-photo { font-size: 5.5pt; color: #111; font-weight: 700; max-width: 60mm; line-height: 1.5; }
+    .footer-photo span { color: #666; font-weight: 400; display: block; }
+    .cost-badge { background: #DCFF4F; padding: 1.5mm 3mm; font-weight: 700; font-size: 6.5pt; display: inline-block; margin-top: 1mm; }
   </style>
   </head><body>
+
   <div class="header">
-    <div class="header-left">
-      <h1>SSC</h1>
-      <p>Two-Week Defensive Behaviour Observation Scorecard${orgName ? ' · ' + orgName : ''}</p>
+    <div class="header-logo">
+      <img src="${LOGO_B64}" alt="SSC">
+      <div>
+        <div class="header-logo-text">SSC</div>
+        <div class="header-title">Two-Week Defensive Behaviour Observation Scorecard${orgName ? ' · ' + orgName : ''}</div>
+      </div>
     </div>
     <div class="header-right">
-      <strong>Observer: ___________________________</strong>
-      Dates: _________________ to _________________
+      <div class="org">Observer: ___________________________________</div>
+      <div style="font-size:6pt; color:#666;">Dates: _________________ to _________________</div>
     </div>
   </div>
+
+  <div class="details-strip">
+    <div class="detail-cell">
+      <div class="detail-label">Organisation</div>
+      <div class="detail-val">${orgName || '_______________'}</div>
+    </div>
+    <div class="detail-cell">
+      <div class="detail-label">Headcount</div>
+      <div class="detail-val">${hc}</div>
+    </div>
+    <div class="detail-cell">
+      <div class="detail-label">Avg Annual Salary</div>
+      <div class="detail-val">${sal} (${cur})</div>
+    </div>
+    <div class="detail-cell">
+      <div class="detail-label">People Leaders</div>
+      <div class="detail-val">${leaders}</div>
+    </div>
+  </div>
+
   <table>
     <thead>
       <tr>
-        <th class="left" style="width:28%">Behaviour</th>
-        <th style="width:6%">M</th><th style="width:6%">T</th><th style="width:6%">W</th><th style="width:6%">T</th><th style="width:6%">F</th>
-        <th style="width:6%">M</th><th style="width:6%">T</th><th style="width:6%">W</th><th style="width:6%">T</th><th style="width:6%">F</th>
-        <th style="width:8%" class="total">Total</th>
+        <th class="left" style="width:30%">Behaviour</th>
+        <th>M</th><th>T</th><th>W</th><th>T</th><th>F</th>
+        <th>M</th><th>T</th><th>W</th><th>T</th><th>F</th>
+        <th>Total</th>
       </tr>
-      <tr>
+      <tr class="wk-row">
         <th class="left"></th>
-        <th colspan="5" style="background:#333; font-size:5.5pt;">WEEK 1</th>
-        <th colspan="5" style="background:#555; font-size:5.5pt;">WEEK 2</th>
+        <th colspan="5">WEEK 1</th>
+        <th colspan="5" class="wk2">WEEK 2</th>
         <th></th>
       </tr>
     </thead>
     <tbody>
       ${BEHAVIOURS.map(b => `<tr>
-        <td class="name">${b.name}<br><span style="font-weight:300;font-size:6pt;color:#666;">${b.eg}</span></td>
+        <td class="name">${b.name}<span>${b.eg.replace(/"/g,'').replace(/'/g,'')}</span></td>
         ${Array(10).fill('<td class="day"></td>').join('')}
         <td class="total"></td>
       </tr>`).join('')}
-      <tr style="border-top: 2px solid #111;">
-        <td style="font-weight:700; font-size:7pt; text-transform:uppercase; letter-spacing:0.08em;">TOTAL</td>
-        ${Array(10).fill('<td class="day" style="background:#f0f0f0;"></td>').join('')}
-        <td class="total" style="background:#DCFF4F; font-size:9pt;"></td>
+      <tr class="total-row">
+        <td style="text-transform:uppercase;letter-spacing:0.08em;">TOTAL TICKS</td>
+        ${Array(10).fill('<td class="day"></td>').join('')}
+        <td class="total-final"></td>
       </tr>
     </tbody>
   </table>
+
   <div class="footer">
     <div class="footer-left">
       <strong>How to use:</strong> Each time a defensive behaviour stops a conversation happening, put a mark in that day's column. Count your total marks at the end of two weeks and enter into the SSC calculator at singlesession.online
+      <br><br>
+      <span class="cost-badge">Each tick = ${minCost} – ${maxCost} per blocked conversation</span>
     </div>
-    <div class="footer-right">
-      <span class="cost-ref">Each tick = $1,500–$7,500</span><br>
-      singlesession.online
+    <div class="footer-photo">
+      Feel free to take a photo of this completed scorecard and send it to <span>calculations@singlesession.online</span> — we will come back to you within 3 days with your full cost estimate and recovery analysis.
     </div>
   </div>
+
   </body></html>`);
   win.document.close();
   win.focus();
-  setTimeout(() => { win.print(); }, 500);
+  setTimeout(() => { win.print(); }, 600);
 }
 
 function wl(label, calc, val, cls) {
