@@ -409,7 +409,7 @@ const WORDMARK_B64 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUND
     <div class="cta-block">
       <div class="cta-heading">Let's find your number together.</div>
       <div class="cta-body">These are conservative estimates based on published research and your observed data. A 30-minute scoping conversation with SSC will give you a more precise figure — and show you exactly which leaders to start with.</div>
-      <a href="https://singlesession.online/schedule" class="cta-btn">Book a Scoping Call</a>
+      <a href="https://singlesession.online/schedule" class="cta-btn" target="_blank" rel="noopener">Book a Scoping Call</a>
     </div>
     <div class="calc-footer">
       <div class="calc-footer-note"><strong>Methodology.</strong> All figures are estimates. Research figures converted from USD at live rates. Sources: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. Reactive population: 75% of headcount. Gallup disengagement: 34% of annual salary. Recovery = cost attributable to reactive people leaders.</div>
@@ -619,7 +619,13 @@ function calculate() {
   const reactive        = Math.round(headcount * 0.75);
   const bTotal          = reactive * salary * 0.34;
   const reactiveLeaders = Math.round(leaders * 0.75);
-  const leaderShare     = reactive > 0 ? reactiveLeaders / reactive : 0;
+  // Recovery model: Gallup states managers account for 70% of variance in
+  // team engagement. Therefore 70% of the Gallup org-wide cost is directly
+  // attributable to leadership behaviour. SSC works with reactive leaders —
+  // so the recoverable cost = 70% of Gallup total.
+  // LC: reactive leadership suppresses not one conversation but all of them.
+  // One session removes the pattern. All conversations start happening.
+  const leaderShare     = 0.70;
   const recoverableCost = bTotal * leaderShare;
 
   lastCalc = { ticks, observed, headcount, salary, leaders, sym, costLow, costHigh,
@@ -633,8 +639,8 @@ function calculate() {
   s('h-gallup',      sym + fmtM(bTotal));
   s('h-gallup-desc', `${fmtN(reactive)} reactive people × ${sym}${fmtN(salary)} average salary × 34% Gallup disengagement cost`);
   s('h-recovery',    sym + fmtM(recoverableCost));
-  s('h-recovery-context', `Based on approximately ${fmtN(leaders)} people leaders — ${fmtN(reactiveLeaders)} estimated to be operating reactively.`);
-  s('h-recovery-desc', `Estimated ${(leaderShare*100).toFixed(0)}% share of the ${sym}${fmtM(bTotal)} whole-organisation cost. One session per leader. One shift per session.`);
+  s('h-recovery-context', `Based on ${fmtN(reactiveLeaders)} reactive people leaders in your organisation. Gallup research shows managers account for 70% of variance in team engagement — meaning 70% of your organisational cost is directly attributable to leadership behaviour.`);
+  s('h-recovery-desc', `SSC works with your reactive people leaders. Each session removes an unconscious pattern — not one blocked conversation, but all of them. One session per leader. One shift per session.`);
 
   document.getElementById('detail-a').innerHTML =
     wl('Blocked conversations observed over 10 working days', `${ticks} ticks`, ticks, '') +
@@ -651,8 +657,8 @@ function calculate() {
   document.getElementById('detail-r').innerHTML =
     wl('People leaders (your input)', '', fmtN(leaders), '') +
     wl('Reactive people leaders — 75% (Leadership Circle)', `${fmtN(leaders)} × 75%`, fmtN(reactiveLeaders), '') +
-    wl('Their share of the total reactive population', `${fmtN(reactiveLeaders)} ÷ ${fmtN(reactive)}`, (leaderShare*100).toFixed(0)+'%', '') +
-    wl('Estimated recoverable cost', `${(leaderShare*100).toFixed(0)}% of ${sym}${fmtM(bTotal)}`, sym+fmtM(recoverableCost), 'lime');
+    wl('Managers account for 70% of variance in team engagement (Gallup)', '70% of Gallup total', '70%', '') +
+    wl('Estimated recoverable cost', `70% of ${sym}${fmtM(bTotal)}`, sym+fmtM(recoverableCost), 'lime');
 
   // Switch screen — scroll to top
   document.getElementById('screen-1').classList.remove('active');
@@ -755,7 +761,7 @@ function generateReport() {
   s('pr-gallup',        sym + fmtM(c.bTotal));
   s('pr-gallup-desc',   `${fmtN(c.reactive)} reactive people × ${sym}${fmtN(c.salary)} average salary × 34%`);
   s('pr-recovery',      sym + fmtM(c.recoverableCost));
-  s('pr-recovery-desc', `${fmtN(c.reactiveLeaders)} reactive people leaders · ${(c.leaderShare*100).toFixed(0)}% share of the ${sym}${fmtM(c.bTotal)} total`);
+  s('pr-recovery-desc', `Gallup: managers account for 70% of variance in team engagement. 70% of the ${sym}${fmtM(c.bTotal)} organisational cost is directly attributable to leadership behaviour. SSC removes the reactive pattern in each leader — not one blocked conversation, but all of them.`);
 
   document.getElementById('pr-inputs-table').innerHTML = `
     <tr><td>Organisation</td><td>${orgName || '—'}</td></tr>
@@ -775,8 +781,8 @@ function generateReport() {
     <tr><td>Reactive population (75% of ${fmtN(c.headcount)})</td><td></td><td>${fmtN(c.reactive)}</td></tr>
     <tr><td>Gallup model — whole organisation</td><td>${fmtN(c.reactive)} × ${sym}${fmtN(c.salary)} × 34%</td><td class="amber">${sym}${fmtM(c.bTotal)}</td></tr>
     <tr><td>Reactive people leaders (75% of ${fmtN(c.leaders)})</td><td></td><td>${fmtN(c.reactiveLeaders)}</td></tr>
-    <tr><td>Their share of total cost</td><td>${fmtN(c.reactiveLeaders)} ÷ ${fmtN(c.reactive)}</td><td>${(c.leaderShare*100).toFixed(0)}%</td></tr>
-    <tr><td>Estimated recoverable cost</td><td>${(c.leaderShare*100).toFixed(0)}% of ${sym}${fmtM(c.bTotal)}</td><td class="lime">${sym}${fmtM(c.recoverableCost)}</td></tr>
+    <tr><td>Managers' share of engagement variance (Gallup)</td><td>70% of Gallup total</td><td>70%</td></tr>
+    <tr><td>Estimated recoverable cost</td><td>70% of ${sym}${fmtM(c.bTotal)}</td><td class="lime">${sym}${fmtM(c.recoverableCost)}</td></tr>
   `;
 
   window.print();
@@ -797,9 +803,11 @@ function printScorecard() {
   win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
   <title>SSC Observation Scorecard</title>
   <style>
-    @page { size:A5 landscape; margin:10mm; }
+    @page { size:A5 landscape; margin:14mm 10mm 14mm 10mm; }
+    html { margin:0; padding:0; }
+    body{ font-family:Arial,sans-serif; font-size:9pt; color:#111; background:white; -webkit-print-color-adjust:exact; print-color-adjust:exact; margin:0; padding:0; }
     *{ box-sizing:border-box; margin:0; padding:0; }
-    body{ font-family:Arial,sans-serif; font-size:9pt; color:#111; background:white; }
+
     .header{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4mm; padding-bottom:3mm; border-bottom:2px solid #111; }
     .header-logo{ display:flex; align-items:center; gap:3mm; }
     .header-logo img{ width:22mm; height:auto; filter:invert(1); }
