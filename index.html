@@ -350,6 +350,7 @@ const WORDMARK_B64 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUND
         <div class="calc-field"><label>Total ticks</label><input type="number" id="inp-ticks" placeholder="e.g. 18" min="0" inputmode="numeric"><div class="field-note">Auto-fills as you tick above, or enter manually</div></div>
         <div class="calc-field"><label>People you observed</label><input type="number" id="inp-observed" placeholder="e.g. 8" min="1" inputmode="numeric"><div class="field-note">How many people did you watch over two weeks?</div></div>
         <div class="calc-field"><label>Total org headcount</label><input type="number" id="inp-headcount" placeholder="e.g. 1000" min="1" inputmode="numeric"><div class="field-note">Total number of people in your organisation</div></div>
+        <div class="calc-field"><label>Average annual salary (<span id="sal-lbl">$</span>)</label><input type="number" id="inp-salary" placeholder="e.g. 65000" min="1" inputmode="numeric"><div class="field-note">Used to calculate the cost of reactive leadership</div></div>
 
       </div>
       <div class="leader-field-wrap">
@@ -383,7 +384,7 @@ const WORDMARK_B64 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUND
 
       <div class="headline-row" style="margin-top:1px;">
         <div class="headline-panel recovery">
-          <div class="headline-eyebrow lime">SSC works with your reactive people leaders</div>
+          <div class="headline-eyebrow lime">SSC estimates it could recover approximately</div>
           <div class="headline-num lime" id="h-recovery-leaders">—</div>
           <div class="headline-context" id="h-recovery-context"></div>
           <div class="headline-desc" id="h-recovery-desc"></div>
@@ -405,7 +406,7 @@ const WORDMARK_B64 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUND
       <a href="https://singlesession.online/schedule" class="cta-btn" target="_blank" rel="noopener">Book a Scoping Call</a>
     </div>
     <div class="calc-footer">
-      <div class="calc-footer-note"><strong>Methodology.</strong> All figures are estimates. Research figures converted from USD at live rates. Sources: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486 organisations). Reactive population: 75% of headcount (Leadership Circle, Anderson &amp; Adams, 2M+ leaders). Leadership effectiveness explains 37.6% of business performance variance (Leadership Circle, Anderson, n=486).</div>
+      <div class="calc-footer-note"><strong>Methodology.</strong> All figures are estimates. Research figures converted from USD at live rates. Sources: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025). Reactive population: 75% of headcount (published research, 2M+ leaders assessed). 37.6% — proportion of business performance variance explained by leadership effectiveness (published research, n=486 organisations). All figures are estimates.</div>
     </div>
   </div>
 </div>
@@ -467,8 +468,8 @@ const WORDMARK_B64 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUND
       <div class="pr-research-item"><div class="pr-research-title">Conscious approaches can't reach unconscious patterns</div><div class="pr-research-body">Kahneman (2011), Thinking, Fast and Slow. Van der Kolk (2014), The Body Keeps the Score. Libet et al. (1983) on neural activity preceding conscious awareness of a decision.</div></div>
       <div class="pr-research-item"><div class="pr-research-title">Patterns form early and consolidate over time</div><div class="pr-research-body">Hebb's Law (1949) — repeated neural firing strengthens the pathways that carry a behaviour. LeDoux (2002), Synaptic Self.</div></div>
       <div class="pr-research-item"><div class="pr-research-title">A single session can produce lasting change</div><div class="pr-research-body">Hoyt &amp; Talmon (2014), Capturing the Moment — depth of contact matters more than duration. SSC outcome data available on request.</div></div>
-      <div class="pr-research-item"><div class="pr-research-title">Defensive behaviour cost: min–max per blocked conversation</div><div class="pr-research-body">Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. Five independent sources. Same number.</div></div>
-      <div class="pr-research-item"><div class="pr-research-title">75% of leaders operate reactively</div><div class="pr-research-body">Leadership Circle / Anderson &amp; Adams, 2M+ leaders. Reactive leadership is by definition unconscious and systemic — driven by patterns formed outside the leader's awareness.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">Defensive behaviour cost: min–max per blocked conversation</div><div class="pr-research-body">Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · five independent sources. Same number.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">75% of leaders operate reactively</div><div class="pr-research-body">Published research across 2M+ leaders assessed. Reactive leadership is by definition unconscious and systemic — driven by patterns formed outside the leader's awareness.</div></div>
     </div>
     <div class="pr-cta">
       <div class="pr-cta-logo"><img src="" id="pr-wm-cta" alt="SSC"></div>
@@ -513,7 +514,9 @@ async function fetchRates() {
       rates = data.rates;
       const d = new Date(data.time_last_update_utc);
       document.getElementById('rate-note').textContent = 'Live rates · ' + d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-      updateCostStrip();
+      const salLbl = document.getElementById('sal-lbl');
+    if (salLbl) salLbl.textContent = selectedSymbol;
+    updateCostStrip();
     }
   } catch(e) {
     rates = { EUR:0.92, GBP:0.79, USD:1, AUD:1.53, SGD:1.34 };
@@ -598,11 +601,12 @@ function calculate() {
   const ticks     = parseFloat(document.getElementById('inp-ticks').value)    || 0;
   const observed  = parseFloat(document.getElementById('inp-observed').value)  || 1;
   const headcount = parseFloat(document.getElementById('inp-headcount').value) || 0;
-  const salary = 0; // removed
+  const salary    = parseFloat(document.getElementById('inp-salary').value)    || 0;
   const leaders   = parseFloat(document.getElementById('inp-leaders').value)   || 0;
 
   if (!ticks)     { alert('Please enter your total ticks.'); return; }
   if (!headcount) { alert('Please enter your organisation headcount.'); return; }
+  if (!salary)    { alert('Please enter your average annual salary.'); return; }
   if (!leaders)   { alert('Please enter your approximate number of people leaders.'); return; }
 
   const sym      = selectedSymbol;
@@ -615,12 +619,14 @@ function calculate() {
   const bTotal          = reactive * salary * 0.34;
   const reactiveLeaders = Math.round(leaders * 0.75);
 
-  // Recovery — LC framing, no calculated number
-  // Leadership Circle: leadership effectiveness explains 37.6% of business performance variance
-  const reactiveLeadersCount = reactiveLeaders; // alias for clarity
+  // Recovery — LC model: reactive leaders × salary × 37.6%
+  // Each reactive leader suppresses 37.6% of their own + team performance
+  // Salary is a proxy for the value they should be generating
+  // Source: Leadership Circle, Anderson, n=486
+  const recoverableCost = reactiveLeaders * salary * 0.376;
 
-  lastCalc = { ticks, observed, headcount, leaders, sym, costLow, costHigh,
-    annualised, aLow, aHigh, reactive, reactiveLeaders,
+  lastCalc = { ticks, observed, headcount, salary, leaders, sym, costLow, costHigh,
+    annualised, aLow, aHigh, reactive, reactiveLeaders, recoverableCost,
     currency: selectedCurrency };
 
   s('range-eyebrow', `In an organisation of approximately ${fmtN(headcount)} people, we estimate human behaviour is costing your P&L`);
@@ -628,10 +634,10 @@ function calculate() {
   s('r-max',  sym + fmtM(aHigh));
   s('r-range-desc', `Minimum: ${sym}${fmtN(costLow)} per blocked conversation · Maximum: ${sym}${fmtN(costHigh)} · ${fmtN(annualised)} blocked conversations annualised · based on ${Math.round(observed)} people observed`);
 
-  // Recovery — LC framing as statement, no calculated number
-  s('h-recovery-leaders', fmtN(reactiveLeaders));
-  s('h-recovery-context', `Your organisation has approximately ${fmtN(leaders)} people leaders. ${fmtN(reactiveLeaders)} of them are estimated to be operating from a reactive mindset.`);
-  s('h-recovery-desc', `The Leadership Circle, across 486 organisations, found that leadership effectiveness explains 37.6% of business performance variance. SSC works with each of your reactive leaders — removing the unconscious pattern, not one blocked conversation at a time, but all of them. One session per leader. One shift per session.`);
+  // Recovery display
+  s('h-recovery-leaders', sym + fmtM(recoverableCost));
+  s('h-recovery-context', `Based on ${fmtN(reactiveLeaders)} reactive people leaders × ${sym}${fmtN(salary)} average salary × 37.6% — the estimated proportion of business performance directly sensitive to leadership behaviour.`);
+  s('h-recovery-desc', `SSC works with each of your reactive people leaders — removing the unconscious pattern that is suppressing that performance. Not one blocked conversation, but all of them. One session. One shift.`);
 
   document.getElementById('detail-a').innerHTML =
     wl('Blocked conversations observed over 10 working days', `${ticks} ticks`, ticks, '') +
@@ -646,26 +652,26 @@ function calculate() {
   // Switch screen — scroll to top
   document.getElementById('screen-1').classList.remove('active');
   document.getElementById('screen-2').classList.add('active');
-  // Multiple scroll attempts to handle iFrame context
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
   setTimeout(() => {
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
-    try { window.parent.scrollTo({top:0, behavior:'instant'}); } catch(e){}
-    try { window.scrollTo({top:0, behavior:'instant'}); } catch(e){}
-    postHeight();
+    try { window.parent.scrollTo(0,0); } catch(e){}
+    try { window.parent.postMessage({type:'ssc-scroll-top'}, '*'); } catch(e){}
   }, 50);
 }
 
 function goBack() {
   document.getElementById('screen-2').classList.remove('active');
   document.getElementById('screen-1').classList.add('active');
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
   setTimeout(() => {
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
-    try { window.parent.scrollTo({top:0, behavior:'instant'}); } catch(e){}
-    try { window.scrollTo({top:0, behavior:'instant'}); } catch(e){}
-    postHeight();
-  }, 50);
+    try { window.parent.scrollTo(0,0); } catch(e){}
+    try { window.parent.postMessage({type:'ssc-scroll-top'}, '*'); } catch(e){}
 }
 
 function toggleDetail(id, btnId) {
