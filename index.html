@@ -187,6 +187,7 @@ const WORDMARK_B64 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUND
   .cta-btn:hover { opacity:0.85; }
 
   .calc-footer { border-top:1px solid var(--border); padding-top:20px; margin-top:32px; }
+  #screen-2 .calc-footer { margin-bottom:32px; }
   .calc-footer-note { font-family:'GothamBook',Arial,sans-serif; font-size:0.7rem; color:var(--muted); line-height:1.7; }
   .calc-footer-note strong { font-family:'GothamMedium',Arial,sans-serif; font-weight:600; color:var(--white); }
 
@@ -365,7 +366,7 @@ const WORDMARK_B64 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUND
 
   <!-- ══ SCREEN 2 ══ -->
   <div id="screen-2" style="display:none;">
-    <div style="margin-bottom:20px;">
+    <div style="margin-bottom:36px;margin-top:12px;">
       <button class="back-btn" onclick="document.getElementById('screen-1').scrollIntoView({behavior:'smooth'})" style="background:none;border:1px solid var(--border);color:var(--muted);font-family:'GothamMedium',Arial,sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;padding:9px 18px;cursor:pointer;transition:all 0.15s;">↑ Adjust inputs</button>
     </div>
     <div class="org-name-wrap">
@@ -623,7 +624,9 @@ function calculate() {
   // Each reactive leader suppresses 37.6% of their own + team performance
   // Salary is a proxy for the value they should be generating
   // Source: Leadership Circle, Anderson, n=486
-  const recoverableCost = reactiveLeaders * salary * 0.376;
+  const recoveryCapped = reactiveLeaders * salary * 0.376;
+  // Cap recovery at 80% of the maximum observed cost — SSC can recover most but not all of the cost
+  const recoverableCost = Math.min(recoveryCapped, aHigh * 0.80);
 
   lastCalc = { ticks, observed, headcount, salary, leaders, sym, costLow, costHigh,
     annualised, aLow, aHigh, reactive, reactiveLeaders, recoverableCost,
