@@ -753,7 +753,9 @@ function generateReport() {
      <tr><td>Recovery — reactive leaders × salary × 37.6%</td><td>${fmtN(c.reactiveLeaders)} × ${sym}${fmtN(c.salary)} × 37.6%</td><td class="lime">${sym}${fmtM(c.recoverableCost)}</td></tr>
    `;
 
-  window.print();
+document.querySelector('.page').style.display = 'none';
+window.print();
+document.querySelector('.page').style.display = '';
 }
 
 function printScorecard() {
