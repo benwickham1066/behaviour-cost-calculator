@@ -938,7 +938,7 @@ async function submitCTA() {
         cost_min:    c.aLow      ? sym + fmtM(c.aLow)  : '—',
         cost_max:    c.aHigh     ? sym + fmtM(c.aHigh) : '—',
         recovery:    c.recoverableCost ? sym + fmtM(c.recoverableCost) : '—',
-        _subject:    `SSC Calculator — ${name || email}`
+        _subject:    'SSC Calculator — ' + (name || email)
       })
     });
   } catch(e) { console.log('CTA form error', e); }
