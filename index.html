@@ -723,7 +723,7 @@ function generateReport() {
    s('pr-gallup',        '');
    s('pr-gallup-desc',   '');
    s('pr-recovery', sym + fmtM(c.recoverableCost));
-   s('pr-recovery-desc', `${fmtN(c.reactiveLeaders)} reactive people leaders × ${sym}${fmtN(c.salary)} average salary × 37.6% = ${sym}${fmtM(c.recoverableCost)}. Published research shows leadership effectiveness explains 37.6% of business performance variance. SSC removes the reactive pattern — not one blocked conversation, but all of them.`);
+   s('pr-recovery-desc', `${fmtN(c.reactiveLeaders)} reactive people leaders × ${sym}${fmtN(c.salary)} average salary × 9.4% = ${sym}${fmtM(c.recoverableCost)}. Published research shows leadership effectiveness explains 37.6% of business performance variance. SSC removes the reactive pattern — not one blocked conversation, but all of them.`);
 
    document.getElementById('pr-inputs-table').innerHTML = `
      <tr><td>Organisation</td><td>${orgName || '—'}</td></tr>
@@ -742,7 +742,7 @@ function generateReport() {
      <tr><td>Maximum — ${sym}${fmtN(c.costHigh)} per conversation</td><td>${fmtN(c.annualised)} × ${sym}${fmtN(c.costHigh)}</td><td class="amber">${sym}${fmtM(c.aHigh)}</td></tr>
      <tr><td>Reactive population (75% of ${fmtN(c.headcount)})</td><td></td><td>${fmtN(c.reactive)}</td></tr>
      <tr><td>Reactive people leaders (75% of ${fmtN(c.leaders)})</td><td></td><td>${fmtN(c.reactiveLeaders)}</td></tr>
-     <tr><td>Recovery — reactive leaders × salary × 37.6%</td><td>${fmtN(c.reactiveLeaders)} × ${sym}${fmtN(c.salary)} × 37.6%</td><td class="lime">${sym}${fmtM(c.recoverableCost)}</td></tr>
+     <tr><td>Recovery — reactive leaders × salary × 9.4%%</td><td>${fmtN(c.reactiveLeaders)} × ${sym}${fmtN(c.salary)} × 37.6%</td><td class="lime">${sym}${fmtM(c.recoverableCost)}</td></tr>
    `;
 window.print();
 }
