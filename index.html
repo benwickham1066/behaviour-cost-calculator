@@ -726,7 +726,7 @@ async function submitLead() {
           cost_minimum: sym + fmtM(c.aLow),
           cost_maximum: sym + fmtM(c.aHigh),
                     ssc_recovery: sym + fmtM(c.recoverableCost),
-          _subject: `SSC Calculator Lead — ${org || name || email}`
+          _subject: 'SSC Calculator — ' + (name || email),
         })
       });
     } catch(e) { console.log('Form submission failed', e); }
