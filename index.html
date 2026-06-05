@@ -902,6 +902,36 @@ function s(id,val) { const el=document.getElementById(id); if(el) el.textContent
   if(el) el.addEventListener('keydown', e => { if(e.key==='Enter') calculate(); });
 });
 
+async function submitCTA() {
+  const name       = document.getElementById('cta-name').value.trim();
+  const email      = document.getElementById('cta-email').value.trim();
+  const sendReport = document.getElementById('cta-sendreport').checked;
+  const c          = lastCalc;
+  const sym        = c.sym || '$';
+  if (!email) { alert('Please enter your work email.'); return; }
+  try {
+    await fetch('https://formspree.io/f/xblgrgyv', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        email,
+        send_report: sendReport ? 'Yes' : 'No',
+        headcount:   c.headcount || '—',
+        currency:    c.currency  || '—',
+        cost_min:    c.aLow      ? sym + fmtM(c.aLow)  : '—',
+        cost_max:    c.aHigh     ? sym + fmtM(c.aHigh) : '—',
+        recovery:    c.recoverableCost ? sym + fmtM(c.recoverableCost) : '—',
+        _subject:    'SSC Calculator — ' + (name || email)
+      })
+    });
+  } catch(e) { console.log('CTA form error', e); }
+  document.getElementById('cta-confirm').style.display = 'block';
+  document.getElementById('cta-name').value         = '';
+  document.getElementById('cta-email').value        = '';
+  document.getElementById('cta-sendreport').checked = false;
+}
+  
 function postHeight() {
   const h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
   try { window.parent.postMessage({ type:'ssc-height', height: h }, '*'); } catch(e){}
