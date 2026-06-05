@@ -655,55 +655,6 @@ function toggleDetail(id, btnId) {
   btn.textContent = (open ? '− ' : '+ ') + btn.textContent.slice(2);
 }
 
-// LEAD GATE
-function openLeadGate() {
-  if (!lastCalc.aLow) { alert('Please calculate your number first.'); return; }
-  document.getElementById('lead-gate').classList.add('open');
-}
-
-function skipLead() {
-  document.getElementById('lead-gate').classList.remove('open');
-  generateReport();
-}
-
-async function submitLead() {
-  const name  = document.getElementById('lead-name').value.trim();
-  const email = document.getElementById('lead-email').value.trim();
-  const org   = document.getElementById('lead-org').value.trim();
-
-  if (!email) { alert('Please enter your email address.'); return; }
-
-  const c = lastCalc;
-  const sym = c.sym || '$';
-
-  // Send to Formspree
-  if (FORMSPREE_ID && FORMSPREE_ID !== 'YOUR_FORM_ID') {
-    try {
-      await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name, email, organisation: org || (document.getElementById('inp-orgname') || {}).value || '—',
-          headcount: c.headcount, people_leaders: c.leaders,
-          currency: c.currency,
-          ticks: c.ticks, people_observed: c.observed,
-          cost_minimum: sym + fmtM(c.aLow),
-          cost_maximum: sym + fmtM(c.aHigh),
-                    ssc_recovery: sym + fmtM(c.recoverableCost),
-          _subject: `SSC Calculator Lead — ${org || name || email}`
-        })
-      });
-    } catch(e) { console.log('Form submission failed', e); }
-  }
-
-  // Pre-fill org name if provided
-  if (org && document.getElementById('inp-orgname')) {
-    document.getElementById('inp-orgname').value = org;
-  }
-
-  document.getElementById('lead-gate').classList.remove('open');
-  generateReport();
-}
 
 function generateReport() {
   const c = lastCalc;
