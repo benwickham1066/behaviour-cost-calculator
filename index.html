@@ -599,14 +599,11 @@ function calculate() {
   const bTotal          = reactive * salary * 0.34;
   const reactiveLeaders = Math.round(leaders * 0.75);
 
-  // Recovery — LC model: reactive leaders × salary × 37.6%
-  // Each reactive leader suppresses 37.6% of their own + team performance
-  // Salary is a proxy for the value they should be generating
-  // Source: Leadership Circle, Anderson, n=486
-  const recoveryCapped = reactiveLeaders * salary * 0.376;
-  // Cap recovery at 80% of the maximum observed cost — SSC can recover most but not all of the cost
-  const recoverableCost = Math.min(recoveryCapped, aHigh * 0.80);
-
+// Recovery — conservative 25% of LC 37.6% figure
+// Source: Leadership Circle, Anderson, n=486
+const recoveryCapped = reactiveLeaders * salary * 0.094;
+// Cap recovery at 60% of the maximum observed cost
+const recoverableCost = Math.min(recoveryCapped, aHigh * 0.60);
   lastCalc = { ticks, observed, headcount, salary, leaders, sym, costLow, costHigh,
     annualised, aLow, aHigh, reactive, reactiveLeaders, recoverableCost,
     currency: selectedCurrency };
