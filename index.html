@@ -664,7 +664,7 @@ function generateReport() {
   const date = new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
 
   // Set logo — white wordmark on cover (shows on black)
-  document.querySelectorAll('#pr-wm-cover, #pr-wm-cta').forEach(img => img.src = WORDMARK_B64);
+  document.querySelectorAll('#pr-wm-cover, #pr-wm-cta').forEach(img => img.src = LOGO_WHITE);
 
   s('pr-org-name',      orgName ? `Prepared for ${orgName.toUpperCase()}` : '');
   s('pr-date',          date);
