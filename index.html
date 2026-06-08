@@ -242,9 +242,9 @@
       <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.75rem;color:var(--muted);line-height:1.6;" id="r-saving-desc"></div>
     </div>
 
-    <!-- PANEL 3 — PAYBACK -->
+    <!-- PANEL 3 — SAVING PER LEADER -->
     <div id="r-payback-block" style="display:none;background:var(--surface);border:1px solid var(--border);padding:28px;margin-bottom:28px;">
-      <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">SSC payback period — per leader</div>
+      <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Estimated annual return — per reactive leader</div>
       <div style="font-family:'DrukTextBold',Arial,sans-serif;font-size:clamp(2rem,5vw,3.2rem);color:var(--white);line-height:1;text-transform:uppercase;margin-bottom:12px;" id="r-payback-num">—</div>
       <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.75rem;color:var(--muted);line-height:1.6;" id="r-payback-desc"></div>
     </div>
@@ -261,9 +261,9 @@
       <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.75rem;color:var(--muted);margin-top:8px;line-height:1.5;">Each of those moments is a conversation that did not happen — and will not happen tomorrow unless something changes at the pattern level.</div>
     </div>
 
-    <!-- PANEL 5 — MODEL B CORROBORATING CONTEXT -->
+    <!-- PANEL 5 — TRIANGULATION -->
     <div style="background:var(--surface);border:1px solid var(--border);padding:22px;margin-bottom:28px;">
-      <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Corroborating lens — reactive leadership performance suppression</div>
+      <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Independent triangulation — Gallup &amp; McKinsey</div>
       <div style="font-family:'DrukTextBold',Arial,sans-serif;font-size:clamp(1.6rem,4vw,2.4rem);color:var(--white);line-height:1;text-transform:uppercase;margin-bottom:10px;" id="r-modelb-num">—</div>
       <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.75rem;color:var(--muted);line-height:1.6;" id="r-modelb-desc"></div>
     </div>
@@ -387,81 +387,91 @@ function calculate() {
 
   const sym = selectedSymbol;
 
-  // MODEL A — cost of defensive behaviour
+  // ── MODEL A — cost of defensive behaviour ────────────────────────────────
   // Crucial Learning (n=1,100), five independent sources. $1,500 per blocked conversation.
-  const costPerConv  = toLocal(COST_LOW_USD, selectedCurrency);
-  const annualised   = ticks * 22;
-  const modelA       = annualised * costPerConv;
+  // Observation is a SAMPLE. Scale the observed rate to all reactive leaders.
+  const reactiveLeaders    = Math.round(leaders * 0.75);         // LC: 75% of leaders operate reactively
+  const ratePerPerson      = ticks / observed;                    // blocked convs per person over 2 weeks
+  const annualisedPerPerson = ratePerPerson * 22;                 // per person per year (220 working days)
+  const annualisedScaled   = annualisedPerPerson * reactiveLeaders; // scaled to all reactive leaders
+  const costPerConv        = toLocal(COST_LOW_USD, selectedCurrency);
+  const modelA             = annualisedScaled * costPerConv;
 
-  // SAVING — Model A x 75%
-  // SSC removes the cause. 75% recovery is conservative — accounts for timing,
-  // partial programmes, organisational variance.
-  const saving = modelA * 0.75;
-
-  // MODEL B — corroborating lens: reactive leadership performance suppression
-  // Leadership Circle, Anderson (n=486): 37.6% of business performance variance
-  // explained by leadership effectiveness. Conservative 25% discount applied = 9.4%.
-  const reactiveLeaders = Math.round(leaders * 0.75);
-  const modelB          = reactiveLeaders * salary * 0.094;
-
-  // PAYBACK — saving per reactive leader vs SSC session cost
+  // ── SAVING — Model A × 75% ───────────────────────────────────────────────
+  // SSC removes the cause. 75% is conservative — accounts for timing and variance.
+  const saving          = modelA * 0.75;
   const savingPerLeader = reactiveLeaders > 0 ? saving / reactiveLeaders : 0;
-  const sessionCost     = toLocal(3500, selectedCurrency);
-  const paybackMo       = savingPerLeader > 0 ? Math.round(sessionCost / (savingPerLeader / 12)) : null;
 
-  // OBSERVATION RATE — incidents per person per day
+  // ── MODEL B — corroborating lens ─────────────────────────────────────────
+  // Leadership Circle, Anderson (n=486): 37.6% performance variance explained
+  // by leadership effectiveness. Conservative 25% = 9.4%. Used for context only.
+  const modelB = reactiveLeaders * salary * 0.094;
+
+  // ── GALLUP TRIANGULATION ─────────────────────────────────────────────────
+  // Gallup: actively disengaged employees cost ~18% of annual salary in lost productivity.
+  // State of the Global Workplace 2023. Applied to disengaged portion of headcount.
+  // Gallup: ~77% of employees not fully engaged. Of those, ~16% actively disengaged.
+  const gallupDisengaged    = Math.round(headcount * 0.16);
+  const gallupCost          = gallupDisengaged * salary * 0.18;
+
+  // ── OBSERVATION RATE ─────────────────────────────────────────────────────
   const observationRate = (ticks > 0 && observed > 0)
-    ? Math.round((ticks / observed / 10) * 10) / 10
+    ? Math.round((ratePerPerson / 10) * 10) / 10
     : null;
 
   lastCalc = { ticks, observed, headcount, salary, leaders, sym,
-    costPerConv, annualised, modelA, saving, modelB,
-    reactiveLeaders, savingPerLeader, sessionCost, paybackMo, observationRate,
+    costPerConv, ratePerPerson, annualisedPerPerson, annualisedScaled,
+    modelA, saving, savingPerLeader, modelB, gallupDisengaged, gallupCost,
+    reactiveLeaders, observationRate,
     currency: selectedCurrency };
 
-  // DISPLAY — Model A cost
-  s('r-cost-eyebrow', 'Based on ' + fmtN(annualised) + ' blocked conversations observed and annualised, in an organisation of approximately ' + fmtN(headcount) + ' people');
+  // ── DISPLAY — Model A cost ───────────────────────────────────────────────
+  s('r-cost-eyebrow', 'Estimated annual cost of defensive behaviour across your ' + fmtN(reactiveLeaders) + ' reactive leaders — scaled from your two-week observation');
   s('r-cost-num',  sym + fmtM(modelA));
-  s('r-cost-desc', fmtN(ticks) + ' blocked conversations over two weeks · annualised ×22 · ' + sym + fmtN(costPerConv) + ' per blocked conversation (Crucial Learning, n=1,100)');
+  s('r-cost-desc', fmtN(ticks) + ' blocked conversations observed across ' + Math.round(observed) + ' people over two weeks · ' + Math.round(ratePerPerson * 10) / 10 + ' per person per fortnight · scaled to ' + fmtN(reactiveLeaders) + ' reactive leaders · annualised · ' + sym + fmtN(costPerConv) + ' per blocked conversation (Crucial Learning, n=1,100)');
 
-  // DISPLAY — Saving
+  // ── DISPLAY — Saving ─────────────────────────────────────────────────────
   s('r-saving-num',  sym + fmtM(saving));
-  s('r-saving-desc', 'Estimated annual saving if SSC works with your leaders and people managers — based on 75% recovery of the estimated annual cost of defensive behaviour.');
+  s('r-saving-desc', 'Estimated annual saving if SSC works with your leaders and people managers — based on 75% recovery of the estimated annual cost of defensive behaviour. Annual saving per reactive leader: ' + sym + fmtN(Math.round(savingPerLeader)) + '.');
 
-  // DISPLAY — Payback
-  if (paybackMo !== null) {
-    s('r-payback-num',  paybackMo + (paybackMo === 1 ? ' month' : ' months'));
-    s('r-payback-desc', 'Each SSC session costs ' + sym + fmtN(Math.round(sessionCost)) + '. Based on ' + fmtN(reactiveLeaders) + ' reactive leaders, the annual saving per leader is ' + sym + fmtN(Math.round(savingPerLeader)) + '. SSC pays for itself in ' + paybackMo + (paybackMo === 1 ? ' month' : ' months') + ' per leader.');
-    document.getElementById('r-payback-block').style.display = 'block';
-  } else {
-    document.getElementById('r-payback-block').style.display = 'none';
-  }
+  // ── DISPLAY — Payback (no session cost — ROI framing only) ───────────────
+  document.getElementById('r-payback-block').style.display = 'block';
+  s('r-payback-num', sym + fmtN(Math.round(savingPerLeader)));
+  s('r-payback-desc', 'Estimated annual return per reactive leader who works with SSC. Across all ' + fmtN(reactiveLeaders) + ' reactive leaders the total estimated annual saving is ' + sym + fmtM(saving) + '. The investment conversation happens with your SSC director.');
 
-  // DISPLAY — Model B corroborating context
-  s('r-modelb-num',  sym + fmtM(modelB));
-  s('r-modelb-desc', fmtN(reactiveLeaders) + ' reactive leaders (75% of ' + fmtN(leaders) + ') × ' + sym + fmtN(salary) + ' average salary × 9.4% per year. Leadership Circle research (Anderson, n=486) shows leadership effectiveness explains 37.6% of business performance variance. A conservative 25% of that figure is applied here.');
+  // ── DISPLAY — Gallup + Model B triangulation ─────────────────────────────
+  s('r-modelb-num',  sym + fmtM(gallupCost));
+  s('r-modelb-desc',
+    'Independent triangulation against two published data sets: '
+    + 'Gallup (State of the Global Workplace, 2023) estimates actively disengaged employees cost approximately 18% of annual salary in lost productivity — applied to an estimated ' + fmtN(gallupDisengaged) + ' actively disengaged employees (16% of ' + fmtN(headcount) + ') at ' + sym + fmtN(salary) + ' average salary, that produces ' + sym + fmtM(gallupCost) + '. '
+    + 'McKinsey research shows organisations in the top quartile for leadership performance deliver nearly three times the returns of those in the bottom quartile. '
+    + 'Both data sets support the order of magnitude of the Model A estimate above.'
+  );
 
-  // DISPLAY — Observation rate
+  // ── DISPLAY — Observation rate ───────────────────────────────────────────
   if (observationRate !== null && ticks > 0) {
-    const rateText = observationRate < 0.2
+    const rateText = observationRate < 0.5
       ? 'less than once a week per person'
       : observationRate < 1
-        ? (Math.round(observationRate * 5)) + ' times per person per week'
-        : observationRate + ' times per person per day';
-    s('g-obs-context', 'In your sample of ' + Math.round(observed) + (Math.round(observed) === 1 ? ' person' : ' people') + ', defensive behaviour was observed at a rate of ' + rateText + ' on average.');
+        ? Math.round(observationRate * 5) + ' times per person per week'
+        : Math.round(observationRate * 10) / 10 + ' times per person per day';
+    s('g-obs-context', 'In your sample of ' + Math.round(observed) + (Math.round(observed) === 1 ? ' person' : ' people') + ', defensive behaviour was observed at a rate of ' + rateText + '. Scaled across your ' + fmtN(reactiveLeaders) + ' reactive leaders, that is an estimated ' + fmtN(Math.round(annualisedScaled)) + ' blocked conversations per year.');
     document.getElementById('gold-obs-block').style.display = 'block';
   } else {
     document.getElementById('gold-obs-block').style.display = 'none';
   }
 
-  // DISPLAY — Working panel
+  // ── DISPLAY — Working panel ──────────────────────────────────────────────
   document.getElementById('detail-a').innerHTML =
-    wl('Blocked conversations observed (two weeks)', String(ticks), fmtN(ticks), '') +
-    wl('Annualised across 220 working days', ticks + ' × 22', fmtN(annualised), '') +
-    wl('Model A — cost at ' + sym + fmtN(costPerConv) + ' per conversation', fmtN(annualised) + ' × ' + sym + fmtN(costPerConv), sym + fmtM(modelA), 'amber') +
+    wl('Blocked conversations observed (two weeks)', String(ticks) + ' across ' + Math.round(observed) + ' people', fmtN(ticks), '') +
+    wl('Rate per person per fortnight', ticks + ' ÷ ' + Math.round(observed), Math.round(ratePerPerson * 10) / 10, '') +
+    wl('Annualised per person (×22)', Math.round(ratePerPerson * 10) / 10 + ' × 22', Math.round(annualisedPerPerson * 10) / 10, '') +
+    wl('Scaled to reactive leaders', Math.round(annualisedPerPerson * 10) / 10 + ' × ' + fmtN(reactiveLeaders), fmtN(Math.round(annualisedScaled)), '') +
+    wl('Model A — cost at ' + sym + fmtN(costPerConv) + ' per conversation', fmtN(Math.round(annualisedScaled)) + ' × ' + sym + fmtN(costPerConv), sym + fmtM(modelA), 'amber') +
     wl('SSC estimated saving (Model A × 75%)', sym + fmtM(modelA) + ' × 75%', sym + fmtM(saving), 'lime') +
-    wl('Model B — reactive leadership suppression', fmtN(reactiveLeaders) + ' × ' + sym + fmtN(salary) + ' × 9.4%', sym + fmtM(modelB), '') +
-    (paybackMo ? wl('Payback per leader', sym + fmtN(Math.round(sessionCost)) + ' ÷ (' + sym + fmtN(Math.round(savingPerLeader)) + ' ÷ 12)', paybackMo + ' months', '') : '');
+    wl('Annual saving per reactive leader', sym + fmtM(saving) + ' ÷ ' + fmtN(reactiveLeaders), sym + fmtN(Math.round(savingPerLeader)), 'lime') +
+    wl('Model B — LC reactive leadership suppression', fmtN(reactiveLeaders) + ' × ' + sym + fmtN(salary) + ' × 9.4%', sym + fmtM(modelB), '') +
+    wl('Gallup triangulation — disengagement cost', fmtN(gallupDisengaged) + ' × ' + sym + fmtN(salary) + ' × 18%', sym + fmtM(gallupCost), '');
 
   // Switch screen
   const s2 = document.getElementById('screen-2');
@@ -590,27 +600,27 @@ function generateReport() {
     <div class="pr-section-label">Your Estimated Figures</div>
     <div class="pr-num-grid">
       <div class="pr-num-cell full">
-        <div class="pr-num-eyebrow">Estimated annual cost of defensive behaviour — based on ${fmtN(c.ticks)} blocked conversations observed and annualised across 220 working days</div>
+        <div class="pr-num-eyebrow">Estimated annual cost of defensive behaviour — observation scaled from ${Math.round(c.observed)} people to ${fmtN(c.reactiveLeaders)} reactive leaders</div>
         <div class="pr-big amber">${sym + fmtM(c.modelA)}</div>
-        <div class="pr-num-desc">${fmtN(c.ticks)} blocked conversations over two weeks · annualised ×22 = ${fmtN(c.annualised)} · ${sym}${fmtN(c.costPerConv)} per blocked conversation (Crucial Learning, n=1,100 · five independent sources)</div>
+        <div class="pr-num-desc">${fmtN(c.ticks)} blocked conversations observed across ${Math.round(c.observed)} people · ${Math.round(c.ratePerPerson * 10) / 10} per person per fortnight · scaled to ${fmtN(c.reactiveLeaders)} reactive leaders · annualised × 22 · ${sym}${fmtN(c.costPerConv)} per blocked conversation (Crucial Learning, n=1,100 · five independent sources)</div>
       </div>
       <div class="pr-num-cell full" style="border-left:4px solid #4a7a00;">
         <div class="pr-minmax lime">Estimated annual saving if SSC works with your leaders and people managers</div>
         <div class="pr-big lime">${sym + fmtM(c.saving)}</div>
-        <div class="pr-num-desc">Model A × 75% recovery. SSC removes the defensive behaviour at the pattern level — not managing its consequences, but eliminating the cause. 75% is a conservative recovery assumption.</div>
+        <div class="pr-num-desc">Model A × 75% recovery. SSC removes the defensive behaviour at the pattern level — not managing its consequences, but eliminating the cause. 75% is a conservative recovery assumption. Annual saving per reactive leader: ${sym}${fmtN(Math.round(c.savingPerLeader))}.</div>
       </div>
     </div>
 
     <div class="pr-gold-grid">
       <div class="pr-gold-cell">
-        <div class="pr-gold-label">SSC payback period — per leader</div>
-        <div class="pr-gold-num">${c.paybackMo ? c.paybackMo + (c.paybackMo === 1 ? ' month' : ' months') : '—'}</div>
-        <div class="pr-gold-desc">Session cost ${sym}${fmtN(Math.round(c.sessionCost))} against annual saving of ${sym}${fmtN(Math.round(c.savingPerLeader))} per reactive leader. One session. One shift. Then compounding.</div>
+        <div class="pr-gold-label">Estimated annual return — per reactive leader</div>
+        <div class="pr-gold-num">${sym}${fmtN(Math.round(c.savingPerLeader))}</div>
+        <div class="pr-gold-desc">Total saving of ${sym}${fmtM(c.saving)} across ${fmtN(c.reactiveLeaders)} reactive leaders. The investment conversation happens with your SSC director.</div>
       </div>
       <div class="pr-gold-cell" style="border-left:2px solid #ddd;">
-        <div class="pr-gold-label">Corroborating lens — reactive leadership performance suppression</div>
-        <div class="pr-gold-num" style="color:#555 !important;">${sym + fmtM(c.modelB)}</div>
-        <div class="pr-gold-desc">Leadership Circle (Anderson, n=486): leadership effectiveness explains 37.6% of business performance variance. 25% of that figure applied conservatively across ${fmtN(c.reactiveLeaders)} reactive leaders (75% of ${fmtN(c.leaders)}) × ${sym}${fmtN(c.salary)} average salary.</div>
+        <div class="pr-gold-label">Independent triangulation — Gallup disengagement cost</div>
+        <div class="pr-gold-num" style="color:#555 !important;">${sym + fmtM(c.gallupCost)}</div>
+        <div class="pr-gold-desc">Gallup (State of the Global Workplace, 2023): actively disengaged employees cost ~18% of annual salary in lost productivity. Applied to an estimated ${fmtN(c.gallupDisengaged)} actively disengaged employees (16% of ${fmtN(c.headcount)}). McKinsey research shows top-quartile leadership organisations deliver nearly 3× the returns of bottom-quartile. Both data sets support the order of magnitude of the Model A estimate.</div>
       </div>
       ${(function(){ if (!c.observationRate || !c.ticks) return '';
         const obs = Math.round(c.observed);
@@ -629,22 +639,24 @@ function generateReport() {
       <tr><td>Organisation</td><td>${orgName || '—'}</td></tr>
       <tr><td>Total headcount</td><td>${fmtN(c.headcount)}</td></tr>
       <tr><td>People leaders</td><td>${fmtN(c.leaders)}</td></tr>
+      <tr><td>Reactive leaders (75%)</td><td>${fmtN(c.reactiveLeaders)}</td></tr>
       <tr><td>Average annual salary</td><td>${sym}${fmtN(c.salary)}</td></tr>
-      <tr><td>Blocked conversations observed</td><td>${c.ticks} over two working weeks</td></tr>
-      <tr><td>People observed</td><td>${Math.round(c.observed)}</td></tr>
+      <tr><td>Blocked conversations observed</td><td>${c.ticks} across ${Math.round(c.observed)} people over two working weeks</td></tr>
+      <tr><td>Observed rate per person</td><td>${Math.round(c.ratePerPerson * 10) / 10} per fortnight · ${Math.round(c.annualisedPerPerson * 10) / 10} annualised</td></tr>
       <tr><td>Currency</td><td>${c.currency}</td></tr>
       <tr><td>Date</td><td>${date}</td></tr>
     </table>
     <div class="pr-section-label">How We Calculate These Estimates</div>
     <table class="pr-working">
-      <tr><td>Blocked conversations observed (two weeks)</td><td>${c.ticks}</td><td>${fmtN(c.ticks)}</td></tr>
-      <tr><td>Annualised across 220 working days (×22)</td><td>${c.ticks} × 22</td><td>${fmtN(c.annualised)}</td></tr>
-      <tr><td>Model A — cost at ${sym}${fmtN(c.costPerConv)} per conversation</td><td>${fmtN(c.annualised)} × ${sym}${fmtN(c.costPerConv)}</td><td class="amber">${sym}${fmtM(c.modelA)}</td></tr>
-      <tr><td>SSC estimated saving (Model A × 75%)</td><td>${sym}${fmtM(c.modelA)} × 75%</td><td class="lime">${sym}${fmtM(c.saving)}</td></tr>
+      <tr><td>Blocked conversations observed (two weeks)</td><td>${c.ticks} across ${Math.round(c.observed)} people</td><td>${fmtN(c.ticks)}</td></tr>
+      <tr><td>Rate per person per fortnight</td><td>${c.ticks} ÷ ${Math.round(c.observed)}</td><td>${Math.round(c.ratePerPerson * 10) / 10}</td></tr>
+      <tr><td>Annualised per person (×22)</td><td>${Math.round(c.ratePerPerson * 10) / 10} × 22</td><td>${Math.round(c.annualisedPerPerson * 10) / 10}</td></tr>
       <tr><td>Reactive leaders (75% of ${fmtN(c.leaders)})</td><td></td><td>${fmtN(c.reactiveLeaders)}</td></tr>
+      <tr><td>Scaled to reactive leaders</td><td>${Math.round(c.annualisedPerPerson * 10) / 10} × ${fmtN(c.reactiveLeaders)}</td><td>${fmtN(Math.round(c.annualisedScaled))}</td></tr>
+      <tr><td>Model A — cost at ${sym}${fmtN(c.costPerConv)} per conversation</td><td>${fmtN(Math.round(c.annualisedScaled))} × ${sym}${fmtN(c.costPerConv)}</td><td class="amber">${sym}${fmtM(c.modelA)}</td></tr>
+      <tr><td>SSC estimated saving (Model A × 75%)</td><td>${sym}${fmtM(c.modelA)} × 75%</td><td class="lime">${sym}${fmtM(c.saving)}</td></tr>
       <tr><td>Annual saving per reactive leader</td><td>${sym}${fmtM(c.saving)} ÷ ${fmtN(c.reactiveLeaders)}</td><td class="lime">${sym}${fmtN(Math.round(c.savingPerLeader))}</td></tr>
-      <tr><td>Payback per leader</td><td>${sym}${fmtN(Math.round(c.sessionCost))} ÷ (${sym}${fmtN(Math.round(c.savingPerLeader))} ÷ 12)</td><td>${c.paybackMo ? c.paybackMo + ' months' : '—'}</td></tr>
-      <tr><td>Model B — reactive leadership suppression</td><td>${fmtN(c.reactiveLeaders)} × ${sym}${fmtN(c.salary)} × 9.4%</td><td>${sym}${fmtM(c.modelB)}</td></tr>
+      <tr><td>Gallup triangulation — disengagement cost</td><td>${fmtN(c.gallupDisengaged)} × ${sym}${fmtN(c.salary)} × 18%</td><td>${sym}${fmtM(c.gallupCost)}</td></tr>
     </table>
   </div>
 
