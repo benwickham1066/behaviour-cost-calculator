@@ -439,13 +439,15 @@ function calculate() {
   s('r-payback-num', sym + fmtN(Math.round(savingPerLeader)));
   s('r-payback-desc', 'Estimated annual return per reactive leader who works with SSC. Across all ' + fmtN(reactiveLeaders) + ' reactive leaders the total estimated annual saving is ' + sym + fmtM(saving) + '. The investment conversation happens with your SSC director.');
 
-  // ── DISPLAY — Gallup + Model B triangulation ─────────────────────────────
+  // ── DISPLAY — Gallup + McKinsey triangulation ─────────────────────────────
   s('r-modelb-num',  sym + fmtM(gallupCost));
   s('r-modelb-desc',
-    'Independent triangulation against two published data sets: '
-    + 'Gallup (State of the Global Workplace, 2023) estimates actively disengaged employees cost approximately 18% of annual salary in lost productivity — applied to an estimated ' + fmtN(gallupDisengaged) + ' actively disengaged employees (16% of ' + fmtN(headcount) + ') at ' + sym + fmtN(salary) + ' average salary, that produces ' + sym + fmtM(gallupCost) + '. '
-    + 'McKinsey research shows organisations in the top quartile for leadership performance deliver nearly three times the returns of those in the bottom quartile. '
-    + 'Both data sets support the order of magnitude of the Model A estimate above.'
+    'Gallup (State of the Global Workplace, 2023) estimates that actively disengaged employees — the 16% most visibly disengaged — cost approximately 18% of annual salary in lost productivity. '
+    + 'Applied to an estimated ' + fmtN(gallupDisengaged) + ' actively disengaged employees in your organisation, that produces ' + sym + fmtM(gallupCost) + '. '
+    + 'This figure is a conservative floor: it captures only the most visibly disengaged. '
+    + 'Gallup\'s own research puts the total cost of disengagement — including the much larger group of passively disengaged employees — at 9% of global GDP. '
+    + 'Model A is larger because it captures the full spectrum of defensive behaviour across all reactive leaders, not just the actively disengaged subset. '
+    + 'McKinsey research independently shows top-quartile leadership organisations deliver nearly three times the returns of those in the bottom quartile — consistent with the order of magnitude above.'
   );
 
   // ── DISPLAY — Observation rate ───────────────────────────────────────────
@@ -618,9 +620,9 @@ function generateReport() {
         <div class="pr-gold-desc">Total saving of ${sym}${fmtM(c.saving)} across ${fmtN(c.reactiveLeaders)} reactive leaders. The investment conversation happens with your SSC director.</div>
       </div>
       <div class="pr-gold-cell" style="border-left:2px solid #ddd;">
-        <div class="pr-gold-label">Independent triangulation — Gallup disengagement cost</div>
+        <div class="pr-gold-label">Independent triangulation — Gallup &amp; McKinsey</div>
         <div class="pr-gold-num" style="color:#555 !important;">${sym + fmtM(c.gallupCost)}</div>
-        <div class="pr-gold-desc">Gallup (State of the Global Workplace, 2023): actively disengaged employees cost ~18% of annual salary in lost productivity. Applied to an estimated ${fmtN(c.gallupDisengaged)} actively disengaged employees (16% of ${fmtN(c.headcount)}). McKinsey research shows top-quartile leadership organisations deliver nearly 3× the returns of bottom-quartile. Both data sets support the order of magnitude of the Model A estimate.</div>
+        <div class="pr-gold-desc">Gallup (State of the Global Workplace, 2023): actively disengaged employees cost ~18% of annual salary. Applied to ${fmtN(c.gallupDisengaged)} actively disengaged employees (16% of ${fmtN(c.headcount)}) this produces ${sym}${fmtM(c.gallupCost)}. This is a conservative floor — it captures only the most visibly disengaged. Gallup's total disengagement cost (including passive disengagement) runs to 9% of global GDP. Model A is larger because it captures the full spectrum of defensive behaviour across all reactive leaders. McKinsey independently shows top-quartile leadership organisations deliver nearly 3× the returns of bottom-quartile — consistent with the order of magnitude above.</div>
       </div>
       ${(function(){ if (!c.observationRate || !c.ticks) return '';
         const obs = Math.round(c.observed);
@@ -662,18 +664,18 @@ function generateReport() {
 
   <div class="pr-page">
     <div class="pr-section-label">What Single Session Coaching Does</div>
-    <p class="pr-body">Most leadership behaviour isn't a conscious choice. It's automatic — shaped by patterns formed early, reinforced over decades, and running quietly beneath the surface of every meeting, every decision, every difficult conversation a leader has ever had. This matters because the entire $400 billion global L&D industry is built on a different assumption: that leaders change through knowledge, reflection, and practice. Sometimes they do. But not reliably, and not at the level that counts. McKinsey estimates that around 10% of leadership development investment produces lasting behavioural change. The other 90% produces awareness. And awareness, however hard-won, is not the same as change.</p>
+    <p class="pr-body">Most leadership behaviour isn't a conscious choice. It's automatic — shaped by patterns formed early, reinforced over decades, and running quietly beneath the surface of every meeting, every decision, every difficult conversation a leader has ever had. This matters because an industry spending between $340 and $400 billion annually on corporate learning and development is built on a different assumption: that leaders change through knowledge, reflection, and practice. Sometimes they do. But not reliably, and not at the level that counts. McKinsey research found that only 11% of executives strongly agreed that their leadership development programmes achieve and sustain the desired results. Separately, a peer-reviewed study found that as little as 15% of classroom-based training produces sustained behavioural change in the workplace. The rest produces awareness. And awareness, however hard-won, is not the same as change.</p>
     <p class="pr-body">You cannot reach an unconscious pattern with a conscious approach. The pattern simply waits you out.</p>
     <p class="pr-body">Single Session Coaching was built on a different premise. That every pattern a leader carries made sense once — it was learned for a reason, in a context that no longer exists. The work isn't to judge it or dismantle it. It's to make it visible, understand what it was protecting, and give the leader a genuine choice about whether to keep it. That's what Surface / Decode / Resolve does. In 90 minutes. Not through insight alone — through mechanism. The pattern becomes optional. What replaces it belongs to them.</p>
     <div class="pr-section-label" style="margin-top:7mm;">The Research Behind These Numbers</div>
     <div class="pr-research-grid">
-      <div class="pr-research-item"><div class="pr-research-title">The $400 billion figure</div><div class="pr-research-body">Global investment in corporate learning and development, reported annually by the World Economic Forum and Statista. The number has grown every year. The return has not kept pace.</div></div>
-      <div class="pr-research-item"><div class="pr-research-title">Only 10% produces lasting change</div><div class="pr-research-body">McKinsey &amp; Company, Losing from Day One (2021). Supported by longitudinal research from Bersin by Deloitte on how much leadership learning translates into sustained behavioural change.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">$340–400 billion invested annually in L&amp;D</div><div class="pr-research-body">Global corporate learning and development investment estimated at $395 billion in 2023, rising toward $413 billion by 2024. Sources: Grand View Research; SkyQuest; multiple market analyses. The number has grown every year. The return has not kept pace.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">Only 11% believe it works</div><div class="pr-research-body">McKinsey &amp; Company: only 11% of executives strongly agreed that their leadership development programmes achieve and sustain the desired results (McKinsey Quarterly, What's Missing in Leadership Development). A peer-reviewed study in the Proceedings of the National Academy of Sciences (2015) found as little as 15% of classroom-based training produces sustained behavioural change.</div></div>
       <div class="pr-research-item"><div class="pr-research-title">Most behaviour is automatic</div><div class="pr-research-body">Bargh &amp; Chartrand (1999), The Unbearable Automaticity of Being, American Psychologist. The vast majority of cognitive activity — including what we call decisions — operates below conscious awareness.</div></div>
       <div class="pr-research-item"><div class="pr-research-title">Conscious approaches can't reach unconscious patterns</div><div class="pr-research-body">Kahneman (2011), Thinking, Fast and Slow. Van der Kolk (2014), The Body Keeps the Score. Libet et al. (1983) on neural activity preceding conscious awareness of a decision.</div></div>
       <div class="pr-research-item"><div class="pr-research-title">Patterns form early and consolidate over time</div><div class="pr-research-body">Hebb's Law (1949) — repeated neural firing strengthens the pathways that carry a behaviour. LeDoux (2002), Synaptic Self.</div></div>
       <div class="pr-research-item"><div class="pr-research-title">A single session can produce lasting change</div><div class="pr-research-body">Hoyt &amp; Talmon (2014), Capturing the Moment — depth of contact matters more than duration. SSC outcome data available on request.</div></div>
-      <div class="pr-research-item"><div class="pr-research-title">Defensive behaviour cost: min–max per blocked conversation</div><div class="pr-research-body">Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · five independent sources. Same number.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">$1,500 per blocked conversation</div><div class="pr-research-body">Crucial Learning (n=1,100) — the conservative, well-sourced floor. Replicated across five independent research sources. This figure represents the average downstream cost of a single avoided conversation: the delay, the rework, the relationship cost, the decision made without the right input.</div></div>
       <div class="pr-research-item"><div class="pr-research-title">75% of leaders operate reactively</div><div class="pr-research-body">Published research across 2M+ leaders assessed. Reactive leadership is by definition unconscious and systemic — driven by patterns formed outside the leader's awareness.</div></div>
     </div>
     <div class="pr-cta">
