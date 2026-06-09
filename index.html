@@ -130,8 +130,8 @@
   .headline-context { font-family:'GothamBook',Arial,sans-serif; font-size:clamp(0.85rem,1.4vw,0.96rem); color:var(--white); line-height:1.6; margin-bottom:6px; }
 
   .section-divider { font-family:'GothamMedium',Arial,sans-serif; font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin:28px 0 12px; padding-bottom:10px; border-bottom:1px solid var(--border); }
-  .detail-toggle { background:none; border:1px solid var(--border); color:var(--muted); font-family:'GothamMedium',Arial,sans-serif; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; padding:9px 16px; cursor:pointer; margin-bottom:8px; transition:all 0.15s; display:block; width:100%; text-align:left; }
-  .detail-toggle:hover { border-color:var(--white); color:var(--white); }
+  .detail-toggle { background:none; border:1px solid var(--lime); color:var(--lime); font-family:'GothamMedium',Arial,sans-serif; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; padding:9px 16px; cursor:pointer; margin-bottom:8px; transition:all 0.15s; display:block; width:100%; text-align:left; }
+  .detail-toggle:hover { background:rgba(220,255,79,0.08); border-color:var(--lime); color:var(--lime); }
   .detail-block { display:none; background:var(--surface); border:1px solid var(--border); padding:6px 18px; margin-bottom:8px; }
   .detail-block.open { display:block; }
   .working-line { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); padding:11px 0; gap:16px; }
@@ -276,7 +276,7 @@
     </div>
 
     <div class="section-divider">How we calculate this estimate</div>
-    <button class="detail-toggle" id="tog-a" onclick="toggleDetail('detail-a','tog-a')">+ Full working — Model A, saving, Model B, payback</button>
+    <button class="detail-toggle" id="tog-a" onclick="toggleDetail('detail-a','tog-a')">+ Show full working — Model A cost, SSC saving, Gallup triangulation</button>
     <div class="detail-block" id="detail-a"></div>
 
 
@@ -292,7 +292,7 @@
         </div>
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
           <input type="checkbox" id="cta-sendreport" style="width:18px;height:18px;cursor:pointer;accent-color:var(--black);">
-          <label for="cta-sendreport" style="font-family:'GothamBook',Arial,sans-serif;font-size:0.82rem;color:var(--black);cursor:pointer;">Send me this report by email</label>
+          <label for="cta-sendreport" style="font-family:'GothamBook',Arial,sans-serif;font-size:0.82rem;color:var(--black);cursor:pointer;">Send my report as an attachment — SSC will email it to you within one working day</label>
         </div>
         <button onclick="submitCTA()" style="background:var(--black);color:var(--lime);font-family:'GothamMedium',Arial,sans-serif;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;padding:14px 32px;border:none;cursor:pointer;">Send</button>
         <div id="cta-confirm" style="display:none;font-family:'GothamBook',Arial,sans-serif;font-size:0.82rem;color:var(--black);margin-top:12px;">Thanks — we will be in touch within 3 working days.</div>
@@ -546,16 +546,16 @@ function generateReport() {
     .pr-page:last-child { page-break-after:avoid; }
 
     /* COVER */
-    .pr-cover { 
-      background-image:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6a27713a93b9ce172dc42f29/1780969789480/Calculator+Report+Out+Front+Page.001.png') !important;
-      background-size:cover !important; background-position:center top !important; background-repeat:no-repeat !important;
-      min-height:257mm; display:flex; flex-direction:column; justify-content:flex-end; padding:0; margin:0;
-      page-break-after:always;
+    .pr-cover {
+      position:relative; min-height:257mm; display:flex; flex-direction:column;
+      justify-content:flex-end; padding:0; margin:0; overflow:hidden;
+      page-break-after:always; background:#111 !important;
     }
-    .pr-cover-head { display:flex; align-items:flex-start; justify-content:space-between; padding:12mm 16mm 0; position:absolute; top:0; left:0; right:0; }
+    .pr-cover-img { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position:center top; display:block; z-index:0; }
+    .pr-cover-head { position:absolute; top:0; left:0; right:0; display:flex; align-items:flex-start; justify-content:space-between; padding:12mm 16mm 0; z-index:2; }
+    .pr-cover-body { position:relative; z-index:2; padding:0 16mm 14mm; }
     .pr-wm { width:32mm; height:auto; }
     .pr-cover-tag { font-family:'GothamMedium',Arial,sans-serif; font-size:6.5pt; letter-spacing:0.16em; text-transform:uppercase; color:rgba(255,255,255,0.5) !important; text-align:right; line-height:1.6; }
-    .pr-cover-body { padding:0 16mm 14mm; }
     .pr-cover-org { font-family:'GothamMedium',Arial,sans-serif; font-size:7.5pt; letter-spacing:0.16em; text-transform:uppercase; color:#DCFF4F !important; margin-bottom:4mm; }
     .pr-cover-title { font-family:'DrukTextBold',Arial,sans-serif; font-size:42pt; line-height:0.9; color:#ffffff !important; text-transform:uppercase; margin-bottom:6mm; letter-spacing:0.01em; }
     .pr-cover-sub { font-family:'GothamLight',Arial,sans-serif; font-size:10.5pt; color:rgba(255,255,255,0.7) !important; line-height:1.55; max-width:130mm; margin-bottom:8mm; }
@@ -613,7 +613,8 @@ function generateReport() {
     .page2-wrap { padding:0 0; }
   </style></head><body>
 
-  <div class="pr-page pr-cover" style="position:relative;">
+  <div class="pr-page pr-cover">
+    <img class="pr-cover-img" src="https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6a27713a93b9ce172dc42f29/1780969789480/Calculator+Report+Out+Front+Page.001.png" alt="">
     <div class="pr-cover-head">
       <img class="pr-wm" src="${LOGO_WHITE}" alt="SSC">
       <div class="pr-cover-tag">SINGLE SESSION COACHING<br>SINGLESESSION.ONLINE</div>
