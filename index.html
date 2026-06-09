@@ -163,6 +163,7 @@
 
   .working-divider { font-family:'GothamMedium',Arial,sans-serif; font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); padding:10px 0 6px; border-top:1px solid var(--border); margin-top:4px; }
 </style>
+<script src="https://unpkg.com/@botpoison/browser" async></script>
 </head>
 <body>
 <div class="page"><a id="top" style="position:absolute;top:0;left:0;"></a>
@@ -331,7 +332,7 @@ let lastCalc = {};
 const COST_LOW_USD = 1500, COST_HIGH_USD = 7500;
 
 // FORMSPREE — replace YOUR_FORM_ID with your actual Formspree form ID
-const FORMSPREE_ID = 'xblgrgyv';
+const FORMSPARK_URL = 'https://submit-form.com/ObpfIN0LX';
 
 async function fetchRates() {
   try {
@@ -871,8 +872,17 @@ async function submitCTA() {
   const c          = lastCalc;
   const sym        = c.sym || '$';
   if (!email) { alert('Please enter your work email.'); return; }
+
+  // Botpoison challenge — runs silently, catches bots
+  let botpoisonSolution = '';
   try {
-    await fetch('https://formspree.io/f/xblgrgyv', {
+    const bp = new window.Botpoison({ publicKey: 'pk_5641d95b-5aaa-4763-b124-e3b7e4375e63' });
+    const { solution } = await bp.challenge();
+    botpoisonSolution = solution;
+  } catch(e) { console.log('Botpoison error', e); }
+
+  try {
+    await fetch(FORMSPARK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -881,13 +891,14 @@ async function submitCTA() {
         send_report: sendReport ? 'Yes' : 'No',
         headcount:   c.headcount || '—',
         currency:    c.currency  || '—',
-        cost_modelA: c.modelA  ? sym + fmtM(c.modelA)  : '—',
-        saving:      c.saving   ? sym + fmtM(c.saving)  : '—',
+        cost_modelA: c.modelA    ? sym + fmtM(c.modelA)   : '—',
+        saving:      c.saving    ? sym + fmtM(c.saving)   : '—',
         gallup:      c.gallupCost ? sym + fmtM(c.gallupCost) : '—',
-        _subject:    'SSC Calculator — ' + (name || email)
+        _botpoison:  botpoisonSolution
       })
     });
-  } catch(e) { console.log('CTA form error', e); }
+  } catch(e) { console.log('Form error', e); }
+
   document.getElementById('cta-confirm').style.display = 'block';
   document.getElementById('cta-name').value         = '';
   document.getElementById('cta-email').value        = '';
