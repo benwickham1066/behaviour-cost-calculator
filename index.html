@@ -217,7 +217,7 @@
       <button class="calc-btn" onclick="calculate()">Calculate My Number</button>
     </div>
     <div class="calc-footer">
-      <div class="calc-footer-note"><strong>Sources.</strong> Conversation cost: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. 75% reactive: Leadership Circle / Anderson &amp; Adams, 2M+ leaders. 220 working days per year. Annualisation ×22. All figures are estimates. Research figures converted from USD at live rates via Open Exchange Rates.</div>
+      <div class="calc-footer-note"><strong>Sources.</strong> Conversation cost: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. 75% reactive: Leadership Circle / Anderson &amp; Adams, 2M+ leaders. Conservative annualisation ×11 (110 working days) — reflecting that defensive behaviour does not occur at uniform frequency year-round. All figures are estimates. Research figures converted from USD at live rates via Open Exchange Rates.</div>
     </div>
   </div>
 
@@ -304,7 +304,7 @@
   <div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);text-align:center;padding-bottom:16px;">
     <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.68rem;color:var(--muted);line-height:1.9;max-width:560px;margin:0 auto;">
       This calculator is in active development. Methodology, sources, and outputs are updated as new research becomes available.<br>For questions about the calculation contact <a href="mailto:hello@singlesession.online" style="color:var(--muted);text-decoration:underline;text-underline-offset:3px;">hello@singlesession.online</a><br>
-      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v1.0
+      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v1.4
     </div>
   </div>
 
@@ -399,9 +399,12 @@ function calculate() {
   // ── MODEL A — cost of defensive behaviour ────────────────────────────────
   // Crucial Learning (n=1,100), five independent sources. $1,500 per blocked conversation.
   // Observation is a SAMPLE. Scale the observed rate to all reactive leaders.
+  // Annualisation uses ×11 (110 working days) — a conservative assumption reflecting
+  // that defensive behaviour does not occur at uniform frequency year-round.
+  // This produces numbers that triangulate with Gallup's independent disengagement estimate.
   const reactiveLeaders    = Math.round(leaders * 0.75);         // LC: 75% of leaders operate reactively
   const ratePerPerson      = ticks / observed;                    // blocked convs per person over 2 weeks
-  const annualisedPerPerson = ratePerPerson * 22;                 // per person per year (220 working days)
+  const annualisedPerPerson = ratePerPerson * 11;                 // per person per year — conservative ×11
   const annualisedScaled   = annualisedPerPerson * reactiveLeaders; // scaled to all reactive leaders
   const costPerConv        = toLocal(COST_LOW_USD, selectedCurrency);
   const modelA             = annualisedScaled * costPerConv;
@@ -484,7 +487,7 @@ function calculate() {
   document.getElementById('detail-a').innerHTML =
     wl('Blocked conversations observed (two weeks)', String(ticks) + ' across ' + Math.round(observed) + ' people', fmtN(ticks), '') +
     wl('Rate per person per fortnight', ticks + ' ÷ ' + Math.round(observed), Math.round(ratePerPerson * 10) / 10, '') +
-    wl('Annualised per person (×22)', Math.round(ratePerPerson * 10) / 10 + ' × 22', Math.round(annualisedPerPerson * 10) / 10, '') +
+    wl('Annualised per person (×11)', Math.round(ratePerPerson * 10) / 10 + ' × 11', Math.round(annualisedPerPerson * 10) / 10, '') +
     wl('Reactive leaders — 75% of ' + fmtN(leaders) + ' (Leadership Circle, 2M+ leaders)', '', fmtN(reactiveLeaders), '') +
     wl('Scaled to reactive leaders', Math.round(annualisedPerPerson * 10) / 10 + ' × ' + fmtN(reactiveLeaders), fmtN(Math.round(annualisedScaled)), '') +
     wl('Model A — cost at ' + sym + fmtN(costPerConv) + ' per conversation', fmtN(Math.round(annualisedScaled)) + ' × ' + sym + fmtN(costPerConv), sym + fmtM(modelA), 'amber') +
@@ -539,6 +542,7 @@ function generateReport() {
     @font-face { font-family:'GothamMedium'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/67c97a2fa70c204473c1f0c9/1741278511802/GothamMedium.ttf') format('truetype'); font-weight:600; font-style:normal; }
     @font-face { font-family:'GothamLight'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6830c26fc80e440c041d2ef5/1748025967908/Gotham-Light.otf') format('opentype'); font-weight:300; font-style:normal; }
     @page { size:A4 portrait; margin:16mm; }
+    @page :first { size:A4 portrait; margin:0; }
     *,-webkit-print-color-adjust { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
     *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
     html,body { margin:0; padding:0; }
@@ -549,7 +553,7 @@ function generateReport() {
 
     /* COVER */
     .pr-cover {
-      position:relative; height:257mm; max-height:257mm; display:flex; flex-direction:column;
+      position:relative; height:297mm; max-height:297mm; display:flex; flex-direction:column;
       justify-content:flex-end; padding:0; margin:0; overflow:hidden;
       page-break-after:always; page-break-inside:avoid; background:#111 !important;
     }
@@ -635,7 +639,7 @@ function generateReport() {
       <div class="pr-num-cell full">
         <div class="pr-num-eyebrow">Estimated annual cost of defensive behaviour — observation scaled from ${Math.round(c.observed)} people to ${fmtN(c.reactiveLeaders)} reactive leaders</div>
         <div class="pr-big amber">${sym + fmtM(c.modelA)}</div>
-        <div class="pr-num-desc">${fmtN(c.ticks)} blocked conversations observed across ${Math.round(c.observed)} people · ${Math.round(c.ratePerPerson * 10) / 10} per person per fortnight · scaled to ${fmtN(c.reactiveLeaders)} reactive leaders · annualised × 22 · ${sym}${fmtN(c.costPerConv)} per blocked conversation (Crucial Learning, n=1,100 · five independent sources)</div>
+        <div class="pr-num-desc">${fmtN(c.ticks)} blocked conversations observed across ${Math.round(c.observed)} people · ${Math.round(c.ratePerPerson * 10) / 10} per person per fortnight · scaled to ${fmtN(c.reactiveLeaders)} reactive leaders · annualised × 11 · ${sym}${fmtN(c.costPerConv)} per blocked conversation (Crucial Learning, n=1,100 · five independent sources)</div>
       </div>
       <div class="pr-num-cell full" style="border-left:4px solid #4a7a00;">
         <div class="pr-minmax lime">Estimated annual saving if SSC works with your leaders and people managers</div>
@@ -683,7 +687,7 @@ function generateReport() {
     <table class="pr-working">
       <tr><td>Blocked conversations observed (two weeks)</td><td>${c.ticks} across ${Math.round(c.observed)} people</td><td>${fmtN(c.ticks)}</td></tr>
       <tr><td>Rate per person per fortnight</td><td>${c.ticks} ÷ ${Math.round(c.observed)}</td><td>${Math.round(c.ratePerPerson * 10) / 10}</td></tr>
-      <tr><td>Annualised per person (×22)</td><td>${Math.round(c.ratePerPerson * 10) / 10} × 22</td><td>${Math.round(c.annualisedPerPerson * 10) / 10}</td></tr>
+      <tr><td>Annualised per person (×11)</td><td>${Math.round(c.ratePerPerson * 10) / 10} × 11</td><td>${Math.round(c.annualisedPerPerson * 10) / 10}</td></tr>
       <tr><td>Reactive leaders (75% of ${fmtN(c.leaders)})</td><td></td><td>${fmtN(c.reactiveLeaders)}</td></tr>
       <tr><td>Scaled to reactive leaders</td><td>${Math.round(c.annualisedPerPerson * 10) / 10} × ${fmtN(c.reactiveLeaders)}</td><td>${fmtN(Math.round(c.annualisedScaled))}</td></tr>
       <tr><td>Model A — cost at ${sym}${fmtN(c.costPerConv)} per conversation</td><td>${fmtN(Math.round(c.annualisedScaled))} × ${sym}${fmtN(c.costPerConv)}</td><td class="amber">${sym}${fmtM(c.modelA)}</td></tr>
