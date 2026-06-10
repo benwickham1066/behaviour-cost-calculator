@@ -255,6 +255,44 @@
       <button class="action-btn" onclick="printScorecard()">↓ Download Observation Scorecard</button>
     </div>
 
+    <!-- ADJUST THE ASSUMPTIONS -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--lime);margin-bottom:28px;">
+      <button id="adj-toggle" onclick="toggleAssumptions()" style="width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px;">
+        <span style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--lime);">Adjust the assumptions — set your own figures</span>
+        <span id="adj-chev" style="font-family:'GothamMedium',Arial,sans-serif;font-size:1rem;color:var(--lime);line-height:1;">+</span>
+      </button>
+      <div id="adj-body" style="display:none;padding:4px 22px 26px;">
+        <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.82rem;color:var(--white);line-height:1.7;margin-bottom:24px;border-top:1px solid var(--border);padding-top:20px;">Every assumption behind this number is shown below — and every one is yours to change. We are not asking you to accept our figures. We are asking whether the case still holds when you set them to your own. Change any value and the numbers above update instantly. If it still stands when the dials are yours, there is something here worth doing together.</div>
+
+        <div class="calc-field" style="margin-bottom:20px;">
+          <label>Annualisation factor (×)</label>
+          <input type="number" id="adj-annual" value="22" min="1" step="1" inputmode="numeric" oninput="liveRecalc()">
+          <div class="field-note">Scales your two-week observation to a full year. ×22 assumes the rate you observed holds across all 220 working days. Lower it if the fortnight you watched ran hotter than a normal one — ×11 assumes it holds for only half the year. <strong style="color:var(--white);">SSC default: ×22.</strong></div>
+        </div>
+
+        <div class="calc-field" style="margin-bottom:20px;">
+          <label>Recovery rate (%)</label>
+          <input type="number" id="adj-recovery" value="70" min="0" max="100" step="1" inputmode="numeric" oninput="liveRecalc()">
+          <div class="field-note">The share of the estimated cost SSC expects to remove. SSC recodes the one keystone behaviour driving the pattern; the downstream behaviours quieten once it stops being triggered. This is an SSC modelling assumption — so it is yours to challenge. <strong style="color:var(--white);">SSC default: 70%, deliberately conservative.</strong></div>
+        </div>
+
+        <div class="calc-field" style="margin-bottom:20px;">
+          <label>Reactive leaders (%)</label>
+          <input type="number" id="adj-reactive" value="75" min="0" max="100" step="1" inputmode="numeric" oninput="liveRecalc()">
+          <div class="field-note">The share of your leaders who operate reactively — the population this cost is scaled across. This is not our figure to set: it is Leadership Circle's, measured across more than two million leaders. Lower it only if you have reason to believe your leadership runs below the global average. <strong style="color:var(--white);">Default: 75% (Leadership Circle / Anderson &amp; Adams).</strong></div>
+        </div>
+
+        <div class="calc-field" style="margin-bottom:22px;">
+          <label>Cost per blocked conversation (<span id="adj-cost-sym">$</span>)</label>
+          <input type="number" id="adj-cost" value="1500" min="0" step="50" inputmode="numeric" oninput="costEdited();liveRecalc()">
+          <div class="field-note">What one stalled or avoided conversation costs you. The default is the conservative floor across five independent sources. If your own cost of a delayed decision is higher, set it here. <strong style="color:var(--white);">SSC default: <span id="adj-cost-def">$1,500</span> at today's live rate.</strong></div>
+        </div>
+
+        <button onclick="resetAssumptions()" style="background:none;border:1px solid var(--border);color:var(--muted);font-family:'GothamMedium',Arial,sans-serif;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;padding:10px 20px;cursor:pointer;transition:all 0.15s;">↺ Reset to SSC defaults</button>
+      </div>
+    </div>
+
+
     <!-- PANEL 4 — OBSERVATION RATE -->
     <div id="gold-obs-block" style="display:none;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--lime);padding:20px 22px;margin-bottom:28px;">
       <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--lime);margin-bottom:8px;">Your observation — what the data shows</div>
@@ -304,7 +342,7 @@
   <div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);text-align:center;padding-bottom:16px;">
     <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.68rem;color:var(--muted);line-height:1.9;max-width:560px;margin:0 auto;">
       This calculator is in active development. Methodology, sources, and outputs are updated as new research becomes available.<br>For questions about the calculation contact <a href="mailto:hello@singlesession.online" style="color:var(--muted);text-decoration:underline;text-underline-offset:3px;">hello@singlesession.online</a><br>
-      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v1.7
+      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v1.8
     </div>
   </div>
 
@@ -345,11 +383,13 @@ async function fetchRates() {
       const salLbl = document.getElementById('sal-lbl');
     if (salLbl) salLbl.textContent = selectedSymbol;
     updateCostStrip();
+    setCostDefault();
     }
   } catch(e) {
     rates = { EUR:0.92, GBP:0.79, USD:1, AUD:1.53, SGD:1.34 };
     document.getElementById('rate-note').textContent = 'Approximate rates';
     updateCostStrip();
+    setCostDefault();
   }
 }
 
@@ -368,6 +408,8 @@ document.querySelectorAll('.currency-btn').forEach(btn => {
     selectedSymbol   = btn.dataset.symbol;
     document.getElementById('sal-lbl').textContent = selectedSymbol;
     updateCostStrip();
+    setCostDefault();
+    liveRecalc();
   });
 });
 
@@ -379,6 +421,43 @@ document.getElementById('inp-headcount').addEventListener('input', function() {
 });
 
 
+
+let userEditedCost = false;
+function costEdited() { userEditedCost = true; }
+
+function toggleAssumptions() {
+  const body = document.getElementById('adj-body');
+  const chev = document.getElementById('adj-chev');
+  const open = (body.style.display === 'none' || !body.style.display);
+  body.style.display = open ? 'block' : 'none';
+  chev.textContent = open ? '−' : '+';
+}
+
+function liveRecalc() {
+  // Re-run only once a calculation already exists (Screen 2 visible) so we never trip validation.
+  if (document.getElementById('screen-2').style.display === 'block') calculate();
+}
+
+function setCostDefault() {
+  const symEl = document.getElementById('adj-cost-sym');
+  const defEl = document.getElementById('adj-cost-def');
+  const localDefault = Math.round(toLocal(COST_LOW_USD, selectedCurrency));
+  if (symEl) symEl.textContent = selectedSymbol;
+  if (defEl) defEl.textContent = selectedSymbol + fmtN(localDefault);
+  if (!userEditedCost) {
+    const el = document.getElementById('adj-cost');
+    if (el) el.value = localDefault;
+  }
+}
+
+function resetAssumptions() {
+  document.getElementById('adj-annual').value   = 22;
+  document.getElementById('adj-recovery').value = 70;
+  document.getElementById('adj-reactive').value = 75;
+  userEditedCost = false;
+  setCostDefault();
+  liveRecalc();
+}
 
 function calculate() {
   const ticks     = parseFloat(document.getElementById('inp-ticks').value)    || 0;
@@ -401,16 +480,29 @@ function calculate() {
   // Observation is a SAMPLE. Scale the observed rate to all reactive leaders.
   // Annualisation uses ×22 (220 working days) — standard working year.
   // Conservatism is applied through the $1,500 floor and 70% recovery rate, not the annualisation.
-  const reactiveLeaders    = Math.round(leaders * 0.75);         // LC: 75% of leaders operate reactively
-  const ratePerPerson      = ticks / observed;                    // blocked convs per person over 2 weeks
-  const annualisedPerPerson = ratePerPerson * 22;                 // per person per year — 220 working days
-  const annualisedScaled   = annualisedPerPerson * reactiveLeaders; // scaled to all reactive leaders
-  const costPerConv        = toLocal(COST_LOW_USD, selectedCurrency);
-  const modelA             = annualisedScaled * costPerConv;
+  // ── ADJUSTABLE ASSUMPTIONS (advanced panel) — default to canonical values ──
+  // Defaults: ×22 annualisation, 75% reactive (Leadership Circle), 70% recovery (SSC),
+  // $1,500 floor per conversation. A client may set any of these to their own figure.
+  const annualFactor = parseFloat(document.getElementById('adj-annual').value) || 22;
+  const reactivePctIn = parseFloat(document.getElementById('adj-reactive').value);
+  const reactiveRate  = (reactivePctIn >= 0 ? reactivePctIn : 75) / 100;
+  const recoveryPctIn = parseFloat(document.getElementById('adj-recovery').value);
+  const recoveryRate  = (recoveryPctIn >= 0 ? recoveryPctIn : 70) / 100;
+  const costFieldVal  = parseFloat(document.getElementById('adj-cost').value);
+  const costIsDefault = !userEditedCost;
+  const costPerConv   = (userEditedCost && costFieldVal > 0) ? costFieldVal : toLocal(COST_LOW_USD, selectedCurrency);
+  const reactivePct   = Math.round(reactiveRate * 100);
+  const recoveryPct   = Math.round(recoveryRate * 100);
 
-  // ── SAVING — Model A × 75% ───────────────────────────────────────────────
-  // SSC removes the cause. 70% is conservative — accounts for timing and variance.
-  const saving          = modelA * 0.70;
+  const reactiveLeaders     = Math.round(leaders * reactiveRate);    // share of leaders operating reactively
+  const ratePerPerson       = ticks / observed;                      // blocked convs per person over 2 weeks
+  const annualisedPerPerson = ratePerPerson * annualFactor;          // per person per year
+  const annualisedScaled    = annualisedPerPerson * reactiveLeaders; // scaled to all reactive leaders
+  const modelA              = annualisedScaled * costPerConv;
+
+  // ── SAVING — Model A × recovery rate ─────────────────────────────────────
+  // SSC removes the cause. Default 70% is conservative — accounts for timing and variance.
+  const saving          = modelA * recoveryRate;
   const savingPerLeader = reactiveLeaders > 0 ? saving / reactiveLeaders : 0;
 
   // ── GALLUP WEIGHTED TRIANGULATION ────────────────────────────────────────
@@ -436,6 +528,7 @@ function calculate() {
   lastCalc = { ticks, observed, headcount, salary, leaders, sym,
     costPerConv, ratePerPerson, annualisedPerPerson, annualisedScaled,
     modelA, saving, savingPerLeader,
+    annualFactor, reactivePct, recoveryPct, costIsDefault,
     reactiveLeaders, observationRate,
     payroll, gallupNotEngaged, gallupActivelyDis,
     gallupNotEngagedCost, gallupActiveCost, gallupCost, gallupPct,
@@ -444,11 +537,11 @@ function calculate() {
   // ── DISPLAY — Model A cost ───────────────────────────────────────────────
   s('r-cost-eyebrow', 'Estimated annual cost of defensive behaviour across your ' + fmtN(reactiveLeaders) + ' reactive leaders — scaled from your two-week observation');
   s('r-cost-num',  sym + fmtM(modelA));
-  s('r-cost-desc', fmtN(ticks) + ' blocked conversations observed across ' + Math.round(observed) + ' people over two weeks · ' + Math.round(ratePerPerson * 10) / 10 + ' per person per fortnight · scaled to ' + fmtN(reactiveLeaders) + ' reactive leaders · annualised · ' + sym + fmtN(costPerConv) + ' per blocked conversation (Crucial Learning, n=1,100)');
+  s('r-cost-desc', fmtN(ticks) + ' blocked conversations observed across ' + Math.round(observed) + ' people over two weeks · ' + Math.round(ratePerPerson * 10) / 10 + ' per person per fortnight · scaled to ' + fmtN(reactiveLeaders) + ' reactive leaders · annualised ×' + annualFactor + ' · ' + sym + fmtN(costPerConv) + ' per blocked conversation (Crucial Learning, n=1,100)');
 
   // ── DISPLAY — Saving ─────────────────────────────────────────────────────
   s('r-saving-num',  sym + fmtM(saving));
-  s('r-saving-desc', 'Estimated annual saving if SSC works with your leaders and people managers — based on 70% recovery of the estimated annual cost of defensive behaviour. Annual saving per reactive leader: ' + sym + fmtN(Math.round(savingPerLeader)) + '.');
+  s('r-saving-desc', 'Estimated annual saving if SSC works with your leaders and people managers — based on ' + recoveryPct + '% recovery of the estimated annual cost of defensive behaviour. Annual saving per reactive leader: ' + sym + fmtN(Math.round(savingPerLeader)) + '.');
 
   // ── DISPLAY — Per-leader return ───────────────────────────────────────────
   document.getElementById('r-payback-block').style.display = 'block';
@@ -488,11 +581,11 @@ function calculate() {
   document.getElementById('detail-a').innerHTML =
     wl('Blocked conversations observed (two weeks)', String(ticks) + ' across ' + Math.round(observed) + ' people', fmtN(ticks), '') +
     wl('Rate per person per fortnight', ticks + ' ÷ ' + Math.round(observed), Math.round(ratePerPerson * 10) / 10, '') +
-    wl('Annualised per person (×22)', Math.round(ratePerPerson * 10) / 10 + ' × 22', Math.round(annualisedPerPerson * 10) / 10, '') +
-    wl('Reactive leaders — 75% of ' + fmtN(leaders) + ' (Leadership Circle, 2M+ leaders)', '', fmtN(reactiveLeaders), '') +
+    wl('Annualised per person (×' + annualFactor + ')', Math.round(ratePerPerson * 10) / 10 + ' × ' + annualFactor, Math.round(annualisedPerPerson * 10) / 10, '') +
+    wl('Reactive leaders — ' + reactivePct + '% of ' + fmtN(leaders) + ' (default 75%, Leadership Circle)', '', fmtN(reactiveLeaders), '') +
     wl('Scaled to reactive leaders', Math.round(annualisedPerPerson * 10) / 10 + ' × ' + fmtN(reactiveLeaders), fmtN(Math.round(annualisedScaled)), '') +
     wl('Model A — cost at ' + sym + fmtN(costPerConv) + ' per conversation', fmtN(Math.round(annualisedScaled)) + ' × ' + sym + fmtN(costPerConv), sym + fmtM(modelA), 'amber') +
-    wl('SSC estimated saving (Model A × 70%)', sym + fmtM(modelA) + ' × 70%', sym + fmtM(saving), 'lime') +
+    wl('SSC estimated saving (Model A × ' + recoveryPct + '%)', sym + fmtM(modelA) + ' × ' + recoveryPct + '%', sym + fmtM(saving), 'lime') +
     wl('Annual saving per reactive leader', sym + fmtM(saving) + ' ÷ ' + fmtN(reactiveLeaders), sym + fmtN(Math.round(savingPerLeader)), 'lime') +
     '<div class="working-divider">Gallup independent context — disengagement cost across whole workforce</div>' +
     wl('Not engaged (' + fmtN(gallupNotEngaged) + ' people, 64%) × 5% salary cost', fmtN(gallupNotEngaged) + ' × ' + sym + fmtN(salary) + ' × 5%', sym + fmtM(gallupNotEngagedCost), '') +
@@ -639,12 +732,12 @@ function generateReport() {
       <div class="pr-num-cell full">
         <div class="pr-num-eyebrow">Estimated annual cost of defensive behaviour — observation scaled from ${Math.round(c.observed)} people to ${fmtN(c.reactiveLeaders)} reactive leaders</div>
         <div class="pr-big amber">${sym + fmtM(c.modelA)}</div>
-        <div class="pr-num-desc">${fmtN(c.ticks)} blocked conversations observed across ${Math.round(c.observed)} people · ${Math.round(c.ratePerPerson * 10) / 10} per person per fortnight · scaled to ${fmtN(c.reactiveLeaders)} reactive leaders · annualised × 22 · ${sym}${fmtN(c.costPerConv)} per blocked conversation (Crucial Learning, n=1,100 · five independent sources)</div>
+        <div class="pr-num-desc">${fmtN(c.ticks)} blocked conversations observed across ${Math.round(c.observed)} people · ${Math.round(c.ratePerPerson * 10) / 10} per person per fortnight · scaled to ${fmtN(c.reactiveLeaders)} reactive leaders · annualised × ${c.annualFactor} · ${sym}${fmtN(c.costPerConv)} per blocked conversation (Crucial Learning, n=1,100 · five independent sources)</div>
       </div>
       <div class="pr-num-cell full" style="border-left:4px solid #4a7a00;">
         <div class="pr-minmax lime">Estimated annual saving if SSC works with your leaders and people managers</div>
         <div class="pr-big lime">${sym + fmtM(c.saving)}</div>
-        <div class="pr-num-desc">Model A × 70% recovery. SSC removes the defensive behaviour at the pattern level — not managing its consequences, but eliminating the cause. 70% is a conservative recovery assumption. Annual saving per reactive leader: ${sym}${fmtN(Math.round(c.savingPerLeader))}.</div>
+        <div class="pr-num-desc">Model A × ${c.recoveryPct}% recovery. SSC removes the defensive behaviour at the pattern level — not managing its consequences, but eliminating the cause. ${c.recoveryPct === 70 ? '70% is a conservative recovery assumption.' : 'Recovery rate set by you; SSC\u2019s conservative default is 70%.'} Annual saving per reactive leader: ${sym}${fmtN(Math.round(c.savingPerLeader))}.</div>
       </div>
     </div>
 
@@ -676,7 +769,10 @@ function generateReport() {
       <tr><td>Organisation</td><td>${orgName || '—'}</td></tr>
       <tr><td>Total headcount</td><td>${fmtN(c.headcount)}</td></tr>
       <tr><td>People leaders</td><td>${fmtN(c.leaders)}</td></tr>
-      <tr><td>Reactive leaders (75%)</td><td>${fmtN(c.reactiveLeaders)}</td></tr>
+      <tr><td>Reactive leaders (${c.reactivePct}%${c.reactivePct === 75 ? ', default' : ', adjusted from 75%'})</td><td>${fmtN(c.reactiveLeaders)}</td></tr>
+      <tr><td>Annualisation factor</td><td>×${c.annualFactor}${c.annualFactor === 22 ? ' (SSC default)' : ' (adjusted from ×22)'}</td></tr>
+      <tr><td>Recovery rate</td><td>${c.recoveryPct}%${c.recoveryPct === 70 ? ' (SSC default)' : ' (adjusted from 70%)'}</td></tr>
+      <tr><td>Cost per blocked conversation</td><td>${sym}${fmtN(c.costPerConv)}${c.costIsDefault ? ' ($1,500 floor at live rate)' : ' (set by you)'}</td></tr>
       <tr><td>Average annual salary</td><td>${sym}${fmtN(c.salary)}</td></tr>
       <tr><td>Blocked conversations observed</td><td>${c.ticks} across ${Math.round(c.observed)} people over two working weeks</td></tr>
       <tr><td>Observed rate per person</td><td>${Math.round(c.ratePerPerson * 10) / 10} per fortnight · ${Math.round(c.annualisedPerPerson * 10) / 10} annualised</td></tr>
@@ -687,11 +783,11 @@ function generateReport() {
     <table class="pr-working">
       <tr><td>Blocked conversations observed (two weeks)</td><td>${c.ticks} across ${Math.round(c.observed)} people</td><td>${fmtN(c.ticks)}</td></tr>
       <tr><td>Rate per person per fortnight</td><td>${c.ticks} ÷ ${Math.round(c.observed)}</td><td>${Math.round(c.ratePerPerson * 10) / 10}</td></tr>
-      <tr><td>Annualised per person (×22)</td><td>${Math.round(c.ratePerPerson * 10) / 10} × 22</td><td>${Math.round(c.annualisedPerPerson * 10) / 10}</td></tr>
-      <tr><td>Reactive leaders (75% of ${fmtN(c.leaders)})</td><td></td><td>${fmtN(c.reactiveLeaders)}</td></tr>
+      <tr><td>Annualised per person (×${c.annualFactor})</td><td>${Math.round(c.ratePerPerson * 10) / 10} × ${c.annualFactor}</td><td>${Math.round(c.annualisedPerPerson * 10) / 10}</td></tr>
+      <tr><td>Reactive leaders (${c.reactivePct}% of ${fmtN(c.leaders)})</td><td></td><td>${fmtN(c.reactiveLeaders)}</td></tr>
       <tr><td>Scaled to reactive leaders</td><td>${Math.round(c.annualisedPerPerson * 10) / 10} × ${fmtN(c.reactiveLeaders)}</td><td>${fmtN(Math.round(c.annualisedScaled))}</td></tr>
       <tr><td>Model A — cost at ${sym}${fmtN(c.costPerConv)} per conversation</td><td>${fmtN(Math.round(c.annualisedScaled))} × ${sym}${fmtN(c.costPerConv)}</td><td class="amber">${sym}${fmtM(c.modelA)}</td></tr>
-      <tr><td>SSC estimated saving (Model A × 70%)</td><td>${sym}${fmtM(c.modelA)} × 70%</td><td class="lime">${sym}${fmtM(c.saving)}</td></tr>
+      <tr><td>SSC estimated saving (Model A × ${c.recoveryPct}%)</td><td>${sym}${fmtM(c.modelA)} × ${c.recoveryPct}%</td><td class="lime">${sym}${fmtM(c.saving)}</td></tr>
       <tr><td>Annual saving per reactive leader</td><td>${sym}${fmtM(c.saving)} ÷ ${fmtN(c.reactiveLeaders)}</td><td class="lime">${sym}${fmtN(Math.round(c.savingPerLeader))}</td></tr>
       <tr><td colspan="3" style="font-size:7pt;letter-spacing:0.12em;text-transform:uppercase;color:#aaa;padding-top:4mm;padding-bottom:1mm;">Gallup weighted triangulation — independent corroboration</td></tr>
       <tr><td>Not engaged (${fmtN(c.gallupNotEngaged)} people, 64%) × 5% salary cost</td><td>${fmtN(c.gallupNotEngaged)} × ${sym}${fmtN(c.salary)} × 5%</td><td>${sym}${fmtM(c.gallupNotEngagedCost)}</td></tr>
