@@ -203,7 +203,7 @@
       <div class="calc-title">— Calculate Your Number —</div>
       <div class="calc-intro">Enter your inputs below. All outputs are estimates based on published research and your observed data. No salary or revenue data required.</div>
       <div class="inputs-grid">
-        <div class="calc-field"><label>Total defensive behaviours observed</label><input type="number" id="inp-ticks" placeholder="e.g. 18" min="0" inputmode="numeric"><div class="field-note">Your two-week total from the scorecard — all behaviours, all marks combined</div></div>
+        <div class="calc-field"><label>Total blocked conversations observed</label><input type="number" id="inp-ticks" placeholder="e.g. 18" min="0" inputmode="numeric"><div class="field-note">Your two-week total from the scorecard — all behaviours, all marks combined</div></div>
         <div class="calc-field"><label>People you observed</label><input type="number" id="inp-observed" placeholder="e.g. 8" min="1" inputmode="numeric"><div class="field-note">How many people did you watch over two weeks?</div></div>
         <div class="calc-field"><label>Total org headcount</label><input type="number" id="inp-headcount" placeholder="e.g. 1000" min="1" inputmode="numeric"><div class="field-note">Total number of people in your organisation</div></div>
         <div class="calc-field"><label>Average annual salary (<span id="sal-lbl">$</span>)</label><input type="number" id="inp-salary" placeholder="e.g. 65000" min="1" inputmode="numeric"><div class="field-note">Used to calculate the cost of reactive leadership</div></div>
@@ -304,7 +304,7 @@
   <div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);text-align:center;padding-bottom:16px;">
     <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.68rem;color:var(--muted);line-height:1.9;max-width:560px;margin:0 auto;">
       This calculator is in active development. Methodology, sources, and outputs are updated as new research becomes available.<br>For questions about the calculation contact <a href="mailto:hello@singlesession.online" style="color:var(--muted);text-decoration:underline;text-underline-offset:3px;">hello@singlesession.online</a><br>
-      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v1.7
+      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v1.0
     </div>
   </div>
 
@@ -331,7 +331,7 @@ let selectedSymbol   = '$';
 let lastCalc = {};
 const COST_LOW_USD = 1500, COST_HIGH_USD = 7500;
 
-// FORMSPREE — replace YOUR_FORM_ID with your actual Formspree form ID
+// Formspark endpoint — EU-based, GDPR compliant
 const FORMSPARK_URL = 'https://submit-form.com/ObpfIN0LX';
 
 async function fetchRates() {
@@ -876,15 +876,15 @@ async function submitCTA() {
   const sym        = c.sym || '$';
   if (!email) { alert('Please enter your work email.'); return; }
 
-  // Botpoison challenge — runs silently, catches bots
+  // Botpoison disabled temporarily for testing — re-enable once form is confirmed working
   let botpoisonSolution = '';
-  try {
-    if (window.Botpoison) {
-      const bp = new window.Botpoison({ publicKey: 'pk_5641d95b-5aaa-4763-b124-e3b7e4375e63' });
-      const { solution } = await bp.challenge();
-      botpoisonSolution = solution;
-    }
-  } catch(e) { console.log('Botpoison error:', e); }
+  // try {
+  //   if (window.Botpoison) {
+  //     const bp = new window.Botpoison({ publicKey: 'pk_5641d95b-5aaa-4763-b124-e3b7e4375e63' });
+  //     const { solution } = await bp.challenge();
+  //     botpoisonSolution = solution;
+  //   }
+  // } catch(e) { console.log('Botpoison error:', e); }
 
   try {
     const response = await fetch(FORMSPARK_URL, {
@@ -901,8 +901,7 @@ async function submitCTA() {
         currency:    c.currency  || '—',
         cost_modelA: c.modelA    ? sym + fmtM(c.modelA)   : '—',
         saving:      c.saving    ? sym + fmtM(c.saving)   : '—',
-        gallup:      c.gallupCost ? sym + fmtM(c.gallupCost) : '—',
-        _botpoison:  botpoisonSolution
+        gallup:      c.gallupCost ? sym + fmtM(c.gallupCost) : '—'
       })
     });
     console.log('Formspark response status:', response.status, response.statusText);
