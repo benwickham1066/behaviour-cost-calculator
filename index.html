@@ -203,7 +203,7 @@
       <div class="calc-title">— Calculate Your Number —</div>
       <div class="calc-intro">Enter your inputs below. All outputs are estimates based on published research and your observed data. No salary or revenue data required.</div>
       <div class="inputs-grid">
-        <div class="calc-field"><label>Total blocked conversations observed</label><input type="number" id="inp-ticks" placeholder="e.g. 18" min="0" inputmode="numeric"><div class="field-note">Your two-week total from the scorecard — all behaviours, all marks combined</div></div>
+        <div class="calc-field"><label>Total defensive behaviours observed</label><input type="number" id="inp-ticks" placeholder="e.g. 18" min="0" inputmode="numeric"><div class="field-note">Your two-week total from the scorecard — all behaviours, all marks combined</div></div>
         <div class="calc-field"><label>People you observed</label><input type="number" id="inp-observed" placeholder="e.g. 8" min="1" inputmode="numeric"><div class="field-note">How many people did you watch over two weeks?</div></div>
         <div class="calc-field"><label>Total org headcount</label><input type="number" id="inp-headcount" placeholder="e.g. 1000" min="1" inputmode="numeric"><div class="field-note">Total number of people in your organisation</div></div>
         <div class="calc-field"><label>Average annual salary (<span id="sal-lbl">$</span>)</label><input type="number" id="inp-salary" placeholder="e.g. 65000" min="1" inputmode="numeric"><div class="field-note">Used to calculate the cost of reactive leadership</div></div>
@@ -264,7 +264,7 @@
 
     <!-- PANEL 5 — TRIANGULATION -->
     <div style="background:var(--surface);border:1px solid var(--border);padding:22px;margin-bottom:28px;">
-      <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Independent triangulation — Gallup &amp; McKinsey</div>
+      <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Independent context — Gallup disengagement cost across your whole workforce</div>
       <div style="font-family:'DrukTextBold',Arial,sans-serif;font-size:clamp(1.6rem,4vw,2.4rem);color:var(--white);line-height:1;text-transform:uppercase;margin-bottom:10px;" id="r-modelb-num">—</div>
       <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.75rem;color:var(--muted);line-height:1.6;" id="r-modelb-desc"></div>
     </div>
@@ -304,7 +304,7 @@
   <div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);text-align:center;padding-bottom:16px;">
     <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.68rem;color:var(--muted);line-height:1.9;max-width:560px;margin:0 auto;">
       This calculator is in active development. Methodology, sources, and outputs are updated as new research becomes available.<br>For questions about the calculation contact <a href="mailto:hello@singlesession.online" style="color:var(--muted);text-decoration:underline;text-underline-offset:3px;">hello@singlesession.online</a><br>
-      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v1.0
+      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v1.6
     </div>
   </div>
 
@@ -458,16 +458,17 @@ function calculate() {
   // ── DISPLAY — Gallup weighted triangulation ───────────────────────────────
   s('r-modelb-num', sym + fmtM(gallupCost));
   s('r-modelb-desc',
-    'Gallup (State of the Global Workplace, 2023): 80% of employees are not fully engaged — '
+    'This figure comes from a completely different methodology measuring a related but distinct problem. '
+    + 'Gallup (State of the Global Workplace, 2023) estimates that 80% of employees are not fully engaged — '
     + '64% not engaged, 16% actively disengaged. '
     + 'A weighted productivity loss model applied conservatively: '
     + fmtN(gallupNotEngaged) + ' not-engaged employees at 5% salary cost, plus '
     + fmtN(gallupActivelyDis) + ' actively disengaged at 18% salary cost (Gallup published figure), '
-    + 'produces a total estimated disengagement cost of ' + sym + fmtM(gallupCost)
-    + ' — approximately ' + gallupPct + '% of your total payroll. '
-    + 'Gallup measures disengagement across your whole workforce. Model A measures defensive behaviour concentrated in your reactive leaders only — a narrower, deeper estimate. '
-    + 'Where Gallup\'s whole-workforce figure exceeds Model A, that confirms our estimate is conservative by design. '
-    + 'McKinsey independently shows top-quartile leadership organisations deliver nearly three times the returns of bottom-quartile.'
+    + 'produces ' + sym + fmtM(gallupCost) + ' — approximately ' + gallupPct + '% of your total payroll. '
+    + 'Model A (' + sym + fmtM(modelA) + ') measures the cost of defensive behaviour concentrated in your ' + fmtN(reactiveLeaders) + ' reactive leaders — a specific, observed, leadership-level problem. '
+    + 'Gallup (' + sym + fmtM(gallupCost) + ') measures the cost of disengagement spread across your entire workforce — a broader, shallower estimate of a related symptom. '
+    + 'These two numbers are not designed to match. They measure different things. Together they establish that the cost of human behaviour in your organisation is significant by any methodology. '
+    + 'McKinsey independently shows top-quartile leadership organisations deliver nearly three times the returns of bottom-quartile — consistent with both estimates above.'
   );
 
   // ── DISPLAY — Observation rate ───────────────────────────────────────────
@@ -493,7 +494,7 @@ function calculate() {
     wl('Model A — cost at ' + sym + fmtN(costPerConv) + ' per conversation', fmtN(Math.round(annualisedScaled)) + ' × ' + sym + fmtN(costPerConv), sym + fmtM(modelA), 'amber') +
     wl('SSC estimated saving (Model A × 70%)', sym + fmtM(modelA) + ' × 70%', sym + fmtM(saving), 'lime') +
     wl('Annual saving per reactive leader', sym + fmtM(saving) + ' ÷ ' + fmtN(reactiveLeaders), sym + fmtN(Math.round(savingPerLeader)), 'lime') +
-    '<div class="working-divider">Gallup weighted triangulation — independent corroboration</div>' +
+    '<div class="working-divider">Gallup independent context — disengagement cost across whole workforce</div>' +
     wl('Not engaged (' + fmtN(gallupNotEngaged) + ' people, 64%) × 5% salary cost', fmtN(gallupNotEngaged) + ' × ' + sym + fmtN(salary) + ' × 5%', sym + fmtM(gallupNotEngagedCost), '') +
     wl('Actively disengaged (' + fmtN(gallupActivelyDis) + ' people, 16%) × 18% salary cost', fmtN(gallupActivelyDis) + ' × ' + sym + fmtN(salary) + ' × 18%', sym + fmtM(gallupActiveCost), '') +
     wl('Total Gallup weighted disengagement cost', '', sym + fmtM(gallupCost) + ' (' + gallupPct + '% of payroll)', '');
@@ -654,9 +655,9 @@ function generateReport() {
         <div class="pr-gold-desc">Total saving of ${sym}${fmtM(c.saving)} across ${fmtN(c.reactiveLeaders)} reactive leaders. The investment conversation happens with your SSC director.</div>
       </div>
       <div class="pr-gold-cell" style="border-left:2px solid #ddd;">
-        <div class="pr-gold-label">Independent triangulation — Gallup weighted disengagement cost</div>
+        <div class="pr-gold-label">Independent context — Gallup disengagement cost across whole workforce</div>
         <div class="pr-gold-num" style="color:#555 !important;">${sym + fmtM(c.gallupCost)}</div>
-        <div class="pr-gold-desc">Gallup (State of the Global Workplace, 2023): 80% of employees are not fully engaged — 64% not engaged, 16% actively disengaged. Weighted model: ${fmtN(c.gallupNotEngaged)} not-engaged × 5% salary cost = ${sym}${fmtM(c.gallupNotEngagedCost)}; ${fmtN(c.gallupActivelyDis)} actively disengaged × 18% = ${sym}${fmtM(c.gallupActiveCost)}. Total: ${sym}${fmtM(c.gallupCost)} (${c.gallupPct}% of payroll). Gallup measures disengagement across the whole workforce. Model A measures defensive behaviour concentrated in reactive leaders only — a narrower, deeper estimate. Where Gallup exceeds Model A, that confirms our estimate is conservative by design. McKinsey independently shows top-quartile leadership organisations deliver nearly 3× the returns of bottom-quartile.</div>
+        <div class="pr-gold-desc">Gallup (State of the Global Workplace, 2023): 80% of employees are not fully engaged. Weighted model: ${fmtN(c.gallupNotEngaged)} not-engaged × 5% salary = ${sym}${fmtM(c.gallupNotEngagedCost)}; ${fmtN(c.gallupActivelyDis)} actively disengaged × 18% = ${sym}${fmtM(c.gallupActiveCost)}. Total: ${sym}${fmtM(c.gallupCost)} (${c.gallupPct}% of payroll). This measures disengagement spread across the entire workforce — a broader, shallower estimate of a related symptom. Model A measures the cost of defensive behaviour concentrated in reactive leaders — a specific, observed, leadership-level problem. These two numbers are not designed to match. They measure different things. Together they establish that the cost of human behaviour in this organisation is significant by any methodology. McKinsey independently shows top-quartile leadership organisations deliver nearly 3× the returns of bottom-quartile.</div>
       </div>
       ${(function(){ if (!c.observationRate || !c.ticks) return '';
         const obs = Math.round(c.observed);
