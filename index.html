@@ -1,9 +1,50 @@
 <!DOCTYPE html>
+<!--
+  THE COST — Defensive Behaviour Cost Calculator
+  © 2026 Single Session Coaching Global BV. All rights reserved.
+  Proprietary and confidential. This code, its calculation model, and its copy
+  are the intellectual property of Single Session Coaching Global BV and are NOT
+  licensed for reuse, redistribution, modification, or republication in whole or
+  in part. https://singlesession.online
+-->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SSC — Behaviour Audit</title>
+<script>
+/* Domain guard — runs only on authorised SSC domains. Invisible on legitimate
+   embeds; disables the tool if the file is copied to another host. */
+(function () {
+  try {
+    var ALLOWED = ['singlesession.online', 'benwickham1066.github.io', 'localhost', '127.0.0.1'];
+    function hostOK(h) { return ALLOWED.some(function (d) { return h === d || h.endsWith('.' + d); }); }
+    var ok = hostOK(location.hostname);
+    if (!ok && window.self !== window.top) {
+      try {
+        var ao = window.location.ancestorOrigins;
+        if (ao && ao.length) {
+          for (var i = 0; i < ao.length; i++) { if (hostOK(new URL(ao[i]).hostname)) { ok = true; break; } }
+        } else if (document.referrer) {
+          ok = hostOK(new URL(document.referrer).hostname);
+        } else {
+          ok = true; /* framed but ancestry unreadable (cross-origin) — fail open so legit embeds never break */
+        }
+      } catch (e) { ok = true; }
+    }
+    if (!ok) {
+      var block = function () {
+        document.documentElement.innerHTML = '<div style="font-family:Arial,sans-serif;padding:64px 24px;text-align:center;color:#111;background:#DCFF4F;min-height:100vh;box-sizing:border-box;"><p style="font-size:18px;font-weight:700;margin:0 0 12px;">This tool is &copy; Single Session Coaching.</p><p style="font-size:15px;margin:0;">View it at <a href="https://singlesession.online/calculator" style="color:#111;">singlesession.online/calculator</a></p></div>';
+      };
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', block);
+      } else {
+        block();
+      }
+    }
+  } catch (e) {}
+})();
+</script>
 <script>
   const WORDMARK_B64 = "https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6972fd9e3ad07f5999803ff2/1769143710800/SSC+Word+Mark.001.png";
   const LOGO_WHITE   = "https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6a228252da61d52e8d94fc8e/1780646482602/SSC+Word+Mark.001.png";
@@ -346,7 +387,7 @@
   <div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);text-align:center;padding-bottom:16px;">
     <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.68rem;color:var(--muted);line-height:1.9;max-width:560px;margin:0 auto;">
       This calculator is in active development. Methodology, sources, and outputs are updated as new research becomes available.<br>For questions about the calculation contact <a href="mailto:hello@singlesession.online" style="color:var(--muted);text-decoration:underline;text-underline-offset:3px;">hello@singlesession.online</a><br>
-      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v1.9
+      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v2.1
     </div>
   </div>
 
