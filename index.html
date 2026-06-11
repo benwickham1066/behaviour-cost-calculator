@@ -268,24 +268,28 @@
           <label>Annualisation factor (×)</label>
           <input type="number" id="adj-annual" value="22" min="1" step="1" inputmode="numeric" oninput="liveRecalc()">
           <div class="field-note">Scales your two-week observation to a full year. ×22 assumes the rate you observed holds across all 220 working days. Lower it if the fortnight you watched ran hotter than a normal one — ×11 assumes it holds for only half the year. <strong style="color:var(--white);">SSC default: ×22.</strong></div>
+          <div id="warn-annual" style="display:none;font-family:'GothamMedium',Arial,sans-serif;font-size:0.72rem;color:var(--amber);line-height:1.55;margin-top:8px;"></div>
         </div>
 
         <div class="calc-field" style="margin-bottom:20px;">
           <label>Recovery rate (%)</label>
           <input type="number" id="adj-recovery" value="70" min="0" max="100" step="1" inputmode="numeric" oninput="liveRecalc()">
           <div class="field-note">The share of the estimated cost SSC expects to remove. SSC recodes the one keystone behaviour driving the pattern; the downstream behaviours quieten once it stops being triggered. This is an SSC modelling assumption — so it is yours to challenge. <strong style="color:var(--white);">SSC default: 70%, deliberately conservative.</strong></div>
+          <div id="warn-recovery" style="display:none;font-family:'GothamMedium',Arial,sans-serif;font-size:0.72rem;color:var(--amber);line-height:1.55;margin-top:8px;"></div>
         </div>
 
         <div class="calc-field" style="margin-bottom:20px;">
           <label>Reactive leaders (%)</label>
           <input type="number" id="adj-reactive" value="75" min="0" max="100" step="1" inputmode="numeric" oninput="liveRecalc()">
           <div class="field-note">The share of your leaders who operate reactively — the population this cost is scaled across. This is not our figure to set: it is Leadership Circle's, measured across more than two million leaders. Lower it only if you have reason to believe your leadership runs below the global average. <strong style="color:var(--white);">Default: 75% (Leadership Circle / Anderson &amp; Adams).</strong></div>
+          <div id="warn-reactive" style="display:none;font-family:'GothamMedium',Arial,sans-serif;font-size:0.72rem;color:var(--amber);line-height:1.55;margin-top:8px;"></div>
         </div>
 
         <div class="calc-field" style="margin-bottom:22px;">
           <label>Cost per blocked conversation (<span id="adj-cost-sym">$</span>)</label>
           <input type="number" id="adj-cost" value="1500" min="0" step="50" inputmode="numeric" oninput="costEdited();liveRecalc()">
           <div class="field-note">What one stalled or avoided conversation costs you. The default is the conservative floor across five independent sources. If your own cost of a delayed decision is higher, set it here. <strong style="color:var(--white);">SSC default: <span id="adj-cost-def">$1,500</span> at today's live rate.</strong></div>
+          <div id="warn-cost" style="display:none;font-family:'GothamMedium',Arial,sans-serif;font-size:0.72rem;color:var(--amber);line-height:1.55;margin-top:8px;"></div>
         </div>
 
         <button onclick="resetAssumptions()" style="background:none;border:1px solid var(--border);color:var(--muted);font-family:'GothamMedium',Arial,sans-serif;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;padding:10px 20px;cursor:pointer;transition:all 0.15s;">↺ Reset to SSC defaults</button>
@@ -342,7 +346,7 @@
   <div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);text-align:center;padding-bottom:16px;">
     <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.68rem;color:var(--muted);line-height:1.9;max-width:560px;margin:0 auto;">
       This calculator is in active development. Methodology, sources, and outputs are updated as new research becomes available.<br>For questions about the calculation contact <a href="mailto:hello@singlesession.online" style="color:var(--muted);text-decoration:underline;text-underline-offset:3px;">hello@singlesession.online</a><br>
-      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v1.8
+      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v1.9
     </div>
   </div>
 
@@ -434,8 +438,43 @@ function toggleAssumptions() {
 }
 
 function liveRecalc() {
+  updateAssumptionWarnings();
   // Re-run only once a calculation already exists (Screen 2 visible) so we never trip validation.
   if (document.getElementById('screen-2').style.display === 'block') calculate();
+}
+
+function setWarn(id, msg) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = msg;
+  el.style.display = msg ? 'block' : 'none';
+}
+
+// Gentle "really?" nudges for implausibly low settings. These never block or clamp —
+// they make a low setting a conscious claim the user has to own.
+function updateAssumptionWarnings() {
+  const annual = parseFloat(document.getElementById('adj-annual').value);
+  const recov  = parseFloat(document.getElementById('adj-recovery').value);
+  const react  = parseFloat(document.getElementById('adj-reactive').value);
+  const costV  = parseFloat(document.getElementById('adj-cost').value);
+  const localFloor = Math.round(toLocal(COST_LOW_USD, selectedCurrency));
+
+  setWarn('warn-annual',
+    (annual > 0 && annual < 8)
+      ? '↳ Really? ×' + annual + ' assumes the rate you observed holds in only about ' + (annual * 2) + ' weeks of the year. Worth being sure that is what you intend.'
+      : '');
+  setWarn('warn-recovery',
+    (recov >= 0 && recov < 35)
+      ? '↳ Really? Recovery at ' + recov + '% assumes a keystone intervention returns barely one pound in ' + Math.round(100 / Math.max(recov, 1)) + '. If you believe that, it is worth testing directly rather than assuming.'
+      : '');
+  setWarn('warn-reactive',
+    (react >= 0 && react < 50)
+      ? '↳ Really? ' + react + '% claims your leadership runs well below the global average of 75%, measured across two million leaders.'
+      : '');
+  setWarn('warn-cost',
+    (userEditedCost && costV > 0 && costV < localFloor)
+      ? '↳ Really? That is below the ' + selectedSymbol + fmtN(localFloor) + ' floor — already the most conservative figure across five independent sources.'
+      : '');
 }
 
 function setCostDefault() {
@@ -794,6 +833,17 @@ function generateReport() {
       <tr><td>Actively disengaged (${fmtN(c.gallupActivelyDis)} people, 16%) × 18% salary cost</td><td>${fmtN(c.gallupActivelyDis)} × ${sym}${fmtN(c.salary)} × 18%</td><td>${sym}${fmtM(c.gallupActiveCost)}</td></tr>
       <tr><td>Total Gallup weighted disengagement cost</td><td>${c.gallupPct}% of payroll</td><td>${sym}${fmtM(c.gallupCost)}</td></tr>
     </table>
+  </div>
+
+  <div class="pr-page">
+    <div class="pr-section-label">Strengthen This Estimate</div>
+    <div class="pr-body">This estimate is only as strong as the observation behind it. Four ways to make it more robust — and to turn an estimate into evidence you can stand behind.</div>
+    <div class="pr-research-grid">
+      <div class="pr-research-item"><div class="pr-research-title">1 · Triangulate the observation</div><div class="pr-research-body">Have three or four colleagues run the same two-week scorecard independently, then average the totals before you enter them. One observer sees a slice; several see the pattern — and the average strips out individual bias.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">2 · Watch for the recurring few</div><div class="pr-research-body">Note which one or two defensive behaviours keep reappearing. That recurring pattern is the keystone — the behaviour SSC works to recode, and the one whose removal quietens the rest.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">3 · Set your own assumptions</div><div class="pr-research-body">In the calculator, open Adjust the assumptions and re-run with figures you would defend to your own board. If the number still holds when the dials are yours, it is real.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">4 · Re-measure after the work</div><div class="pr-research-body">The honest test of recovery is before and after. Re-run the diagnostic ninety days on. The gap between the two is your actual recovery rate — measured fact in place of an assumption.</div></div>
+    </div>
   </div>
 
   <div class="pr-page">
