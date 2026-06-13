@@ -59,7 +59,7 @@
   :root {
     --lime:#DCFF4F; --amber:#E9A944; --white:#f7f7f7; --muted:#bbbbbb;
     --surface:rgba(255,255,255,0.06); --surface2:rgba(255,255,255,0.10);
-    --border:rgba(255,255,255,0.15); --black:#1a1a1a;
+    --border:rgba(255,255,255,0.15); --black:#1a1a1a; --r:7px;
   }
   body { background:transparent; color:var(--white); font-family:'GothamBook',Arial,sans-serif; font-weight:400; font-size:clamp(0.95rem,2vw,1.05rem); line-height:1.6; padding:0 0 80px; }
   .page { max-width:100%; margin:0 auto; }
@@ -203,6 +203,12 @@
   .calc-footer-note strong { font-family:'GothamMedium',Arial,sans-serif; font-weight:600; color:var(--white); }
 
   .working-divider { font-family:'GothamMedium',Arial,sans-serif; font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); padding:10px 0 6px; border-top:1px solid var(--border); margin-top:4px; }
+
+  /* ROUNDED CORNERS — subtle 7px radius to match site imagery */
+  .calc-field input, .lead-modal-field input, #cta-name, #cta-email { border-radius:var(--r) !important; }
+  .cost-strip, .how-to { border-radius:var(--r); overflow:hidden; }
+  .calc-block, .lead-modal, .range-panel, .headline-panel, .detail-block, .cta-block { border-radius:var(--r); }
+  .currency-btn, .calc-btn, .detail-toggle, .action-btn, .cta-btn, .lead-submit { border-radius:var(--r) !important; }
 </style>
 <script src="https://unpkg.com/@botpoison/browser"></script>
 </head>
@@ -297,7 +303,7 @@
     </div>
 
     <!-- ADJUST THE ASSUMPTIONS -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--lime);margin-bottom:28px;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--lime);margin-bottom:28px;border-radius:var(--r);overflow:hidden;">
       <button id="adj-toggle" onclick="toggleAssumptions()" style="width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px;">
         <span style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--lime);">Adjust the assumptions — set your own figures</span>
         <span id="adj-chev" style="font-family:'GothamMedium',Arial,sans-serif;font-size:1rem;color:var(--lime);line-height:1;">+</span>
@@ -333,7 +339,7 @@
           <div id="warn-cost" style="display:none;font-family:'GothamMedium',Arial,sans-serif;font-size:0.72rem;color:var(--amber);line-height:1.55;margin-top:8px;"></div>
         </div>
 
-        <button onclick="resetAssumptions()" style="background:none;border:1px solid var(--border);color:var(--muted);font-family:'GothamMedium',Arial,sans-serif;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;padding:10px 20px;cursor:pointer;transition:all 0.15s;">↺ Reset to SSC defaults</button>
+        <button onclick="resetAssumptions()" style="background:none;border:1px solid var(--border);color:var(--muted);font-family:'GothamMedium',Arial,sans-serif;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;padding:10px 20px;cursor:pointer;transition:all 0.15s;border-radius:var(--r);">↺ Reset to SSC defaults</button>
       </div>
     </div>
 
@@ -387,7 +393,7 @@
   <div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);text-align:center;padding-bottom:16px;">
     <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.68rem;color:var(--muted);line-height:1.9;max-width:560px;margin:0 auto;">
       This calculator is in active development. Methodology, sources, and outputs are updated as new research becomes available.<br>For questions about the calculation contact <a href="mailto:hello@singlesession.online" style="color:var(--muted);text-decoration:underline;text-underline-offset:3px;">hello@singlesession.online</a><br>
-      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v2.1
+      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v2.2
     </div>
   </div>
 
