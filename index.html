@@ -1,462 +1,1118 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<!--
+  THE COST — Defensive Behaviour Cost Calculator
+  © 2026 Single Session Coaching Global BV. All rights reserved.
+  Proprietary and confidential. This code, its calculation model, and its copy
+  are the intellectual property of Single Session Coaching Global BV and are NOT
+  licensed for reuse, redistribution, modification, or republication in whole or
+  in part. https://singlesession.online
+-->
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>What a Reactive Sales Leader Costs You | SSC Calculator</title>
-<meta name="description" content="Size the upside a reactive sales leader is hiding — revenue to win back and reps to keep — from figures you already hold. Grounded in Gallup research, deliberately conservative.">
-
-<!-- ============================================================
-     SSC SALES-LEADER CALCULATOR — V2 BETA
-     Sibling to the v1 cost calculator: same design tokens, fonts and
-     idioms (flat translucent panels, hairline borders, squared corners,
-     currency pill bar, rotated lime tag). Distinct register: GAIN, not loss.
-     Single self-contained file, vanilla JS. Background transparent so it
-     inherits the Squarespace page, exactly like v1.
-     ============================================================ -->
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
+<title>SSC — Behaviour Audit</title>
+<script>
+/* Domain guard — runs only on authorised SSC domains. Invisible on legitimate
+   embeds; disables the tool if the file is copied to another host. */
+(function () {
+  try {
+    var ALLOWED = ['singlesession.online', 'benwickham1066.github.io', 'localhost', '127.0.0.1'];
+    function hostOK(h) { return ALLOWED.some(function (d) { return h === d || h.endsWith('.' + d); }); }
+    var ok = hostOK(location.hostname);
+    if (!ok && window.self !== window.top) {
+      try {
+        var ao = window.location.ancestorOrigins;
+        if (ao && ao.length) {
+          for (var i = 0; i < ao.length; i++) { if (hostOK(new URL(ao[i]).hostname)) { ok = true; break; } }
+        } else if (document.referrer) {
+          ok = hostOK(new URL(document.referrer).hostname);
+        } else {
+          ok = true; /* framed but ancestry unreadable (cross-origin) — fail open so legit embeds never break */
+        }
+      } catch (e) { ok = true; }
+    }
+    if (!ok) {
+      var block = function () {
+        document.documentElement.innerHTML = '<div style="font-family:Arial,sans-serif;padding:64px 24px;text-align:center;color:#111;background:#DCFF4F;min-height:100vh;box-sizing:border-box;"><p style="font-size:18px;font-weight:700;margin:0 0 12px;">This tool is &copy; Single Session Coaching.</p><p style="font-size:15px;margin:0;">View it at <a href="https://singlesession.online/calculator" style="color:#111;">singlesession.online/calculator</a></p></div>';
+      };
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', block);
+      } else {
+        block();
+      }
+    }
+  } catch (e) {}
+})();
+</script>
+<script>
+  const WORDMARK_B64 = "https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6972fd9e3ad07f5999803ff2/1769143710800/SSC+Word+Mark.001.png";
+  const LOGO_WHITE   = "https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6a228252da61d52e8d94fc8e/1780646482602/SSC+Word+Mark.001.png";
+</script>
 <style>
-/* Real SSC faces (Squarespace CDN), matching v1 exactly. Archivo/Inter fall back. */
-@font-face { font-family:'DrukTextBold'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6a1009cd7aaf840ccfa17f85/1779435981098/Druk-Bold-Web.woff2') format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
-@font-face { font-family:'GothamLight'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6830c26fc80e440c041d2ef5/1748025967908/Gotham-Light.otf') format('opentype'); font-weight:300; font-style:normal; font-display:swap; }
-@font-face { font-family:'GothamBook'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/67c16f32ccecbb575ae82d2f/1740730162912/GothamBook.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
-@font-face { font-family:'GothamMedium'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/67c97a2fa70c204473c1f0c9/1741278511802/GothamMedium.ttf') format('truetype'); font-weight:600; font-style:normal; font-display:swap; }
+  @font-face { font-family:'DrukTextBold'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6a1009cd7aaf840ccfa17f85/1779435981098/Druk-Bold-Web.woff2') format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
+  @font-face { font-family:'GothamLight'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6830c26fc80e440c041d2ef5/1748025967908/Gotham-Light.otf') format('opentype'); font-weight:300; font-style:normal; font-display:swap; }
+  @font-face { font-family:'GothamBook'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/67c16f32ccecbb575ae82d2f/1740730162912/GothamBook.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:'GothamMedium'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/67c97a2fa70c204473c1f0c9/1741278511802/GothamMedium.ttf') format('truetype'); font-weight:600; font-style:normal; font-display:swap; }
 
-:root{
-  --lime:#DCFF4F; --amber:#E9A944; --white:#f7f7f7; --muted:#bbbbbb;
-  --surface:rgba(255,255,255,0.06); --surface2:rgba(255,255,255,0.10);
-  --border:rgba(255,255,255,0.15); --black:#1a1a1a;
-  --display:'DrukTextBold','Archivo','Arial Narrow',sans-serif;
-  --body:'GothamBook','Inter',-apple-system,system-ui,sans-serif;
-  --ui:'GothamMedium','Inter',sans-serif;
-  --radius:7px;            /* corner rounding — change this one line to tune all boxes */
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%}
-body{background:transparent;color:var(--white);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased}
-.wrap{max-width:100%;margin:0 auto;padding:0 0 80px}
+  *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --lime:#DCFF4F; --amber:#E9A944; --white:#f7f7f7; --muted:#bbbbbb;
+    --surface:rgba(255,255,255,0.06); --surface2:rgba(255,255,255,0.10);
+    --border:rgba(255,255,255,0.15); --black:#1a1a1a;
+  }
+  body { background:transparent; color:var(--white); font-family:'GothamBook',Arial,sans-serif; font-weight:400; font-size:clamp(0.95rem,2vw,1.05rem); line-height:1.6; padding:0 0 80px; }
+  .page { max-width:100%; margin:0 auto; }
 
-/* type */
-.eyebrow{font-family:var(--ui);font-weight:600;text-transform:uppercase;letter-spacing:.14em;font-size:.7rem;color:var(--lime)}
-.eyebrow .beta{display:inline-block;background:var(--lime);color:var(--black);font-family:var(--display);
-  font-size:.6rem;letter-spacing:.14em;padding:3px 8px;margin-left:8px;vertical-align:middle}
-h1{font-family:var(--display);font-weight:700;font-size:clamp(34px,7vw,60px);line-height:.95;
-   letter-spacing:.005em;text-transform:uppercase;margin:14px 0 0}
-h1 em{font-style:normal;color:var(--lime)}
-.sub{color:var(--muted);font-size:clamp(15px,2.3vw,18px);max-width:56ch;margin-top:16px}
-h2{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.005em;
-   font-size:clamp(20px,3.4vw,26px);margin:0}
-.sect-label{font-family:var(--ui);font-weight:600;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 
-.step{display:none}
-.step.on{display:block;animation:rise .4s cubic-bezier(.2,.7,.2,1)}
-@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){.step.on{animation:none}}
+  /* CURRENCY */
+  .currency-bar { display:flex; align-items:center; gap:10px; margin-bottom:28px; flex-wrap:wrap; }
+  .currency-bar-label { font-family:'GothamMedium',Arial,sans-serif; font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
+  .currency-btn { background:var(--surface); border:1px solid var(--border); color:var(--muted); font-family:'GothamMedium',Arial,sans-serif; font-size:0.78rem; padding:9px 16px; cursor:pointer; transition:all 0.15s; -webkit-tap-highlight-color:transparent; }
+  .currency-btn:hover { border-color:var(--lime); color:var(--white); }
+  .currency-btn.active { background:var(--lime); border-color:var(--lime); color:var(--black); }
+  .rate-note { font-family:'GothamBook',Arial,sans-serif; font-size:0.68rem; color:var(--muted); margin-left:auto; }
 
-/* how-it-works grid — v1 idiom (1px gaps show border through) */
-.how{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);
-     border:1px solid var(--border);margin-top:0;border-radius:var(--radius);overflow:hidden}
-.how-step{background:var(--surface);padding:22px 18px}
-.how-num{font-family:var(--display);color:var(--lime);font-size:1.6rem;line-height:1;margin-bottom:12px}
-.how-text{font-size:clamp(.82rem,1.4vw,.92rem);color:var(--white);line-height:1.6}
-@media(max-width:620px){.how{grid-template-columns:1fr}}
+  /* HOW TO */
+  .how-to { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); margin-bottom:28px; }
+  .how-step { background:var(--surface); padding:22px 18px; }
+  .how-num { font-family:'DrukTextBold',Arial,sans-serif; font-size:clamp(1.6rem,3.5vw,2.2rem); color:var(--lime); line-height:1; margin-bottom:10px; text-transform:uppercase; }
+  .how-text { font-family:'GothamBook',Arial,sans-serif; font-size:clamp(0.78rem,1.5vw,0.92rem); color:var(--white); line-height:1.65; }
+  @media(max-width:560px){ .how-to{ grid-template-columns:1fr; } }
 
-/* currency pill bar — v1 idiom */
-.curbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:28px}
-.curbar-label{font-family:var(--ui);font-weight:600;font-size:.7rem;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--muted);white-space:nowrap}
-.cur-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);font-family:var(--ui);
-  font-weight:600;font-size:.78rem;padding:9px 16px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;border-radius:var(--radius)}
-.cur-btn:hover{border-color:var(--lime);color:var(--white)}
-.cur-btn.active{background:var(--lime);border-color:var(--lime);color:var(--black)}
-.cur-note{font-family:var(--body);font-size:.68rem;color:var(--muted);margin-left:auto}
+  /* COST STRIP */
+  .cost-strip { display:flex; border:1px solid var(--border); margin-bottom:28px; overflow:hidden; }
+  .cost-tag { background:var(--lime); color:var(--black); font-family:'DrukTextBold',Arial,sans-serif; font-size:9px; letter-spacing:0.14em; text-transform:uppercase; writing-mode:vertical-rl; transform:rotate(180deg); padding:12px 9px; flex-shrink:0; white-space:nowrap; }
+  .cost-items { display:flex; flex:1; flex-wrap:wrap; }
+  .cost-item { flex:1; min-width:110px; padding:16px 18px; border-right:1px solid var(--border); }
+  .cost-item:last-child { border-right:none; }
+  .cost-item-label { font-family:'GothamMedium',Arial,sans-serif; font-size:0.62rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); margin-bottom:5px; }
+  .cost-amount { font-family:'DrukTextBold',Arial,sans-serif; font-size:clamp(1.5rem,2.8vw,2.1rem); color:var(--lime); line-height:1; margin-bottom:5px; text-transform:uppercase; letter-spacing:0.02em; }
+  .cost-desc { font-family:'GothamBook',Arial,sans-serif; font-size:0.72rem; color:var(--muted); line-height:1.55; }
 
-/* panels — flat, hairline, squared */
-.panel{background:var(--surface);border:1px solid var(--border);padding:clamp(20px,4vw,30px);margin-top:1px;border-radius:var(--radius)}
-.panel.spaced{margin-top:22px}
-.panel.lime{border:1px solid var(--lime);border-top:3px solid var(--lime)}
+  /* Tally table CSS removed — scorecard is now print-only */
 
-.field{margin-top:18px}.field:first-child{margin-top:0}
-label{display:block;font-family:var(--ui);font-weight:600;font-size:.72rem;letter-spacing:.04em;
-  text-transform:uppercase;color:var(--white);margin-bottom:8px}
-label .opt{color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0}
-.input-row{display:flex;align-items:stretch;border-radius:var(--radius);overflow:hidden}
-.input-row > *{border-radius:0 !important}   /* children square; the row's clip rounds the outer corners as one unit */
-.cur{display:flex;align-items:center;justify-content:center;min-width:48px;background:var(--surface2);
-  border:1px solid var(--border);border-right:0;font-family:var(--ui);font-weight:600;color:var(--lime)}
-input[type=number],input[type=email],input[type=text]{
-  width:100%;background:var(--surface);border:1px solid var(--border);color:var(--white);
-  font-family:var(--body);font-size:16px;padding:13px 14px;border-radius:var(--radius);outline:none;-webkit-appearance:none}
-input:focus{border-color:var(--lime);box-shadow:none}
-input::placeholder{color:#888}
-input[type=number]{-moz-appearance:textfield}
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-.half{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:560px){.half{grid-template-columns:1fr}}
-.micro{font-size:12px;color:var(--muted);margin-top:6px}
-.adv-toggle{margin-top:18px;font-family:var(--ui);font-weight:600;font-size:.72rem;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--lime);cursor:pointer;background:none;border:0;padding:0;text-decoration:underline}
-.adv{display:none;margin-top:14px;padding-top:14px;border-top:1px dashed var(--border)}
-.adv.on{display:block}
+  /* CALC BLOCK */
+  .calc-block { border:1px solid var(--lime); padding:28px 26px; margin-bottom:28px; }
+  @media(max-width:560px){ .calc-block{ padding:20px 16px; } }
+  .calc-title { font-family:'DrukTextBold',Arial,sans-serif; font-size:clamp(1rem,2vw,1.3rem); letter-spacing:0.16em; text-transform:uppercase; color:var(--lime); margin-bottom:10px; }
+  .calc-intro { font-family:'GothamBook',Arial,sans-serif; font-size:clamp(0.85rem,1.5vw,1rem); color:var(--muted); line-height:1.65; margin-bottom:24px; }
+  .inputs-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+  @media(max-width:560px){ .inputs-grid{ grid-template-columns:1fr; } }
+  .leader-field-wrap { margin-bottom:20px; }
+  .leader-helper { font-family:'GothamBook',Arial,sans-serif; font-size:0.72rem; color:var(--muted); margin-top:8px; line-height:1.5; border-left:2px solid var(--border); padding-left:10px; }
+  .leader-helper strong { font-family:'GothamMedium',Arial,sans-serif; color:var(--white); font-weight:600; }
+  .calc-field label { display:block; font-family:'GothamMedium',Arial,sans-serif; font-size:0.65rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); margin-bottom:7px; }
+  .calc-field input {
+    width:100% !important; height:auto !important; min-height:unset !important;
+    background:var(--surface) !important; border:1px solid var(--border) !important;
+    color:var(--white) !important; font-family:'GothamBook',Arial,sans-serif !important;
+    font-size:1rem !important; font-weight:400 !important; padding:13px 14px !important;
+    outline:none !important; -webkit-appearance:none !important; border-radius:0 !important;
+    box-shadow:none !important; box-sizing:border-box !important; display:block !important;
+    transition:border-color 0.15s !important;
+  }
+  .calc-field input::placeholder { color:rgba(187,187,187,0.4) !important; }
+  .calc-field input:focus { border-color:var(--lime) !important; box-shadow:none !important; }
+  .field-note { font-family:'GothamBook',Arial,sans-serif; font-size:0.7rem; color:var(--muted); margin-top:5px; line-height:1.45; }
+  .calc-btn {
+    width:100% !important; background:var(--lime) !important; background-image:none !important;
+    color:var(--black) !important; border:none !important;
+    font-family:'DrukTextBold',Arial,sans-serif !important;
+    font-size:clamp(1rem,2.2vw,1.3rem) !important; letter-spacing:0.12em !important;
+    text-transform:uppercase !important; padding:20px !important; cursor:pointer !important;
+    border-radius:0 !important; display:block !important; box-shadow:none !important;
+    height:auto !important; min-height:unset !important; line-height:1.2 !important;
+    transition:opacity 0.15s !important; margin:0 !important;
+    -webkit-tap-highlight-color:transparent !important;
+  }
+  .calc-btn:hover { opacity:0.88 !important; background:var(--lime) !important; color:var(--black) !important; }
 
-/* renewals toggle */
-.switch{display:flex;align-items:center;gap:12px;margin-top:6px}
-.toggle{position:relative;width:46px;height:26px;flex:0 0 auto;display:inline-block;cursor:pointer}
-.toggle input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;z-index:2}
-.toggle .track{position:absolute;inset:0;background:var(--surface);border:1px solid var(--border);transition:.2s;pointer-events:none}
-.toggle .dot{position:absolute;top:3px;left:3px;width:18px;height:18px;background:var(--muted);transition:.2s;pointer-events:none}
-.toggle input:checked ~ .track{background:rgba(220,255,79,.22);border-color:var(--lime)}
-.toggle input:checked ~ .dot{transform:translateX(20px);background:var(--lime)}
+  /* SCREEN 2 */
 
-/* scorecard */
-.dim{margin-top:20px}.dim:first-child{margin-top:0}
-.dim-h{font-family:var(--display);font-size:.95rem;letter-spacing:.02em;text-transform:uppercase;color:var(--white);margin-bottom:2px}
-.dim-h span{color:var(--muted);font-family:var(--body);text-transform:none;letter-spacing:0;font-size:.78rem}
-.tick{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--border);cursor:pointer}
-.tick:last-child{border-bottom:0}
-.tick input{width:18px;height:18px;flex:0 0 auto;margin-top:2px;accent-color:var(--lime);cursor:pointer}
-.tick span{font-size:14px;color:var(--white)}
+  .org-name-wrap { margin-bottom:28px; }
 
-/* buttons — v1 idiom */
-.btn{display:inline-flex;align-items:center;gap:8px;background:var(--lime);color:var(--black);border:0;cursor:pointer;
-  font-family:var(--ui);font-weight:600;text-transform:uppercase;letter-spacing:.1em;font-size:.82rem;
-  padding:15px 24px;border-radius:var(--radius);margin-top:26px;transition:opacity .15s}
-.btn:hover{opacity:.88}
-.btn.ghost{background:var(--surface);color:var(--white);border:1px solid var(--border)}
-.btn.ghost:hover{opacity:1;border-color:var(--lime);color:var(--lime)}
-.btn-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.err{color:var(--amber);font-size:13px;margin-top:12px;min-height:1px}
-.ok{color:var(--lime);font-size:13px;margin-top:12px;min-height:1px}
+  /* LEAD GATE */
+  .lead-gate { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.85); z-index:9999; display:none; align-items:center; justify-content:center; padding:24px; }
+  .lead-gate.open { display:flex; }
+  .lead-modal { background:var(--black); border:1px solid var(--lime); padding:36px 32px; max-width:480px; width:100%; }
+  .lead-modal-title { font-family:'DrukTextBold',Arial,sans-serif; font-size:clamp(1.2rem,3vw,1.8rem); text-transform:uppercase; color:var(--lime); margin-bottom:8px; }
+  .lead-modal-sub { font-family:'GothamBook',Arial,sans-serif; font-size:0.9rem; color:var(--muted); line-height:1.6; margin-bottom:24px; }
+  .lead-modal-field { margin-bottom:14px; }
+  .lead-modal-field label { display:block; font-family:'GothamMedium',Arial,sans-serif; font-size:0.62rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+  .lead-modal-field input { width:100%; background:rgba(255,255,255,0.08); border:1px solid var(--border); color:var(--white); font-family:'GothamBook',Arial,sans-serif; font-size:0.95rem; padding:12px 14px; outline:none; border-radius:0; -webkit-appearance:none; }
+  .lead-modal-field input:focus { border-color:var(--lime); }
+  .lead-submit { width:100%; background:var(--lime); color:var(--black); border:none; font-family:'GothamMedium',Arial,sans-serif; font-size:0.9rem; letter-spacing:0.1em; text-transform:uppercase; padding:16px; cursor:pointer; margin-top:8px; }
+  .lead-submit:hover { opacity:0.88; }
+  .lead-skip { font-family:'GothamBook',Arial,sans-serif; font-size:0.72rem; color:var(--muted); text-align:center; margin-top:12px; cursor:pointer; }
+  .lead-skip:hover { color:var(--white); }
 
-/* gain ledger */
-.ledger{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:6px;border-radius:var(--radius);overflow:hidden}
-@media(max-width:560px){.ledger{grid-template-columns:1fr}}
-.gain{background:var(--surface);padding:22px}
-.gain .tag{font-family:var(--ui);font-weight:600;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--lime)}
-.gain .num{font-family:var(--display);font-size:clamp(30px,6vw,44px);line-height:1;margin:10px 0 4px;color:var(--white)}
-.gain .of{font-size:12px;color:var(--muted)}
+  /* HEADLINES */
+  .headline-block { margin-bottom:32px; }
+  .range-panel { background:var(--surface); border:1px solid var(--border); margin-bottom:1px; padding:26px 26px; }
+  .range-label { font-family:'GothamMedium',Arial,sans-serif; font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin-bottom:14px; line-height:1.5; }
+  .range-nums { display:flex; align-items:flex-end; gap:16px; flex-wrap:wrap; margin-bottom:10px; }
+  .range-block { }
+  .minmax-label { font-family:'GothamMedium',Arial,sans-serif; font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+  .range-num { font-family:'DrukTextBold',Arial,sans-serif; font-size:clamp(2.8rem,6vw,5rem); line-height:1; text-transform:uppercase; color:var(--amber); letter-spacing:0.02em; }
+  .range-sep { font-family:'DrukTextBold',Arial,sans-serif; font-size:clamp(1.8rem,3.5vw,3rem); color:var(--muted); padding-bottom:4px; }
+  .range-desc { font-family:'GothamBook',Arial,sans-serif; font-size:0.8rem; color:var(--muted); line-height:1.55; }
 
-/* total strip with rotated lime tag — the shared SSC signature */
-.strip{display:flex;border:1px solid var(--lime);border-top:3px solid var(--lime);margin-top:16px;overflow:hidden;border-radius:var(--radius)}
-.strip-tag{background:var(--lime);color:var(--black);font-family:var(--display);font-size:9px;letter-spacing:.14em;
-  text-transform:uppercase;writing-mode:vertical-rl;transform:rotate(180deg);padding:14px 9px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;white-space:nowrap}
-.strip-body{padding:clamp(20px,4vw,28px);flex:1}
-.strip-body .tag{font-family:var(--ui);font-weight:600;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.strip-body .num{font-family:var(--display);font-size:clamp(40px,9vw,68px);line-height:.95;margin:6px 0;color:var(--lime)}
-.strip-body .band{font-size:14px;color:var(--muted)}
-.roi{display:flex;align-items:baseline;gap:8px;margin-top:14px;border-top:1px solid var(--border);padding-top:14px}
-.roi b{font-family:var(--display);font-size:28px;color:var(--white)}.roi span{font-size:13px;color:var(--muted)}
+  .headline-row { display:grid; grid-template-columns:1fr; margin-bottom:1px; }
+  .headline-panel { background:var(--surface); padding:24px 26px; border:1px solid var(--border); }
+  .headline-panel.dark { background:rgba(0,0,0,0.3); }
+  .headline-panel.recovery { border-top:3px solid var(--lime); }
+  .headline-eyebrow { font-family:'GothamMedium',Arial,sans-serif; font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+  .headline-eyebrow.lime { color:var(--lime); }
+  .headline-num { font-family:'DrukTextBold',Arial,sans-serif; font-size:clamp(3rem,7vw,5.5rem); line-height:1; text-transform:uppercase; margin-bottom:10px; letter-spacing:0.02em; }
+  .headline-num.amber { color:var(--amber); }
+  .headline-num.lime { color:var(--lime); }
+  .headline-desc { font-family:'GothamBook',Arial,sans-serif; font-size:clamp(0.8rem,1.4vw,0.92rem); color:var(--muted); line-height:1.6; }
+  .headline-context { font-family:'GothamBook',Arial,sans-serif; font-size:clamp(0.85rem,1.4vw,0.96rem); color:var(--white); line-height:1.6; margin-bottom:6px; }
 
-.breakdown{margin-top:14px}
-.brow{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--border);font-size:14px}
-.brow:last-child{border-bottom:0}
-.brow .v{font-variant-numeric:tabular-nums;font-family:var(--ui);font-weight:600;white-space:nowrap}
-.brow.muted{color:var(--muted)}.brow.sum{font-family:var(--ui);font-weight:600}.brow.sum .v{color:var(--lime)}
+  .section-divider { font-family:'GothamMedium',Arial,sans-serif; font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin:28px 0 12px; padding-bottom:10px; border-bottom:1px solid var(--border); }
+  .detail-toggle { background:none; border:1px solid var(--lime); color:var(--lime); font-family:'GothamMedium',Arial,sans-serif; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; padding:9px 16px; cursor:pointer; margin-bottom:8px; transition:all 0.15s; display:block; width:100%; text-align:left; }
+  .detail-toggle:hover { background:rgba(220,255,79,0.08); border-color:var(--lime); color:var(--lime); }
+  .detail-block { display:none; background:var(--surface); border:1px solid var(--border); padding:6px 18px; margin-bottom:8px; }
+  .detail-block.open { display:block; }
+  .working-line { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); padding:11px 0; gap:16px; }
+  .working-line:last-child { border-bottom:none; }
+  .w-label { font-family:'GothamBook',Arial,sans-serif; color:var(--white); flex:1; line-height:1.5; font-size:clamp(0.82rem,1.4vw,0.92rem); }
+  .w-calc { font-family:'GothamBook',Arial,sans-serif; color:var(--muted); font-size:0.72rem; text-align:right; white-space:nowrap; flex-shrink:0; }
+  .w-val { font-family:'GothamMedium',Arial,sans-serif; font-size:clamp(0.92rem,1.5vw,1rem); font-weight:600; color:var(--white); white-space:nowrap; margin-left:16px; min-width:80px; text-align:right; flex-shrink:0; }
+  .w-val.amber { color:var(--amber); }
+  .w-val.lime { color:var(--lime); }
 
-details{margin-top:16px;border:1px solid var(--border);background:var(--surface);border-radius:var(--radius);overflow:hidden}
-summary{cursor:pointer;padding:14px 18px;font-family:var(--ui);font-weight:600;font-size:13px;list-style:none}
-summary::-webkit-details-marker{display:none}
-summary::after{content:'+';float:right;color:var(--lime)}
-details[open] summary::after{content:'\2013'}
-.prov{padding:0 18px 18px;font-size:13px;color:var(--muted);line-height:1.7}
-.prov p{margin-top:10px}.prov b{color:var(--white)}.cite{color:var(--lime)}
-.disc{margin-top:22px;font-size:12px;color:var(--muted);line-height:1.7}
-.emailbox{margin-top:22px;padding-top:18px;border-top:1px solid var(--border)}
-.gdpr{font-size:11px;color:var(--muted);line-height:1.7;margin-top:10px}
-.gdpr a{color:var(--muted);text-decoration:underline}
+  /* ACTION BUTTONS — Gotham */
+  .action-row { display:flex; gap:12px; margin-bottom:28px; flex-wrap:wrap; }
+  .action-btn { flex:1; min-width:160px; background:var(--surface); border:1px solid var(--border); color:var(--white); font-family:'GothamMedium',Arial,sans-serif; font-size:0.82rem; letter-spacing:0.08em; text-transform:uppercase; padding:15px 20px; cursor:pointer; transition:all 0.15s; text-align:center; }
+  .action-btn:hover { border-color:var(--lime); color:var(--lime); }
+  .action-btn.primary { background:var(--lime); border-color:var(--lime); color:var(--black); font-family:'GothamMedium',Arial,sans-serif; font-size:0.82rem; }
+  .action-btn.primary:hover { opacity:0.88; color:var(--black); }
 
-.print-head{display:none}
-@media print{
-  body{background:#fff;color:#000}.wrap{padding:0}
-  .step:not(.on),.no-print{display:none!important}
-  details:not([open]) > *:not(summary){display:block!important}
-  summary::after{content:''!important}
-  .print-head{display:block;margin-bottom:18px}
-  .print-head .ph-name{font-family:var(--display);font-size:18px}
-  .print-head .ph-sub{font-size:12px;color:#555}
-  .panel,.gain,.strip,details,.how-step{border:1px solid #bbb!important;background:#fff!important;color:#000!important}
-  .strip-tag{background:#eee!important;color:#000!important}
-  .num,.cite,.eyebrow,.dim-h,.how-num,.gain .tag,.strip-body .num,.brow.sum .v,.roi b{color:#000!important}
-  a{color:#000;text-decoration:underline}
-}
+  /* CTA */
+  .cta-block { background:var(--lime); padding:32px 28px; margin-bottom:28px; margin-top:32px; }
+  .cta-heading { font-family:'DrukTextBold',Arial,sans-serif; font-size:clamp(1.4rem,3.5vw,2.4rem); text-transform:uppercase; color:var(--black); line-height:1; margin-bottom:12px; }
+  .cta-body { font-family:'GothamBook',Arial,sans-serif; font-size:clamp(0.88rem,1.5vw,1rem); color:var(--black); line-height:1.65; margin-bottom:22px; max-width:580px; }
+  .cta-btn { display:inline-block; background:var(--black); color:var(--lime) !important; font-family:'GothamMedium',Arial,sans-serif !important; font-size:0.9rem !important; letter-spacing:0.1em !important; text-transform:uppercase !important; padding:16px 32px !important; text-decoration:none !important; border:none !important; cursor:pointer; transition:opacity 0.15s; }
+  .cta-btn:hover { opacity:0.85; }
+
+  .calc-footer { border-top:1px solid var(--border); padding-top:20px; margin-top:32px; }
+  #screen-2 .calc-footer { margin-bottom:32px; }
+  .calc-footer-note { font-family:'GothamBook',Arial,sans-serif; font-size:0.7rem; color:var(--muted); line-height:1.7; }
+  .calc-footer-note strong { font-family:'GothamMedium',Arial,sans-serif; font-weight:600; color:var(--white); }
+
+  .working-divider { font-family:'GothamMedium',Arial,sans-serif; font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); padding:10px 0 6px; border-top:1px solid var(--border); margin-top:4px; }
 </style>
+<script src="https://unpkg.com/@botpoison/browser"></script>
 </head>
 <body>
-<div class="wrap">
+<div class="page"><a id="top" style="position:absolute;top:0;left:0;"></a>
 
-  <!-- ===================== STEP 1 — INPUTS (lands here) ===================== -->
-  <section class="step on" id="s1">
-    <div class="how">
-      <div class="how-step"><div class="how-num">01</div><div class="how-text">Tell us the team's numbers — target, headcount, what a rep costs to lose.</div></div>
-      <div class="how-step"><div class="how-num">02</div><div class="how-text">Tick what you've actually seen this leader do. No ticks, no claim.</div></div>
-      <div class="how-step"><div class="how-num">03</div><div class="how-text">See the upside on the table — and what one session could return, every year.</div></div>
+  <!-- ══ SCREEN 1 ══ -->
+    <div id="screen-1" class="screen">
+    <div class="currency-bar">
+      <span class="currency-bar-label">Your currency</span>
+      <button class="currency-btn" data-currency="EUR" data-symbol="€">EUR €</button>
+      <button class="currency-btn" data-currency="GBP" data-symbol="£">GBP £</button>
+      <button class="currency-btn active" data-currency="USD" data-symbol="$">USD $</button>
+      <button class="currency-btn" data-currency="AUD" data-symbol="A$">AUD A$</button>
+      <button class="currency-btn" data-currency="SGD" data-symbol="S$">SGD S$</button>
+      <span class="rate-note" id="rate-note">Loading live rates…</span>
+    </div>
+    <div class="how-to">
+      <div class="how-step"><div class="how-num">01</div><div class="how-text">Download the scorecard below and observe for two weeks. Every time a defensive behaviour stops a conversation — mark it. Multiple marks per day is fine. Count your total at the end.</div></div>
+      <div class="how-step"><div class="how-num">02</div><div class="how-text">Enter your total count, headcount, average salary, and number of people leaders. Hit calculate.</div></div>
+      <div class="how-step"><div class="how-num">03</div><div class="how-text">See the estimated invisible number on your P&amp;L — and what SSC estimates it could recover. Download your personalised report.</div></div>
+    </div>
+    <div class="cost-strip">
+      <div class="cost-tag">Approximate Cost Per Blocked Conversation</div>
+      <div class="cost-items">
+        <div class="cost-item"><div class="cost-item-label">Minimum</div><div class="cost-amount" id="strip-low">$1,500</div><div class="cost-desc">Conservative floor<br>5 independent sources<br>live rate applied</div></div>
+        <div class="cost-item"><div class="cost-item-label">Maximum</div><div class="cost-amount" id="strip-high">$7,500</div><div class="cost-desc">Average per episode<br>Brad Rilatt / Crucial Dimensions<br>n = 1,025 orgs</div></div>
+        <div class="cost-item"><div class="cost-amount">75%</div><div class="cost-desc">Of people make reactive decisions<br>Leadership Circle, 2M+ leaders</div></div>
+      </div>
+    </div>
+    <div style="margin-bottom:24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <button class="action-btn" style="flex:none;width:auto;" onclick="printScorecard()">↓ Download Observation Scorecard</button>
+      <span style="font-family:'GothamBook',Arial,sans-serif;font-size:0.72rem;color:var(--muted);">Print before your two-week observation. Mark freely — as many times as you observe each behaviour each day.</span>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--border);padding:16px 20px;margin-bottom:28px;">
+      <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.82rem;color:var(--white);line-height:1.6;">When your two weeks are done, photograph your completed scorecard and send it to <span style="color:var(--lime);font-family:'GothamMedium',Arial,sans-serif;">calculations@singlesession.online</span> — we will come back within three working days with a more precise estimate based on your per-behaviour data. Or enter your totals below and calculate now.</div>
+    </div>
+    <div class="calc-block">
+      <div class="calc-title">— Calculate Your Number —</div>
+      <div class="calc-intro">Enter your inputs below. All outputs are estimates based on published research and your observed data. No salary or revenue data required.</div>
+      <div class="inputs-grid">
+        <div class="calc-field"><label>Total defensive behaviours observed</label><input type="number" id="inp-ticks" placeholder="e.g. 18" min="0" inputmode="numeric"><div class="field-note">Your two-week total from the scorecard — all behaviours, all marks combined</div></div>
+        <div class="calc-field"><label>People you observed</label><input type="number" id="inp-observed" placeholder="e.g. 8" min="1" inputmode="numeric"><div class="field-note">How many people did you watch over two weeks?</div></div>
+        <div class="calc-field"><label>Total org headcount</label><input type="number" id="inp-headcount" placeholder="e.g. 1000" min="1" inputmode="numeric"><div class="field-note">Total number of people in your organisation</div></div>
+        <div class="calc-field"><label>Average annual salary (<span id="sal-lbl">$</span>)</label><input type="number" id="inp-salary" placeholder="e.g. 65000" min="1" inputmode="numeric"><div class="field-note">Used to calculate the cost of reactive leadership</div></div>
+
+      </div>
+      <div class="leader-field-wrap">
+        <div class="calc-field"><label>Approximate number of people leaders</label><input type="number" id="inp-leaders" placeholder="e.g. 250" min="1" inputmode="numeric"><div class="field-note">Anyone who leads, manages, or influences others — across all tiers</div></div>
+        <div class="leader-helper"><strong>Not sure?</strong> A typical organisation has one people leader for every 3–5 employees. For <span id="hc-hint">1,000</span> people that's roughly <strong><span id="leader-hint-low">200</span>–<span id="leader-hint-high">333</span></strong>.</div>
+      </div>
+
+      <button class="calc-btn" onclick="calculate()">Calculate My Number</button>
+    </div>
+    <div class="calc-footer">
+      <div class="calc-footer-note"><strong>Sources.</strong> Conversation cost: Crucial Learning (n=1,100) · Brad Rilatt / Crucial Dimensions (n=1,025) · Leadership Circle (Anderson, n=486) · Gallup · McKinsey. 75% reactive: Leadership Circle / Anderson &amp; Adams, 2M+ leaders. 220 working days per year (×22). Conservatism is applied through the $1,500 floor and 70% recovery rate. All figures are estimates. Research figures converted from USD at live rates via Open Exchange Rates.</div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 2 ══ -->
+    <div id="screen-2" style="display:none;">
+    <div style="margin-bottom:36px;margin-top:12px;">
+      <button class="back-btn" onclick="document.getElementById('screen-1').scrollIntoView({behavior:'smooth'})" style="background:none;border:1px solid var(--border);color:var(--muted);font-family:'GothamMedium',Arial,sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;padding:9px 18px;cursor:pointer;transition:all 0.15s;">↑ Adjust inputs</button>
+    </div>
+    <div class="org-name-wrap">
+      <div class="calc-field"><label>Enter your organisation name to personalise the report (optional)</label><input type="text" id="inp-orgname" placeholder="e.g. Acme Corporation" style="font-size:0.95rem !important;"></div>
+    </div>
+    <!-- PANEL 1 — MODEL A COST -->
+    <div style="background:var(--surface);border:1px solid var(--border);padding:28px;margin-bottom:1px;">
+      <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;" id="r-cost-eyebrow">Estimated annual cost of defensive behaviour</div>
+      <div style="font-family:'DrukTextBold',Arial,sans-serif;font-size:clamp(2.8rem,7vw,4.5rem);color:var(--amber);line-height:1;text-transform:uppercase;margin-bottom:12px;" id="r-cost-num">—</div>
+      <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.75rem;color:var(--muted);line-height:1.6;" id="r-cost-desc"></div>
     </div>
 
-    <div class="curbar">
-      <span class="curbar-label">Your currency</span>
-      <button class="cur-btn active" data-symbol="€" onclick="setCur(this)">EUR €</button>
-      <button class="cur-btn" data-symbol="£" onclick="setCur(this)">GBP £</button>
-      <button class="cur-btn" data-symbol="$" onclick="setCur(this)">USD $</button>
-      <button class="cur-btn" data-symbol="A$" onclick="setCur(this)">AUD A$</button>
-      <button class="cur-btn" data-symbol="S$" onclick="setCur(this)">SGD S$</button>
-      <span class="cur-note">Figures shown in your currency</span>
+    <!-- PANEL 2 — SAVING -->
+    <div style="background:var(--surface);border:1px solid var(--lime);border-top:3px solid var(--lime);padding:28px;margin-bottom:1px;">
+      <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--lime);margin-bottom:12px;">Estimated annual saving if SSC works with your leaders and people managers</div>
+      <div style="font-family:'DrukTextBold',Arial,sans-serif;font-size:clamp(2.8rem,7vw,4.5rem);color:var(--lime);line-height:1;text-transform:uppercase;margin-bottom:12px;" id="r-saving-num">—</div>
+      <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.75rem;color:var(--muted);line-height:1.6;" id="r-saving-desc"></div>
     </div>
 
-    <div class="panel spaced">
-      <div class="field">
-        <label for="quota">Team annual sales target <span class="opt">(sum of rep quotas)</span></label>
-        <div class="input-row"><span class="cur" data-cur>€</span><input type="number" id="quota" min="0" placeholder="5,000,000"></div>
-      </div>
-      <div class="half">
-        <div class="field"><label for="reps">Reps in the team</label><input type="number" id="reps" min="1" placeholder="8"></div>
-        <div class="field"><label for="ote">Average rep OTE <span class="opt">(base + variable)</span></label>
-          <div class="input-row"><span class="cur" data-cur>€</span><input type="number" id="ote" min="0" placeholder="120,000"></div></div>
-      </div>
-      <div class="half">
-        <div class="field"><label for="lost">Reps lost in last 12 months</label><input type="number" id="lost" min="0" placeholder="2"></div>
-        <div class="field"><label for="attain">Current attainment % <span class="opt">(optional)</span></label><input type="number" id="attain" min="0" max="200" placeholder="82"></div>
-      </div>
-      <button class="adv-toggle" type="button" onclick="toggleAdv()">Adjust the model defaults</button>
-      <div class="adv" id="adv">
-        <div class="half">
-          <div class="field"><label for="baseTurn">Normal annual turnover %</label><input type="number" id="baseTurn" min="0" max="100" value="12">
-            <div class="micro">Churn below this isn't credited to the leader.</div></div>
-          <div class="field"><label for="ramp">Ramp to full productivity (months)</label><input type="number" id="ramp" min="1" max="24" value="7"></div>
+    <!-- PANEL 3 — SAVING PER LEADER -->
+    <div id="r-payback-block" style="display:none;background:var(--surface);border:1px solid var(--border);padding:28px;margin-bottom:28px;">
+      <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Estimated annual return — per reactive leader</div>
+      <div style="font-family:'DrukTextBold',Arial,sans-serif;font-size:clamp(2rem,5vw,3.2rem);color:var(--white);line-height:1;text-transform:uppercase;margin-bottom:12px;" id="r-payback-num">—</div>
+      <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.75rem;color:var(--muted);line-height:1.6;" id="r-payback-desc"></div>
+    </div>
+
+    <div class="action-row">
+      <button class="action-btn primary" onclick="generateReport()">↓ Download Full Report</button>
+      <button class="action-btn" onclick="printScorecard()">↓ Download Observation Scorecard</button>
+    </div>
+
+    <!-- ADJUST THE ASSUMPTIONS -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--lime);margin-bottom:28px;">
+      <button id="adj-toggle" onclick="toggleAssumptions()" style="width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px;">
+        <span style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--lime);">Adjust the assumptions — set your own figures</span>
+        <span id="adj-chev" style="font-family:'GothamMedium',Arial,sans-serif;font-size:1rem;color:var(--lime);line-height:1;">+</span>
+      </button>
+      <div id="adj-body" style="display:none;padding:4px 22px 26px;">
+        <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.82rem;color:var(--white);line-height:1.7;margin-bottom:24px;border-top:1px solid var(--border);padding-top:20px;">Every assumption behind this number is shown below — and every one is yours to change. We are not asking you to accept our figures. We are asking whether the case still holds when you set them to your own. Change any value and the numbers above update instantly. If it still stands when the dials are yours, there is something here worth doing together.</div>
+
+        <div class="calc-field" style="margin-bottom:20px;">
+          <label>Annualisation factor (×)</label>
+          <input type="number" id="adj-annual" value="22" min="1" step="1" inputmode="numeric" oninput="liveRecalc()">
+          <div class="field-note">Scales your two-week observation to a full year. ×22 assumes the rate you observed holds across all 220 working days. Lower it if the fortnight you watched ran hotter than a normal one — ×11 assumes it holds for only half the year. <strong style="color:var(--white);">SSC default: ×22.</strong></div>
+          <div id="warn-annual" style="display:none;font-family:'GothamMedium',Arial,sans-serif;font-size:0.72rem;color:var(--amber);line-height:1.55;margin-top:8px;"></div>
         </div>
-        <div class="field"><label for="repl">Replacement cost as % of OTE</label><input type="number" id="repl" min="0" max="200" value="50">
-          <div class="micro">Hiring, onboarding, lost management time. Conservative default.</div></div>
+
+        <div class="calc-field" style="margin-bottom:20px;">
+          <label>Recovery rate (%)</label>
+          <input type="number" id="adj-recovery" value="70" min="0" max="100" step="1" inputmode="numeric" oninput="liveRecalc()">
+          <div class="field-note">The share of the estimated cost SSC expects to remove. SSC recodes the one keystone behaviour driving the pattern; the downstream behaviours quieten once it stops being triggered. This is an SSC modelling assumption — so it is yours to challenge. <strong style="color:var(--white);">SSC default: 70%, deliberately conservative.</strong></div>
+          <div id="warn-recovery" style="display:none;font-family:'GothamMedium',Arial,sans-serif;font-size:0.72rem;color:var(--amber);line-height:1.55;margin-top:8px;"></div>
+        </div>
+
+        <div class="calc-field" style="margin-bottom:20px;">
+          <label>Reactive leaders (%)</label>
+          <input type="number" id="adj-reactive" value="75" min="0" max="100" step="1" inputmode="numeric" oninput="liveRecalc()">
+          <div class="field-note">The share of your leaders who operate reactively — the population this cost is scaled across. This is not our figure to set: it is Leadership Circle's, measured across more than two million leaders. Lower it only if you have reason to believe your leadership runs below the global average. <strong style="color:var(--white);">Default: 75% (Leadership Circle / Anderson &amp; Adams).</strong></div>
+          <div id="warn-reactive" style="display:none;font-family:'GothamMedium',Arial,sans-serif;font-size:0.72rem;color:var(--amber);line-height:1.55;margin-top:8px;"></div>
+        </div>
+
+        <div class="calc-field" style="margin-bottom:22px;">
+          <label>Cost per blocked conversation (<span id="adj-cost-sym">$</span>)</label>
+          <input type="number" id="adj-cost" value="1500" min="0" step="50" inputmode="numeric" oninput="costEdited();liveRecalc()">
+          <div class="field-note">What one stalled or avoided conversation costs you. The default is the conservative floor across five independent sources. If your own cost of a delayed decision is higher, set it here. <strong style="color:var(--white);">SSC default: <span id="adj-cost-def">$1,500</span> at today's live rate.</strong></div>
+          <div id="warn-cost" style="display:none;font-family:'GothamMedium',Arial,sans-serif;font-size:0.72rem;color:var(--amber);line-height:1.55;margin-top:8px;"></div>
+        </div>
+
+        <button onclick="resetAssumptions()" style="background:none;border:1px solid var(--border);color:var(--muted);font-family:'GothamMedium',Arial,sans-serif;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;padding:10px 20px;cursor:pointer;transition:all 0.15s;">↺ Reset to SSC defaults</button>
       </div>
     </div>
 
-    <div class="panel spaced">
-      <label>Does this team own renewals or expansion revenue?</label>
-      <div class="switch">
-        <label class="toggle"><input type="checkbox" id="hasRenew" onchange="toggleRenew()"><span class="track"></span><span class="dot"></span></label>
-        <span style="font-size:14px;color:var(--white)">A reactive leader also protects less <em>retained</em> revenue, not only new.</span>
-      </div>
-      <div class="field" id="renewField" style="display:none">
-        <label for="renewBook" style="margin-top:16px">Annual renewal / expansion book</label>
-        <div class="input-row"><span class="cur" data-cur>€</span><input type="number" id="renewBook" min="0" placeholder="3,000,000"></div>
-      </div>
+
+    <!-- PANEL 4 — OBSERVATION RATE -->
+    <div id="gold-obs-block" style="display:none;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--lime);padding:20px 22px;margin-bottom:28px;">
+      <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--lime);margin-bottom:8px;">Your observation — what the data shows</div>
+      <div id="g-obs-context" style="font-family:'GothamBook',Arial,sans-serif;font-size:clamp(0.88rem,1.5vw,1rem);color:var(--white);line-height:1.6;"></div>
+      <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.75rem;color:var(--muted);margin-top:8px;line-height:1.5;">Each of those moments is a conversation that did not happen — and will not happen tomorrow unless something changes at the pattern level.</div>
     </div>
 
-    <div class="btn-row"><button class="btn" id="toStep2">Next: observe the pattern &rarr;</button></div>
-    <div class="err" id="err1"></div>
-  </section>
-
-  <!-- ===================== STEP 2 — SCORECARD ===================== -->
-  <section class="step" id="s2">
-    <span class="sect-label">Step 2 of 2 · The pattern</span>
-    <h2 style="margin-top:14px">What you've actually seen this leader do</h2>
-    <p class="sub" style="margin-top:8px">Tick only what you've genuinely observed. The upside is built from this — no ticks, no claim. Behaviours map to three reactive patterns.</p>
-    <div class="panel spaced">
-      <div class="dim">
-        <div class="dim-h">Controlling <span>— drives results through force, can't let go</span></div>
-        <label class="tick"><input type="checkbox" class="sc"><span>Takes over reps' deals or calls rather than coaching them through</span></label>
-        <label class="tick"><input type="checkbox" class="sc"><span>Sits on decisions reps need, so deals stall waiting on them</span></label>
-        <label class="tick"><input type="checkbox" class="sc"><span>Hoards pipeline visibility; the team can't see the whole picture</span></label>
-      </div>
-      <div class="dim">
-        <div class="dim-h">Protecting <span>— withdraws, stays distant and safe</span></div>
-        <label class="tick"><input type="checkbox" class="sc"><span>Avoids the hard performance conversation until it's too late</span></label>
-        <label class="tick"><input type="checkbox" class="sc"><span>Explains away missed numbers rather than confronting them</span></label>
-        <label class="tick"><input type="checkbox" class="sc"><span>Stays remote from the floor and from live deals</span></label>
-      </div>
-      <div class="dim">
-        <div class="dim-h">Complying <span>— defers, pleases, won't push back</span></div>
-        <label class="tick"><input type="checkbox" class="sc"><span>Accepts unrealistic targets without negotiating them down</span></label>
-        <label class="tick"><input type="checkbox" class="sc"><span>Defers upward over backing the team's call</span></label>
-        <label class="tick"><input type="checkbox" class="sc"><span>Lets other functions block deals rather than forcing the issue</span></label>
-      </div>
-    </div>
-    <div class="btn-row">
-      <button class="btn ghost" onclick="go(1)">&larr; Back</button>
-      <button class="btn" onclick="seeEstimate()">See the upside &rarr;</button>
-    </div>
-  </section>
-
-  <!-- ===================== STEP 3 — RESULT ===================== -->
-  <section class="step" id="s3">
-    <div class="print-head"><div class="ph-name">Single Session Coaching</div><div class="ph-sub" id="phSub">Sales-leader upside estimate</div></div>
-    <span class="sect-label no-print">Modelled estimate · one reactive sales leader</span>
-    <h2 style="margin-top:14px">The double gain, in your numbers</h2>
-
-    <div class="ledger">
-      <div class="gain"><div class="tag">Win more · top line</div><div class="num" id="aNum">—</div><div class="of" id="aOf">revenue to win back</div></div>
-      <div class="gain"><div class="tag">Keep more · bottom line</div><div class="num" id="bNum">—</div><div class="of">churn &amp; ramp you stop paying for</div></div>
+    <!-- PANEL 5 — TRIANGULATION -->
+    <div style="background:var(--surface);border:1px solid var(--border);padding:22px;margin-bottom:28px;">
+      <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Independent context — Gallup disengagement cost across your whole workforce</div>
+      <div style="font-family:'DrukTextBold',Arial,sans-serif;font-size:clamp(1.6rem,4vw,2.4rem);color:var(--white);line-height:1;text-transform:uppercase;margin-bottom:10px;" id="r-modelb-num">—</div>
+      <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.75rem;color:var(--muted);line-height:1.6;" id="r-modelb-desc"></div>
     </div>
 
-    <div class="strip">
-      <div class="strip-tag">Upside · per leader · per year</div>
-      <div class="strip-body">
-        <div class="tag">On the table each year</div>
-        <div class="num" id="totNum">—</div>
-        <div class="band" id="totBand"></div>
-        <div class="roi"><b id="roiX">—</b><span>&times; the cost of one 90-minute session (€3,500) — returned every year you act</span></div>
+    <!-- SCORECARD SUBMISSION -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--border);padding:20px 22px;margin-bottom:28px;">
+      <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Want a more precise estimate?</div>
+      <div style="font-family:'GothamBook',Arial,sans-serif;font-size:clamp(0.85rem,1.5vw,0.95rem);color:var(--white);line-height:1.6;margin-bottom:4px;">If you have completed the observation scorecard, photograph it and send it to <span style="color:var(--lime);">calculations@singlesession.online</span></div>
+      <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.75rem;color:var(--muted);line-height:1.5;">We will come back within three working days with a more precise estimate based on your per-behaviour data.</div>
+    </div>
+
+    <div class="section-divider">How we calculate this estimate</div>
+    <button class="detail-toggle" id="tog-a" onclick="toggleDetail('detail-a','tog-a')">+ Show full working — Model A cost, SSC saving, Gallup triangulation</button>
+    <div class="detail-block" id="detail-a"></div>
+
+
+  <div class="cta-block">
+      <div class="cta-heading">Let's find your savings together.</div>
+      <div class="cta-body">Most organisations have cut costs to the bone. Travel. Overheads. Headcount. The one cost they have never seriously explored is the cost of human behaviour — because until now, no one had a way to see it.<br><br>This number is an estimate, based on solid published research across thousands of organisations. It will not be precise. But if it is even half right, it represents a saving worth exploring — and a conversation worth having.</div>
+      <a href="https://singlesession.online/schedule" class="cta-btn" target="_blank" rel="noopener">Book a Scoping Call</a>
+      <div style="margin-top:28px;padding-top:28px;border-top:1px solid rgba(0,0,0,0.15);">
+        <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--black);margin-bottom:16px;">Or leave your details</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+          <input type="text" id="cta-name" placeholder="Your name" style="background:rgba(0,0,0,0.12);border:1px solid rgba(0,0,0,0.2);color:var(--black);font-family:'GothamBook',Arial,sans-serif;font-size:0.9rem;padding:12px 14px;outline:none;border-radius:0;-webkit-appearance:none;width:100%;">
+          <input type="email" id="cta-email" placeholder="Work email" style="background:rgba(0,0,0,0.12);border:1px solid rgba(0,0,0,0.2);color:var(--black);font-family:'GothamBook',Arial,sans-serif;font-size:0.9rem;padding:12px 14px;outline:none;border-radius:0;-webkit-appearance:none;width:100%;">
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <input type="checkbox" id="cta-sendreport" style="width:18px;height:18px;cursor:pointer;accent-color:var(--black);">
+          <label for="cta-sendreport" style="font-family:'GothamBook',Arial,sans-serif;font-size:0.82rem;color:var(--black);cursor:pointer;">Send my report as an attachment — SSC will email it to you within one working day</label>
+        </div>
+        <button onclick="submitCTA()" style="background:var(--black);color:var(--lime);font-family:'GothamMedium',Arial,sans-serif;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;padding:14px 32px;border:none;cursor:pointer;">Send</button>
+        <div id="cta-confirm" style="display:none;font-family:'GothamBook',Arial,sans-serif;font-size:0.82rem;color:var(--black);margin-top:12px;">Thanks — we will be in touch within 3 working days.</div>
+        <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.65rem;color:var(--black);line-height:1.7;margin-top:14px;opacity:0.6;">This calculator runs entirely in your browser. No data is collected, stored, or seen by anyone unless you choose to submit the form above. If you do submit, your details are processed securely by Formspark (EU-based, GDPR compliant) and received by Single Session Coaching Global BV (Netherlands) only. SSC will not share your information with third parties. By submitting you confirm you have read our <a href="https://singlesession.online/privacy" target="_blank" style="color:var(--black);text-decoration:underline;text-underline-offset:3px;">Privacy Policy</a> and agree to our <a href="https://singlesession.online/terms-conditions" target="_blank" style="color:var(--black);text-decoration:underline;text-underline-offset:3px;">Terms &amp; Conditions</a>. Our <a href="https://singlesession.online/dpa" target="_blank" style="color:var(--black);text-decoration:underline;text-underline-offset:3px;">Data Processing Agreement</a> is available for download.</div>
       </div>
     </div>
 
-    <div class="panel spaced">
-      <h2 style="font-size:1.05rem">How the number builds</h2>
-      <div class="breakdown" id="bd"></div>
+  <div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);text-align:center;padding-bottom:16px;">
+    <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.68rem;color:var(--muted);line-height:1.9;max-width:560px;margin:0 auto;">
+      This calculator is in active development. Methodology, sources, and outputs are updated as new research becomes available.<br>For questions about the calculation contact <a href="mailto:hello@singlesession.online" style="color:var(--muted);text-decoration:underline;text-underline-offset:3px;">hello@singlesession.online</a><br>
+      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v2.1
     </div>
-
-    <details>
-      <summary>How this is calculated — and what's research vs judgement</summary>
-      <div class="prov">
-        <p><b>Top line (revenue to win back).</b> Gallup's Q12 meta-analysis finds a <span class="cite">20% gap in sales</span> between top- and bottom-quartile engagement units, and that <span class="cite">managers account for ~70% of engagement variance</span> (State of the American Manager, 2015). We never apply the full gap: the observed-pattern score positions you on a conservative band topping out at <b>half</b> of it — a ceiling of ~7% of quota, lower the fewer behaviours ticked.</p>
-        <p><b>The bridge is ours.</b> Linking a reactive pattern to lower engagement is SSC's reasoning, not Gallup's — which is why this is a modelled estimate, every assumption visible.</p>
-        <p><b>Bottom line (reps kept).</b> Only departures <i>above</i> your normal turnover count, only ~70% credited to the leader, scaled by the observed pattern. Each carries a replacement cost (a % of OTE) plus the quota a ramping seat can't yet carry. Industry benchmarks you can adjust, not research constants.</p>
-        <p><b>No double-counting.</b> For a sales team the productivity loss <i>is</i> the revenue gap, so it's priced once — on the top line — not stacked twice.</p>
-      </div>
-    </details>
-
-    <p class="disc" id="disc"></p>
-
-    <div class="emailbox no-print">
-      <label for="email">Email me this report <span class="opt">(optional)</span></label>
-      <div class="input-row" style="margin-top:8px">
-        <input type="email" id="email" placeholder="you@company.com">
-        <button class="btn" style="margin-top:0" onclick="sendReport()">Send</button>
-      </div>
-      <div class="ok" id="ok3"></div>
-      <div class="err" id="err3"></div>
-      <p class="gdpr">This calculator runs entirely in your browser — nothing is collected unless you submit your email. If you do, your details are processed by Formspark (EU-based, GDPR compliant) and received by Single Session Coaching Global BV (Netherlands) only, never shared with third parties. By sending you confirm you've read our <a href="https://singlesession.online/privacy" target="_blank" rel="noopener">privacy policy</a> and agree to our <a href="https://singlesession.online/terms-conditions" target="_blank" rel="noopener">terms</a>. The <a href="https://singlesession.online/dpa" target="_blank" rel="noopener">DPA</a> is available to download.</p>
-    </div>
-
-    <div class="btn-row no-print">
-      <button class="btn ghost" onclick="go(1)">&larr; Change inputs</button>
-      <button class="btn ghost" onclick="window.print()">Download / print report</button>
-      <button class="btn" onclick="window.open('https://singlesession.online','_blank')">Talk to us &rarr;</button>
-    </div>
-  </section>
-
-</div>
+  </div>
 
 <script>
-const C={gallupSales:0.20,gallupCustomer:0.10,attribution:0.70,gapCeiling:0.50,uncertainty:0.20,sessionCost:3500};
-const FORMSPARK_ACTION='https://submit-form.com/ObpfIN0LX';   // v1's endpoint — leads tagged source:'sales-calc-v2-beta'
+const BEHAVIOURS = [
+  { name:"Pleasing",                           eg:'"That sounds great" — when it doesn\'t',            stops:"Challenge, honest pushback, strategic friction",     desc:"The leader says yes when they mean no. Challenge disappears. Bad decisions go unchallenged." },
+  { name:"Softening feedback",                 eg:"Diluting the message until it carries no weight",   stops:"Growth, behavioural change, standards",              desc:"The message arrives so softened it carries no instruction. The behaviour continues unchanged." },
+  { name:"Tolerating underperformance",        eg:'"Not worth the confrontation"',                     stops:"Team standards, trust, discretionary effort",        desc:"The team sees it. Standards quietly drop. High performers disengage or leave." },
+  { name:"Silence when risk is visible",       eg:"Seeing the problem and saying nothing",             stops:"Early intervention, risk management",                desc:"The risk is known but unspoken. By the time it surfaces, the cost of fixing it has multiplied." },
+  { name:"Approval-seeking",                   eg:"Deferring every decision until the boss decides",   stops:"Independent judgement, speed, accountability",       desc:"Every decision travels upward. Speed slows. The leader stops owning outcomes." },
+  { name:"Rescheduling the hard conversation", eg:"The one that keeps getting moved. Again.",          stops:"Performance feedback, course correction",            desc:"The issue persists. The relationship deteriorates. The cost compounds with every week delayed." },
+  { name:"Cynicism or dismissal",              eg:"Shutting down the idea before it is heard",         stops:"Innovation, psychological safety, trust",            desc:"People stop bringing ideas. The team learns that speaking up carries a cost." },
+  { name:"Defensiveness to challenge",         eg:"Rebutting before listening",                        stops:"Learning, honest dialogue, course correction",       desc:"Feedback stops reaching the leader. Blind spots widen. The team stops trying." },
+  { name:"Micromanagement",                    eg:'"Send it to me before it goes anywhere"',           stops:"Initiative, ownership, speed",                       desc:"People wait for permission. Capacity concentrates at the top. Talent underneath atrophies." },
+  { name:"Delegation avoidance",               eg:'"No one else can do it right"',                     stops:"Talent development, capacity, capability",           desc:"The leader becomes the bottleneck. Development stalls. Successors never emerge." },
+  { name:"Passive in meetings",                eg:"Present in the room. Absent from it.",              stops:"Engagement, accountability, decision quality",       desc:"Decisions are made without the leader's perspective. Their silence is read as agreement — or indifference." },
+  { name:"Reactive firefighting",              eg:"Using urgency to avoid the strategic conversation", stops:"Long-term thinking, strategic dialogue",             desc:"The team operates in permanent crisis mode. Strategic work is perpetually displaced by the urgent." },
+];
 
-let cur='€';
-const fmt=n=>cur+Math.round(n).toLocaleString('en-GB');
+const counts = Array(BEHAVIOURS.length).fill(0); // retained for scorecard compat
+let rates = {};
+let selectedCurrency = 'USD';
+let selectedSymbol   = '$';
+let lastCalc = {};
+const COST_LOW_USD = 1500, COST_HIGH_USD = 7500;
 
-function go(n){
-  document.querySelectorAll('.step').forEach(s=>s.classList.remove('on'));
-  document.getElementById('s'+n).classList.add('on');
-  window.scrollTo({top:0,behavior:'smooth'});postHeight();
-}
-function setCur(btn){
-  cur=btn.dataset.symbol;
-  document.querySelectorAll('.cur-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('[data-cur]').forEach(e=>e.textContent=cur);
-}
-function toggleAdv(){document.getElementById('adv').classList.toggle('on');postHeight();}
-function toggleRenew(){document.getElementById('renewField').style.display=
-  document.getElementById('hasRenew').checked?'block':'none';postHeight();}
-function num(id){const v=parseFloat(document.getElementById(id).value);return isNaN(v)?0:v;}
+// Formspark endpoint — EU-based, GDPR compliant
+const FORMSPARK_URL = 'https://submit-form.com/ObpfIN0LX';
 
-function validateInputs(){
-  const e=document.getElementById('err1');
-  if(num('quota')<=0){e.textContent='Add the team sales target to continue.';return false;}
-  if(num('reps')<1){e.textContent='How many reps are on the team?';return false;}
-  if(num('ote')<=0){e.textContent='Add average rep OTE to continue.';return false;}
-  e.textContent='';return true;
-}
-
-function calc(){
-  const quota=num('quota'),reps=Math.max(1,num('reps')),ote=num('ote'),lost=num('lost');
-  const baseTurn=num('baseTurn')/100,rampM=Math.max(1,num('ramp')),replPct=num('repl')/100;
-  const ticks=document.querySelectorAll('.sc:checked').length;
-  const maxTicks=document.querySelectorAll('.sc').length;
-  const patternIntensity=ticks/maxTicks;
-  const frac=patternIntensity*C.gapCeiling;
-
-  const A=quota*frac*C.gallupSales*C.attribution;
-
-  const baselineDeps=reps*baseTurn;
-  const excess=Math.max(0,lost-baselineDeps);
-  const attribDeps=excess*C.attribution*patternIntensity;
-  const perRepQuota=quota/reps;
-  const replacement=ote*replPct;
-  const rampGap=perRepQuota*(rampM/12)*0.5;
-  const Breplace=attribDeps*replacement,Bramp=attribDeps*rampGap;
-  const B=Breplace+Bramp;
-
-  let Cstream=0;
-  if(document.getElementById('hasRenew').checked)
-    Cstream=num('renewBook')*frac*C.gallupCustomer*C.attribution;
-
-  const total=A+B+Cstream;
-  return {ticks,A,B,Breplace,Bramp,Cstream,total,attribDeps,
-    low:total*(1-C.uncertainty),high:total*(1+C.uncertainty),roi:total/C.sessionCost};
+async function fetchRates() {
+  try {
+    const res = await fetch('https://open.er-api.com/v6/latest/USD');
+    const data = await res.json();
+    if (data && data.rates) {
+      rates = data.rates;
+      const d = new Date(data.time_last_update_utc);
+      document.getElementById('rate-note').textContent = 'Live rates · ' + d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+      const salLbl = document.getElementById('sal-lbl');
+    if (salLbl) salLbl.textContent = selectedSymbol;
+    updateCostStrip();
+    setCostDefault();
+    }
+  } catch(e) {
+    rates = { EUR:0.92, GBP:0.79, USD:1, AUD:1.53, SGD:1.34 };
+    document.getElementById('rate-note').textContent = 'Approximate rates';
+    updateCostStrip();
+    setCostDefault();
+  }
 }
 
-function seeEstimate(){render();go(3);}
+function toLocal(usd, cur) { return usd * (rates[cur] || 1); }
 
-function render(){
-  const r=calc();
-  document.getElementById('aNum').textContent=fmt(r.A);
-  document.getElementById('bNum').textContent=fmt(r.B);
-  document.getElementById('totNum').textContent=fmt(r.total);
-  document.getElementById('totBand').textContent='Modelled range '+fmt(r.low)+' – '+fmt(r.high);
-  document.getElementById('roiX').textContent=r.roi>=1?r.roi.toFixed(0)+'×':r.roi.toFixed(1)+'×';
-  const attain=num('attain');
-  document.getElementById('aOf').textContent=attain>0?('lift from '+attain+'% attainment today'):'revenue to win back';
-
-  const rows=[['Revenue to win back (top line)',fmt(r.A),'']];
-  if(r.attribDeps>0){
-    rows.push(['Replacement cost avoided',fmt(r.Breplace),'muted']);
-    rows.push(['Quota recovered from fewer ramps',fmt(r.Bramp),'muted']);
-  } else rows.push(['Reps kept','No excess churn to credit','muted']);
-  if(r.Cstream>0) rows.push(['Renewal revenue protected',fmt(r.Cstream),'']);
-  rows.push(['Total upside on the table each year',fmt(r.total),'sum']);
-  document.getElementById('bd').innerHTML=rows.map(([k,v,cls])=>
-    `<div class="brow ${cls}"><span>${k}</span><span class="v">${v}</span></div>`).join('');
-
-  document.getElementById('phSub').textContent='Sales-leader upside estimate · '+new Date().toLocaleDateString('en-GB');
-
-  let d='A modelled estimate of upside available to recover — not revenue promised. It sizes what\'s on the table; the realised figure is what we measure together afterwards, against your baseline. We say "won back", never "generated", until it\'s measured.';
-  if(r.ticks===0) d='No behaviours were ticked, so there\'s no observed basis to size an upside — the estimate is zero by design. Go back and tick only what you\'ve genuinely seen.';
-  else if(num('lost')>Math.max(1,num('reps'))) d+=' <br><br>One to check: you\'ve entered more reps lost than the current team size — make sure that\'s a 12-month figure including backfilled seats.';
-  document.getElementById('disc').innerHTML=d;
-  postHeight();
+function updateCostStrip() {
+  document.getElementById('strip-low').textContent  = selectedSymbol + fmtN(toLocal(COST_LOW_USD,  selectedCurrency));
+  document.getElementById('strip-high').textContent = selectedSymbol + fmtN(toLocal(COST_HIGH_USD, selectedCurrency));
 }
 
-function sendReport(){
-  const em=document.getElementById('email').value.trim();
-  const ok=document.getElementById('ok3'),err=document.getElementById('err3');
-  ok.textContent='';err.textContent='';
-  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){err.textContent='Enter a valid email.';return;}
-  if(FORMSPARK_ACTION.indexOf('YOUR-FORMSPARK-ID')!==-1){err.textContent='Email delivery isn\'t wired up yet — set the Formspark endpoint.';return;}
-  const r=calc();
-  fetch(FORMSPARK_ACTION,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({email:em,currency:cur,ticks:r.ticks,
-      revenue_won_back:Math.round(r.A),reps_kept:Math.round(r.B),
-      renewal_protected:Math.round(r.Cstream),total_upside:Math.round(r.total),
-      roi_multiple:Math.round(r.roi),source:'sales-calc-v2-beta'})})
-    .then(()=>{ok.textContent='Sent — check your inbox shortly.';})
-    .catch(()=>{err.textContent='Something went wrong sending that. Try again.';});
-}
-
-document.getElementById('toStep2').addEventListener('click',function(){if(validateInputs())go(2);});
-
-/* iframe auto-resize — same 'ssc-height' contract as v1 */
-function postHeight(){
-  requestAnimationFrame(function(){
-    const h=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight);
-    try{window.parent.postMessage({type:'ssc-height',height:h},'*');}catch(e){}
+document.querySelectorAll('.currency-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedCurrency = btn.dataset.currency;
+    selectedSymbol   = btn.dataset.symbol;
+    document.getElementById('sal-lbl').textContent = selectedSymbol;
+    updateCostStrip();
+    setCostDefault();
+    liveRecalc();
   });
+});
+
+document.getElementById('inp-headcount').addEventListener('input', function() {
+  const hc = parseFloat(this.value) || 1000;
+  document.getElementById('hc-hint').textContent = fmtN(hc);
+  document.getElementById('leader-hint-low').textContent  = fmtN(Math.round(hc/5));
+  document.getElementById('leader-hint-high').textContent = fmtN(Math.round(hc/3));
+});
+
+
+
+let userEditedCost = false;
+function costEdited() { userEditedCost = true; }
+
+function toggleAssumptions() {
+  const body = document.getElementById('adj-body');
+  const chev = document.getElementById('adj-chev');
+  const open = (body.style.display === 'none' || !body.style.display);
+  body.style.display = open ? 'block' : 'none';
+  chev.textContent = open ? '−' : '+';
 }
-window.addEventListener('load',postHeight);
-window.addEventListener('resize',postHeight);
+
+function liveRecalc() {
+  updateAssumptionWarnings();
+  // Re-run only once a calculation already exists (Screen 2 visible) so we never trip validation.
+  if (document.getElementById('screen-2').style.display === 'block') calculate();
+}
+
+function setWarn(id, msg) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = msg;
+  el.style.display = msg ? 'block' : 'none';
+}
+
+// Gentle "really?" nudges for implausibly low settings. These never block or clamp —
+// they make a low setting a conscious claim the user has to own.
+function updateAssumptionWarnings() {
+  const annual = parseFloat(document.getElementById('adj-annual').value);
+  const recov  = parseFloat(document.getElementById('adj-recovery').value);
+  const react  = parseFloat(document.getElementById('adj-reactive').value);
+  const costV  = parseFloat(document.getElementById('adj-cost').value);
+  const localFloor = Math.round(toLocal(COST_LOW_USD, selectedCurrency));
+
+  setWarn('warn-annual',
+    (annual > 0 && annual < 8)
+      ? '↳ Really? ×' + annual + ' assumes the rate you observed holds in only about ' + (annual * 2) + ' weeks of the year. Worth being sure that is what you intend.'
+      : '');
+  setWarn('warn-recovery',
+    (recov >= 0 && recov < 35)
+      ? '↳ Really? Recovery at ' + recov + '% assumes a keystone intervention returns barely one pound in ' + Math.round(100 / Math.max(recov, 1)) + '. If you believe that, it is worth testing directly rather than assuming.'
+      : '');
+  setWarn('warn-reactive',
+    (react >= 0 && react < 50)
+      ? '↳ Really? ' + react + '% claims your leadership runs well below the global average of 75%, measured across two million leaders.'
+      : '');
+  setWarn('warn-cost',
+    (userEditedCost && costV > 0 && costV < localFloor)
+      ? '↳ Really? That is below the ' + selectedSymbol + fmtN(localFloor) + ' floor — already the most conservative figure across five independent sources.'
+      : '');
+}
+
+function setCostDefault() {
+  const symEl = document.getElementById('adj-cost-sym');
+  const defEl = document.getElementById('adj-cost-def');
+  const localDefault = Math.round(toLocal(COST_LOW_USD, selectedCurrency));
+  if (symEl) symEl.textContent = selectedSymbol;
+  if (defEl) defEl.textContent = selectedSymbol + fmtN(localDefault);
+  if (!userEditedCost) {
+    const el = document.getElementById('adj-cost');
+    if (el) el.value = localDefault;
+  }
+}
+
+function resetAssumptions() {
+  document.getElementById('adj-annual').value   = 22;
+  document.getElementById('adj-recovery').value = 70;
+  document.getElementById('adj-reactive').value = 75;
+  userEditedCost = false;
+  setCostDefault();
+  liveRecalc();
+}
+
+function calculate() {
+  const ticks     = parseFloat(document.getElementById('inp-ticks').value)    || 0;
+  const observed  = parseFloat(document.getElementById('inp-observed').value)  || 1;
+  const headcount = parseFloat(document.getElementById('inp-headcount').value) || 0;
+  const salary    = parseFloat(document.getElementById('inp-salary').value)    || 0;
+  const leaders   = parseFloat(document.getElementById('inp-leaders').value)   || 0;
+
+  if (!ticks)     { alert('Please enter your total blocked conversations observed.'); return; }
+  if (!headcount) { alert('Please enter your organisation headcount.'); return; }
+  if (!salary)    { alert('Please enter your average annual salary.'); return; }
+  if (!leaders)   { alert('Please enter your approximate number of people leaders.'); return; }
+  if (leaders > headcount) { alert('People leaders cannot exceed total headcount. Please check your inputs.'); return; }
+  if (leaders > headcount * 0.7) { if (!confirm(fmtN(leaders) + ' leaders out of ' + fmtN(headcount) + ' people seems high (' + Math.round(leaders/headcount*100) + '%). Continue anyway?')) return; }
+
+  const sym = selectedSymbol;
+
+  // ── MODEL A — cost of defensive behaviour ────────────────────────────────
+  // Crucial Learning (n=1,100), five independent sources. $1,500 per blocked conversation.
+  // Observation is a SAMPLE. Scale the observed rate to all reactive leaders.
+  // Annualisation uses ×22 (220 working days) — standard working year.
+  // Conservatism is applied through the $1,500 floor and 70% recovery rate, not the annualisation.
+  // ── ADJUSTABLE ASSUMPTIONS (advanced panel) — default to canonical values ──
+  // Defaults: ×22 annualisation, 75% reactive (Leadership Circle), 70% recovery (SSC),
+  // $1,500 floor per conversation. A client may set any of these to their own figure.
+  const annualFactor = parseFloat(document.getElementById('adj-annual').value) || 22;
+  const reactivePctIn = parseFloat(document.getElementById('adj-reactive').value);
+  const reactiveRate  = (reactivePctIn >= 0 ? reactivePctIn : 75) / 100;
+  const recoveryPctIn = parseFloat(document.getElementById('adj-recovery').value);
+  const recoveryRate  = (recoveryPctIn >= 0 ? recoveryPctIn : 70) / 100;
+  const costFieldVal  = parseFloat(document.getElementById('adj-cost').value);
+  const costIsDefault = !userEditedCost;
+  const costPerConv   = (userEditedCost && costFieldVal > 0) ? costFieldVal : toLocal(COST_LOW_USD, selectedCurrency);
+  const reactivePct   = Math.round(reactiveRate * 100);
+  const recoveryPct   = Math.round(recoveryRate * 100);
+
+  const reactiveLeaders     = Math.round(leaders * reactiveRate);    // share of leaders operating reactively
+  const ratePerPerson       = ticks / observed;                      // blocked convs per person over 2 weeks
+  const annualisedPerPerson = ratePerPerson * annualFactor;          // per person per year
+  const annualisedScaled    = annualisedPerPerson * reactiveLeaders; // scaled to all reactive leaders
+  const modelA              = annualisedScaled * costPerConv;
+
+  // ── SAVING — Model A × recovery rate ─────────────────────────────────────
+  // SSC removes the cause. Default 70% is conservative — accounts for timing and variance.
+  const saving          = modelA * recoveryRate;
+  const savingPerLeader = reactiveLeaders > 0 ? saving / reactiveLeaders : 0;
+
+  // ── GALLUP WEIGHTED TRIANGULATION ────────────────────────────────────────
+  // Gallup State of the Global Workplace 2023: 20% engaged, 64% not engaged, 16% actively disengaged.
+  // Weighted productivity loss model — conservative rates applied per category:
+  //   Not engaged (64%):       5% salary cost — underperformance, lost discretionary effort
+  //   Actively disengaged (16%): 18% salary cost — Gallup published figure
+  // Leadership Circle (Anderson & Adams, 2M+ leaders): 75% of leaders operate reactively/defensively.
+  // Used here only to scale the observation — not as a cost figure.
+  const payroll              = headcount * salary;
+  const gallupNotEngaged     = Math.round(headcount * 0.64);
+  const gallupActivelyDis    = Math.round(headcount * 0.16);
+  const gallupNotEngagedCost = gallupNotEngaged * salary * 0.05;
+  const gallupActiveCost     = gallupActivelyDis * salary * 0.18;
+  const gallupCost           = gallupNotEngagedCost + gallupActiveCost;
+  const gallupPct            = Math.round((gallupCost / payroll) * 1000) / 10; // % of payroll
+
+  // ── OBSERVATION RATE ─────────────────────────────────────────────────────
+  const observationRate = (ticks > 0 && observed > 0)
+    ? Math.round((ratePerPerson / 10) * 10) / 10
+    : null;
+
+  lastCalc = { ticks, observed, headcount, salary, leaders, sym,
+    costPerConv, ratePerPerson, annualisedPerPerson, annualisedScaled,
+    modelA, saving, savingPerLeader,
+    annualFactor, reactivePct, recoveryPct, costIsDefault,
+    reactiveLeaders, observationRate,
+    payroll, gallupNotEngaged, gallupActivelyDis,
+    gallupNotEngagedCost, gallupActiveCost, gallupCost, gallupPct,
+    currency: selectedCurrency };
+
+  // ── DISPLAY — Model A cost ───────────────────────────────────────────────
+  s('r-cost-eyebrow', 'Estimated annual cost of defensive behaviour across your ' + fmtN(reactiveLeaders) + ' reactive leaders — scaled from your two-week observation');
+  s('r-cost-num',  sym + fmtM(modelA));
+  s('r-cost-desc', fmtN(ticks) + ' blocked conversations observed across ' + Math.round(observed) + ' people over two weeks · ' + Math.round(ratePerPerson * 10) / 10 + ' per person per fortnight · scaled to ' + fmtN(reactiveLeaders) + ' reactive leaders · annualised ×' + annualFactor + ' · ' + sym + fmtN(costPerConv) + ' per blocked conversation (Crucial Learning, n=1,100)');
+
+  // ── DISPLAY — Saving ─────────────────────────────────────────────────────
+  s('r-saving-num',  sym + fmtM(saving));
+  s('r-saving-desc', 'Estimated annual saving if SSC works with your leaders and people managers — based on ' + recoveryPct + '% recovery of the estimated annual cost of defensive behaviour. Annual saving per reactive leader: ' + sym + fmtN(Math.round(savingPerLeader)) + '.');
+
+  // ── DISPLAY — Per-leader return ───────────────────────────────────────────
+  document.getElementById('r-payback-block').style.display = 'block';
+  s('r-payback-num', sym + fmtN(Math.round(savingPerLeader)));
+  s('r-payback-desc', 'Estimated annual return per reactive leader who works with SSC. Across all ' + fmtN(reactiveLeaders) + ' reactive leaders the total estimated annual saving is ' + sym + fmtM(saving) + '. The investment conversation happens with your SSC director.');
+
+  // ── DISPLAY — Gallup weighted triangulation ───────────────────────────────
+  s('r-modelb-num', sym + fmtM(gallupCost));
+  s('r-modelb-desc',
+    'This figure comes from a completely different methodology measuring a related but distinct problem. '
+    + 'Gallup (State of the Global Workplace, 2023) estimates that 80% of employees are not fully engaged — '
+    + '64% not engaged, 16% actively disengaged. '
+    + 'A weighted productivity loss model applied conservatively: '
+    + fmtN(gallupNotEngaged) + ' not-engaged employees at 5% salary cost, plus '
+    + fmtN(gallupActivelyDis) + ' actively disengaged at 18% salary cost (Gallup published figure), '
+    + 'produces ' + sym + fmtM(gallupCost) + ' — approximately ' + gallupPct + '% of your total payroll. '
+    + 'Model A (' + sym + fmtM(modelA) + ') measures the cost of defensive behaviour concentrated in your ' + fmtN(reactiveLeaders) + ' reactive leaders — a specific, observed, leadership-level problem. '
+    + 'Gallup (' + sym + fmtM(gallupCost) + ') measures the cost of disengagement spread across your entire workforce — a broader, shallower estimate of a related symptom. '
+    + 'These two numbers are not designed to match. They measure different things. Together they establish that the cost of human behaviour in your organisation is significant by any methodology. '
+    + 'McKinsey independently shows top-quartile leadership organisations deliver nearly three times the returns of bottom-quartile — consistent with both estimates above.'
+  );
+
+  // ── DISPLAY — Observation rate ───────────────────────────────────────────
+  if (observationRate !== null && ticks > 0) {
+    const rateText = observationRate < 0.5
+      ? 'less than once a week per person'
+      : observationRate < 1
+        ? Math.round(observationRate * 5) + ' times per person per week'
+        : Math.round(observationRate * 10) / 10 + ' times per person per day';
+    s('g-obs-context', 'In your sample of ' + Math.round(observed) + (Math.round(observed) === 1 ? ' person' : ' people') + ', defensive behaviour was observed at a rate of ' + rateText + '. Scaled across your ' + fmtN(reactiveLeaders) + ' reactive leaders, that is an estimated ' + fmtN(Math.round(annualisedScaled)) + ' blocked conversations per year.');
+    document.getElementById('gold-obs-block').style.display = 'block';
+  } else {
+    document.getElementById('gold-obs-block').style.display = 'none';
+  }
+
+  // ── DISPLAY — Working panel ──────────────────────────────────────────────
+  document.getElementById('detail-a').innerHTML =
+    wl('Blocked conversations observed (two weeks)', String(ticks) + ' across ' + Math.round(observed) + ' people', fmtN(ticks), '') +
+    wl('Rate per person per fortnight', ticks + ' ÷ ' + Math.round(observed), Math.round(ratePerPerson * 10) / 10, '') +
+    wl('Annualised per person (×' + annualFactor + ')', Math.round(ratePerPerson * 10) / 10 + ' × ' + annualFactor, Math.round(annualisedPerPerson * 10) / 10, '') +
+    wl('Reactive leaders — ' + reactivePct + '% of ' + fmtN(leaders) + ' (default 75%, Leadership Circle)', '', fmtN(reactiveLeaders), '') +
+    wl('Scaled to reactive leaders', Math.round(annualisedPerPerson * 10) / 10 + ' × ' + fmtN(reactiveLeaders), fmtN(Math.round(annualisedScaled)), '') +
+    wl('Model A — cost at ' + sym + fmtN(costPerConv) + ' per conversation', fmtN(Math.round(annualisedScaled)) + ' × ' + sym + fmtN(costPerConv), sym + fmtM(modelA), 'amber') +
+    wl('SSC estimated saving (Model A × ' + recoveryPct + '%)', sym + fmtM(modelA) + ' × ' + recoveryPct + '%', sym + fmtM(saving), 'lime') +
+    wl('Annual saving per reactive leader', sym + fmtM(saving) + ' ÷ ' + fmtN(reactiveLeaders), sym + fmtN(Math.round(savingPerLeader)), 'lime') +
+    '<div class="working-divider">Gallup independent context — disengagement cost across whole workforce</div>' +
+    wl('Not engaged (' + fmtN(gallupNotEngaged) + ' people, 64%) × 5% salary cost', fmtN(gallupNotEngaged) + ' × ' + sym + fmtN(salary) + ' × 5%', sym + fmtM(gallupNotEngagedCost), '') +
+    wl('Actively disengaged (' + fmtN(gallupActivelyDis) + ' people, 16%) × 18% salary cost', fmtN(gallupActivelyDis) + ' × ' + sym + fmtN(salary) + ' × 18%', sym + fmtM(gallupActiveCost), '') +
+    wl('Total Gallup weighted disengagement cost', '', sym + fmtM(gallupCost) + ' (' + gallupPct + '% of payroll)', '');
+
+  // Switch screen
+  const s2 = document.getElementById('screen-2');
+  s2.style.display = 'block';
+  setTimeout(() => { s2.scrollIntoView({behavior: 'smooth', block: 'start'}); }, 100);
+}
+
+function goBack() {
+  document.getElementById('screen-1').scrollIntoView({behavior:'smooth'});
+}
+
+
+
+
+
+
+
+
+
+function toggleDetail(id, btnId) {
+  const el  = document.getElementById(id);
+  const btn = document.getElementById(btnId);
+  const open = el.classList.toggle('open');
+  btn.textContent = (open ? '− ' : '+ ') + btn.textContent.slice(2);
+}
+
+
+function generateReport() {
+  const c = lastCalc;
+  if (!c || !c.sym) { alert('Please calculate first.'); return; }
+  const sym      = c.sym;
+  const orgName  = (document.getElementById('inp-orgname') || {}).value || '';
+  const date     = new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+
+  const win = window.open('', '_blank', 'width=900,height=700');
+  if (!win) { alert('Please allow pop-ups for this site to download your report.'); return; }
+
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+  <title>SSC — Hidden Cost Report${orgName ? ' · ' + orgName : ''}</title>
+  <style>
+    @font-face { font-family:'DrukTextBold'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6a1009cd7aaf840ccfa17f85/1779435981098/Druk-Bold-Web.woff2') format('woff2'); font-weight:700; font-style:normal; }
+    @font-face { font-family:'GothamBook'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/67c16f32ccecbb575ae82d2f/1740730162912/GothamBook.ttf') format('truetype'); font-weight:400; font-style:normal; }
+    @font-face { font-family:'GothamMedium'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/67c97a2fa70c204473c1f0c9/1741278511802/GothamMedium.ttf') format('truetype'); font-weight:600; font-style:normal; }
+    @font-face { font-family:'GothamLight'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6830c26fc80e440c041d2ef5/1748025967908/Gotham-Light.otf') format('opentype'); font-weight:300; font-style:normal; }
+    @page { size:A4 portrait; margin:12mm; }
+    *,-webkit-print-color-adjust { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    html,body { margin:0; padding:0; }
+    body { background:white; color:#111; font-family:'GothamBook',Arial,sans-serif; font-size:10pt; line-height:1.55; }
+
+    .pr-page { page-break-after:always; page-break-inside:avoid; padding:0; }
+    .pr-page:last-child { page-break-after:avoid; }
+
+    /* COVER */
+    .pr-cover {
+      position:relative; height:245mm; max-height:245mm; display:flex; flex-direction:column;
+      justify-content:flex-end; padding:0; margin:0; overflow:hidden;
+      page-break-after:always; page-break-inside:avoid; background:#111 !important;
+    }
+    .pr-cover-img { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position:center top; display:block; z-index:0; }
+    .pr-cover-head { position:absolute; top:0; left:0; right:0; display:flex; align-items:flex-start; justify-content:space-between; padding:6mm 10mm 0; z-index:2; }
+    .pr-cover-body { position:relative; z-index:2; padding:0 10mm 7mm; }
+    .pr-wm { width:16mm; height:auto; }
+    .pr-cover-tag { font-family:'GothamMedium',Arial,sans-serif; font-size:5pt; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.5) !important; text-align:right; line-height:1.5; }
+    .pr-cover-org { font-family:'GothamMedium',Arial,sans-serif; font-size:6pt; letter-spacing:0.12em; text-transform:uppercase; color:#DCFF4F !important; margin-bottom:2mm; }
+    .pr-cover-title { font-family:'DrukTextBold',Arial,sans-serif; font-size:24pt; line-height:0.92; color:#ffffff !important; text-transform:uppercase; margin-bottom:2.5mm; letter-spacing:0.01em; }
+    .pr-cover-sub { font-family:'GothamLight',Arial,sans-serif; font-size:7.5pt; color:rgba(255,255,255,0.7) !important; line-height:1.4; max-width:100mm; margin-bottom:2.5mm; }
+    .pr-cover-date { font-family:'GothamBook',Arial,sans-serif; font-size:5.5pt; color:rgba(255,255,255,0.35) !important; letter-spacing:0.08em; }
+
+    .pr-section-label { font-family:'DrukTextBold',Arial,sans-serif; font-size:7.5pt; letter-spacing:0.22em; text-transform:uppercase; color:#888 !important; border-bottom:1.5px solid #ddd; padding-bottom:2.5mm; margin-bottom:5mm; margin-top:9mm; }
+    .pr-section-label:first-child { margin-top:0; }
+
+    .pr-num-grid { display:grid; grid-template-columns:1fr 1fr; gap:3mm; margin-bottom:6mm; }
+    .pr-num-cell { border:1px solid #e0e0e0; padding:5mm 6mm; page-break-inside:avoid; }
+    .pr-num-cell.full { grid-column:1/-1; }
+    .pr-num-cell.recovery { border-left:4px solid #4a7a00; }
+    .pr-minmax { font-family:'GothamMedium',Arial,sans-serif; font-size:6.5pt; letter-spacing:0.18em; text-transform:uppercase; color:#aaa !important; margin-bottom:1.5mm; }
+    .pr-minmax.lime { color:#4a7a00 !important; }
+    .pr-num-eyebrow { font-family:'GothamMedium',Arial,sans-serif; font-size:7pt; letter-spacing:0.1em; text-transform:uppercase; color:#888 !important; margin-bottom:2.5mm; line-height:1.4; }
+    .pr-big { font-family:'DrukTextBold',Arial,sans-serif; font-size:28pt; line-height:1; text-transform:uppercase; margin-bottom:2.5mm; letter-spacing:0.01em; }
+    .pr-big.amber { color:#b86a00 !important; }
+    .pr-big.lime { color:#4a7a00 !important; }
+    .pr-num-desc { font-family:'GothamLight',Arial,sans-serif; font-size:8.5pt; color:#555 !important; line-height:1.5; }
+    .pr-range { display:flex; align-items:baseline; gap:4mm; flex-wrap:wrap; }
+    .pr-range-num { font-family:'DrukTextBold',Arial,sans-serif; font-size:24pt; color:#b86a00 !important; text-transform:uppercase; letter-spacing:0.01em; }
+    .pr-range-sep { font-family:'DrukTextBold',Arial,sans-serif; font-size:16pt; color:#ccc !important; }
+
+    /* GOLD PANELS */
+    .pr-gold-grid { display:grid; grid-template-columns:1fr 1fr; gap:3mm; margin-bottom:6mm; }
+    .pr-gold-cell { border:1px solid #e0e0e0; padding:5mm 6mm; page-break-inside:avoid; }
+    .pr-gold-label { font-family:'GothamMedium',Arial,sans-serif; font-size:6.5pt; letter-spacing:0.16em; text-transform:uppercase; color:#aaa !important; margin-bottom:2mm; }
+    .pr-gold-num { font-family:'DrukTextBold',Arial,sans-serif; font-size:22pt; color:#4a7a00 !important; line-height:1; margin-bottom:2mm; text-transform:uppercase; }
+    .pr-gold-desc { font-family:'GothamLight',Arial,sans-serif; font-size:8pt; color:#555 !important; line-height:1.5; }
+    .pr-obs-cell { border:1px solid #e0e0e0; border-left:4px solid #DCFF4F; padding:5mm 6mm; margin-bottom:6mm; grid-column:1/-1; page-break-inside:avoid; }
+    .pr-obs-context { font-family:'GothamLight',Arial,sans-serif; font-size:9.5pt; color:#111 !important; line-height:1.6; margin-bottom:2mm; }
+
+    .pr-inputs,.pr-working { width:100%; border-collapse:collapse; margin-bottom:5mm; font-size:9pt; font-family:'GothamBook',Arial,sans-serif; }
+    .pr-inputs tr,.pr-working tr { border-bottom:1px solid #eeeeee; }
+    .pr-inputs td,.pr-working td { padding:2mm 3mm; font-family:'GothamLight',Arial,sans-serif; }
+    .pr-inputs td:last-child { text-align:right; font-family:'GothamMedium',Arial,sans-serif; }
+    .pr-working td:nth-child(2) { color:#aaa !important; text-align:center; font-size:8pt; }
+    .pr-working td:last-child { text-align:right; font-family:'GothamMedium',Arial,sans-serif; }
+    .pr-working .amber { color:#b86a00 !important; }
+    .pr-working .lime { color:#4a7a00 !important; }
+
+    .pr-body { font-family:'GothamLight',Arial,sans-serif; font-size:10pt; color:#1a1a1a !important; line-height:1.75; margin-bottom:5.5mm; }
+    .pr-research-grid { display:grid; grid-template-columns:1fr 1fr; gap:3.5mm 9mm; margin-top:2mm; }
+    .pr-research-item { padding-bottom:3.5mm; border-bottom:1px solid #eeeeee; page-break-inside:avoid; }
+    .pr-research-title { font-family:'GothamMedium',Arial,sans-serif; font-size:8.5pt; color:#111 !important; margin-bottom:1.5mm; }
+    .pr-research-body { font-family:'GothamLight',Arial,sans-serif; font-size:8.5pt; color:#444 !important; line-height:1.55; }
+
+    .pr-cta { background:#111111 !important; padding:10mm 12mm; margin-top:9mm; page-break-inside:avoid; }
+    .pr-cta-logo { margin-bottom:5mm; }
+    .pr-cta-logo img { width:20mm; height:auto; }
+    .pr-cta-head { font-family:'DrukTextBold',Arial,sans-serif; font-size:20pt; color:#DCFF4F !important; text-transform:uppercase; line-height:1; margin-bottom:4mm; letter-spacing:0.01em; }
+    .pr-cta-body { font-family:'GothamLight',Arial,sans-serif; font-size:9.5pt; color:#cccccc !important; line-height:1.65; margin-bottom:4mm; max-width:145mm; }
+    .pr-cta-url { font-family:'GothamMedium',Arial,sans-serif; font-size:9.5pt; color:#DCFF4F !important; letter-spacing:0.06em; }
+
+    .page2-wrap { padding:0 0; }
+  </style></head><body>
+
+  <div class="pr-page pr-cover">
+    <img class="pr-cover-img" src="https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6a27713a93b9ce172dc42f29/1780969789480/Calculator+Report+Out+Front+Page.001.png" alt="">
+    <div class="pr-cover-head">
+      <img class="pr-wm" src="${LOGO_WHITE}" alt="SSC">
+      <div class="pr-cover-tag">SINGLE SESSION COACHING<br>SINGLESESSION.ONLINE</div>
+    </div>
+    <div class="pr-cover-body">
+      ${orgName ? `<div class="pr-cover-org">Prepared for ${orgName.toUpperCase()}</div>` : ''}
+      <div class="pr-cover-title">THE HIDDEN<br>COST OF<br>HUMAN<br>BEHAVIOUR</div>
+      <div class="pr-cover-sub">An estimate of what defensive behaviour is costing your organisation — and what a single session could recover.</div>
+      <div class="pr-cover-date">${date}</div>
+    </div>
+  </div>
+
+  <div class="pr-page page2-wrap">
+    <div class="pr-section-label">Your Estimated Figures</div>
+    <div class="pr-num-grid">
+      <div class="pr-num-cell full">
+        <div class="pr-num-eyebrow">Estimated annual cost of defensive behaviour — observation scaled from ${Math.round(c.observed)} people to ${fmtN(c.reactiveLeaders)} reactive leaders</div>
+        <div class="pr-big amber">${sym + fmtM(c.modelA)}</div>
+        <div class="pr-num-desc">${fmtN(c.ticks)} blocked conversations observed across ${Math.round(c.observed)} people · ${Math.round(c.ratePerPerson * 10) / 10} per person per fortnight · scaled to ${fmtN(c.reactiveLeaders)} reactive leaders · annualised × ${c.annualFactor} · ${sym}${fmtN(c.costPerConv)} per blocked conversation (Crucial Learning, n=1,100 · five independent sources)</div>
+      </div>
+      <div class="pr-num-cell full" style="border-left:4px solid #4a7a00;">
+        <div class="pr-minmax lime">Estimated annual saving if SSC works with your leaders and people managers</div>
+        <div class="pr-big lime">${sym + fmtM(c.saving)}</div>
+        <div class="pr-num-desc">Model A × ${c.recoveryPct}% recovery. SSC removes the defensive behaviour at the pattern level — not managing its consequences, but eliminating the cause. ${c.recoveryPct === 70 ? '70% is a conservative recovery assumption.' : 'Recovery rate set by you; SSC\u2019s conservative default is 70%.'} Annual saving per reactive leader: ${sym}${fmtN(Math.round(c.savingPerLeader))}.</div>
+      </div>
+    </div>
+
+    <div class="pr-gold-grid">
+      <div class="pr-gold-cell">
+        <div class="pr-gold-label">Estimated annual return — per reactive leader</div>
+        <div class="pr-gold-num">${sym}${fmtN(Math.round(c.savingPerLeader))}</div>
+        <div class="pr-gold-desc">Total saving of ${sym}${fmtM(c.saving)} across ${fmtN(c.reactiveLeaders)} reactive leaders. The investment conversation happens with your SSC director.</div>
+      </div>
+      <div class="pr-gold-cell" style="border-left:2px solid #ddd;">
+        <div class="pr-gold-label">Independent context — Gallup disengagement cost across whole workforce</div>
+        <div class="pr-gold-num" style="color:#555 !important;">${sym + fmtM(c.gallupCost)}</div>
+        <div class="pr-gold-desc">Gallup (State of the Global Workplace, 2023): 80% of employees are not fully engaged. Weighted model: ${fmtN(c.gallupNotEngaged)} not-engaged × 5% salary = ${sym}${fmtM(c.gallupNotEngagedCost)}; ${fmtN(c.gallupActivelyDis)} actively disengaged × 18% = ${sym}${fmtM(c.gallupActiveCost)}. Total: ${sym}${fmtM(c.gallupCost)} (${c.gallupPct}% of payroll). This measures disengagement spread across the entire workforce — a broader, shallower estimate of a related symptom. Model A measures the cost of defensive behaviour concentrated in reactive leaders — a specific, observed, leadership-level problem. These two numbers are not designed to match. They measure different things. Together they establish that the cost of human behaviour in this organisation is significant by any methodology. McKinsey independently shows top-quartile leadership organisations deliver nearly 3× the returns of bottom-quartile.</div>
+      </div>
+      ${(function(){ if (!c.observationRate || !c.ticks) return '';
+        const obs = Math.round(c.observed);
+        const rateText = c.observationRate < 0.2 ? 'less than once a week per person'
+          : c.observationRate < 1 ? (Math.round(c.observationRate * 5) + ' times per person per week')
+          : (c.observationRate + ' times per person per day');
+        return '<div class="pr-gold-cell pr-obs-cell" style="grid-column:1/-1;">'
+          + '<div class="pr-gold-label">Your observation — what the data shows</div>'
+          + '<div class="pr-obs-context">In your sample of ' + obs + (obs===1?' person':' people') + ', defensive behaviour was observed at a rate of ' + rateText + ' on average.</div>'
+          + '<div class="pr-gold-desc">Each of those incidents is a conversation that did not happen — and will not happen tomorrow unless something changes at the pattern level.</div>'
+          + '</div>'; })()}
+    </div>
+
+    <div class="pr-section-label">Your Inputs</div>
+    <table class="pr-inputs">
+      <tr><td>Organisation</td><td>${orgName || '—'}</td></tr>
+      <tr><td>Total headcount</td><td>${fmtN(c.headcount)}</td></tr>
+      <tr><td>People leaders</td><td>${fmtN(c.leaders)}</td></tr>
+      <tr><td>Reactive leaders (${c.reactivePct}%${c.reactivePct === 75 ? ', default' : ', adjusted from 75%'})</td><td>${fmtN(c.reactiveLeaders)}</td></tr>
+      <tr><td>Annualisation factor</td><td>×${c.annualFactor}${c.annualFactor === 22 ? ' (SSC default)' : ' (adjusted from ×22)'}</td></tr>
+      <tr><td>Recovery rate</td><td>${c.recoveryPct}%${c.recoveryPct === 70 ? ' (SSC default)' : ' (adjusted from 70%)'}</td></tr>
+      <tr><td>Cost per blocked conversation</td><td>${sym}${fmtN(c.costPerConv)}${c.costIsDefault ? ' ($1,500 floor at live rate)' : ' (set by you)'}</td></tr>
+      <tr><td>Average annual salary</td><td>${sym}${fmtN(c.salary)}</td></tr>
+      <tr><td>Blocked conversations observed</td><td>${c.ticks} across ${Math.round(c.observed)} people over two working weeks</td></tr>
+      <tr><td>Observed rate per person</td><td>${Math.round(c.ratePerPerson * 10) / 10} per fortnight · ${Math.round(c.annualisedPerPerson * 10) / 10} annualised</td></tr>
+      <tr><td>Currency</td><td>${c.currency}</td></tr>
+      <tr><td>Date</td><td>${date}</td></tr>
+    </table>
+    <div class="pr-section-label">How We Calculate These Estimates</div>
+    <table class="pr-working">
+      <tr><td>Blocked conversations observed (two weeks)</td><td>${c.ticks} across ${Math.round(c.observed)} people</td><td>${fmtN(c.ticks)}</td></tr>
+      <tr><td>Rate per person per fortnight</td><td>${c.ticks} ÷ ${Math.round(c.observed)}</td><td>${Math.round(c.ratePerPerson * 10) / 10}</td></tr>
+      <tr><td>Annualised per person (×${c.annualFactor})</td><td>${Math.round(c.ratePerPerson * 10) / 10} × ${c.annualFactor}</td><td>${Math.round(c.annualisedPerPerson * 10) / 10}</td></tr>
+      <tr><td>Reactive leaders (${c.reactivePct}% of ${fmtN(c.leaders)})</td><td></td><td>${fmtN(c.reactiveLeaders)}</td></tr>
+      <tr><td>Scaled to reactive leaders</td><td>${Math.round(c.annualisedPerPerson * 10) / 10} × ${fmtN(c.reactiveLeaders)}</td><td>${fmtN(Math.round(c.annualisedScaled))}</td></tr>
+      <tr><td>Model A — cost at ${sym}${fmtN(c.costPerConv)} per conversation</td><td>${fmtN(Math.round(c.annualisedScaled))} × ${sym}${fmtN(c.costPerConv)}</td><td class="amber">${sym}${fmtM(c.modelA)}</td></tr>
+      <tr><td>SSC estimated saving (Model A × ${c.recoveryPct}%)</td><td>${sym}${fmtM(c.modelA)} × ${c.recoveryPct}%</td><td class="lime">${sym}${fmtM(c.saving)}</td></tr>
+      <tr><td>Annual saving per reactive leader</td><td>${sym}${fmtM(c.saving)} ÷ ${fmtN(c.reactiveLeaders)}</td><td class="lime">${sym}${fmtN(Math.round(c.savingPerLeader))}</td></tr>
+      <tr><td colspan="3" style="font-size:7pt;letter-spacing:0.12em;text-transform:uppercase;color:#aaa;padding-top:4mm;padding-bottom:1mm;">Gallup weighted triangulation — independent corroboration</td></tr>
+      <tr><td>Not engaged (${fmtN(c.gallupNotEngaged)} people, 64%) × 5% salary cost</td><td>${fmtN(c.gallupNotEngaged)} × ${sym}${fmtN(c.salary)} × 5%</td><td>${sym}${fmtM(c.gallupNotEngagedCost)}</td></tr>
+      <tr><td>Actively disengaged (${fmtN(c.gallupActivelyDis)} people, 16%) × 18% salary cost</td><td>${fmtN(c.gallupActivelyDis)} × ${sym}${fmtN(c.salary)} × 18%</td><td>${sym}${fmtM(c.gallupActiveCost)}</td></tr>
+      <tr><td>Total Gallup weighted disengagement cost</td><td>${c.gallupPct}% of payroll</td><td>${sym}${fmtM(c.gallupCost)}</td></tr>
+    </table>
+  </div>
+
+  <div class="pr-page">
+    <div class="pr-section-label">Strengthen This Estimate</div>
+    <div class="pr-body">This estimate is only as strong as the observation behind it. Four ways to make it more robust — and to turn an estimate into evidence you can stand behind.</div>
+    <div class="pr-research-grid">
+      <div class="pr-research-item"><div class="pr-research-title">1 · Triangulate the observation</div><div class="pr-research-body">Have three or four colleagues run the same two-week scorecard independently, then average the totals before you enter them. One observer sees a slice; several see the pattern — and the average strips out individual bias.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">2 · Watch for the recurring few</div><div class="pr-research-body">Note which one or two defensive behaviours keep reappearing. That recurring pattern is the keystone — the behaviour SSC works to recode, and the one whose removal quietens the rest.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">3 · Set your own assumptions</div><div class="pr-research-body">In the calculator, open Adjust the assumptions and re-run with figures you would defend to your own board. If the number still holds when the dials are yours, it is real.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">4 · Re-measure after the work</div><div class="pr-research-body">The honest test of recovery is before and after. Re-run the diagnostic ninety days on. The gap between the two is your actual recovery rate — measured fact in place of an assumption.</div></div>
+    </div>
+  </div>
+
+  <div class="pr-page">
+    <div class="pr-section-label">What Single Session Coaching Does</div>
+    <p class="pr-body">Most leadership behaviour isn't a conscious choice. It's automatic — shaped by patterns formed early, reinforced over decades, and running quietly beneath the surface of every meeting, every decision, every difficult conversation a leader has ever had. This matters because an industry spending between $340 and $400 billion annually on corporate learning and development is built on a different assumption: that leaders change through knowledge, reflection, and practice. Sometimes they do. But not reliably, and not at the level that counts. McKinsey research found that only 11% of executives strongly agreed that their leadership development programmes achieve and sustain the desired results. Separately, a peer-reviewed study found that as little as 15% of classroom-based training produces sustained behavioural change in the workplace. The rest produces awareness. And awareness, however hard-won, is not the same as change.</p>
+    <p class="pr-body">You cannot reach an unconscious pattern with a conscious approach. The pattern simply waits you out.</p>
+    <p class="pr-body">Single Session Coaching was built on a different premise. That every pattern a leader carries made sense once — it was learned for a reason, in a context that no longer exists. The work isn't to judge it or dismantle it. It's to make it visible, understand what it was protecting, and give the leader a genuine choice about whether to keep it. That's what Surface / Decode / Resolve does. In 90 minutes. Not through insight alone — through mechanism. The pattern becomes optional. What replaces it belongs to them.</p>
+    <div class="pr-section-label" style="margin-top:7mm;">The Research Behind These Numbers</div>
+    <div class="pr-research-grid">
+      <div class="pr-research-item"><div class="pr-research-title">$340–400 billion invested annually in L&amp;D</div><div class="pr-research-body">Global corporate learning and development investment estimated at $395 billion in 2023, rising toward $413 billion by 2024. Sources: Grand View Research; SkyQuest; multiple market analyses. The number has grown every year. The return has not kept pace.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">Only 11% believe it works</div><div class="pr-research-body">McKinsey &amp; Company: only 11% of executives strongly agreed that their leadership development programmes achieve and sustain the desired results (McKinsey Quarterly, What's Missing in Leadership Development). A peer-reviewed study in the Proceedings of the National Academy of Sciences (2015) found as little as 15% of classroom-based training produces sustained behavioural change.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">Most behaviour is automatic</div><div class="pr-research-body">Bargh &amp; Chartrand (1999), The Unbearable Automaticity of Being, American Psychologist. The vast majority of cognitive activity — including what we call decisions — operates below conscious awareness.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">Conscious approaches can't reach unconscious patterns</div><div class="pr-research-body">Kahneman (2011), Thinking, Fast and Slow. Van der Kolk (2014), The Body Keeps the Score. Libet et al. (1983) on neural activity preceding conscious awareness of a decision.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">Patterns form early and consolidate over time</div><div class="pr-research-body">Hebb's Law (1949) — repeated neural firing strengthens the pathways that carry a behaviour. LeDoux (2002), Synaptic Self.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">A single session can produce lasting change</div><div class="pr-research-body">Hoyt &amp; Talmon (2014), Capturing the Moment — depth of contact matters more than duration. SSC outcome data available on request.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">$1,500 per blocked conversation</div><div class="pr-research-body">Crucial Learning (n=1,100) — the conservative, well-sourced floor. Replicated across five independent research sources. This figure represents the average downstream cost of a single avoided conversation: the delay, the rework, the relationship cost, the decision made without the right input.</div></div>
+      <div class="pr-research-item"><div class="pr-research-title">75% of leaders operate reactively</div><div class="pr-research-body">Published research across 2M+ leaders assessed. Reactive leadership is by definition unconscious and systemic — driven by patterns formed outside the leader's awareness.</div></div>
+    </div>
+    <div class="pr-cta">
+      <div class="pr-cta-logo"><img src="${LOGO_WHITE}" alt="SSC"></div>
+      <div class="pr-cta-head">Let's find your savings together.</div>
+      <div class="pr-cta-body">This number is an estimate, based on solid published research across thousands of organisations. It will not be precise. But if it is even half right, it represents a saving worth exploring — and a conversation worth having.</div>
+      <div class="pr-cta-url">singlesession.online/schedule</div>
+    </div>
+  </div>
+
+  </body></html>`);
+  win.document.close();
+  win.focus();
+  setTimeout(() => { win.print(); }, 700);
+}
+
+function printScorecard() {
+  const c = lastCalc;
+  const sym = c.sym || '$';
+  const orgName = (document.getElementById('inp-orgname') || {}).value || '';
+  const minCost = sym + fmtN(toLocal(COST_LOW_USD, c.currency || 'USD'));
+  const maxCost = minCost; // single figure — $1,500 conservative floor
+
+  const win = window.open('', '_blank', 'width=1200,height=800');
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+  <title>SSC Observation Scorecard</title>
+  <style>
+    @font-face { font-family:'DrukTextBold'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6a1009cd7aaf840ccfa17f85/1779435981098/Druk-Bold-Web.woff2') format('woff2'); font-weight:700; font-style:normal; }
+    @font-face { font-family:'GothamBook'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/67c16f32ccecbb575ae82d2f/1740730162912/GothamBook.ttf') format('truetype'); font-weight:400; font-style:normal; }
+    @font-face { font-family:'GothamMedium'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/67c97a2fa70c204473c1f0c9/1741278511802/GothamMedium.ttf') format('truetype'); font-weight:600; font-style:normal; }
+    @font-face { font-family:'GothamLight'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6830c26fc80e440c041d2ef5/1748025967908/Gotham-Light.otf') format('opentype'); font-weight:300; font-style:normal; }
+    @page { size:A4 landscape; margin:9mm 11mm 9mm 11mm; }
+    html,body { margin:0; padding:0; }
+    body { font-family:'GothamBook',Arial,sans-serif; font-size:7.5pt; color:#111; background:white; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+
+    /* HEADER */
+    .header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:2.5mm; padding-bottom:2mm; border-bottom:2.5px solid #111; }
+    .header-left { display:flex; align-items:flex-start; gap:4mm; }
+    .header-logo img { width:18mm; height:auto; filter:invert(1); }
+    .header-title { padding-top:0.5mm; }
+    .header-title-main { font-family:'DrukTextBold',Arial,sans-serif; font-size:8pt; color:#111; letter-spacing:0.04em; text-transform:uppercase; margin-bottom:1mm; }
+    .header-title-sub { font-family:'GothamLight',Arial,sans-serif; font-size:6pt; color:#888; line-height:1.5; }
+    .header-right { text-align:right; }
+    .observer-label { font-family:'GothamMedium',Arial,sans-serif; font-size:5.5pt; color:#aaa; text-transform:uppercase; letter-spacing:0.12em; margin-bottom:0.8mm; }
+    .observer-line { font-family:'GothamBook',Arial,sans-serif; font-size:7.5pt; border-bottom:1px solid #bbb; width:58mm; display:inline-block; margin-bottom:1.5mm; }
+    .date-row { font-family:'GothamLight',Arial,sans-serif; font-size:6pt; color:#999; }
+
+    /* TABLE */
+    table { width:100%; border-collapse:collapse; }
+    thead th { background:#111; color:white; font-family:'GothamMedium',Arial,sans-serif; font-size:5pt; letter-spacing:0.1em; text-transform:uppercase; padding:1.5mm 1mm; text-align:center; border:1px solid #111; white-space:nowrap; }
+    thead th.left { text-align:left; padding-left:2mm; }
+    .wk-header th { font-family:'GothamMedium',Arial,sans-serif; font-size:4.5pt; background:#444; padding:1mm; letter-spacing:0.08em; }
+    .wk-header th.wk2 { background:#666; }
+    tbody tr { border-bottom:1px solid #e4e4e4; }
+    tbody tr:nth-child(even) { background:#f7f7f7; }
+    tbody td { padding:1mm 1mm; border-right:1px solid #e8e8e8; vertical-align:top; }
+    td.bname { width:29%; padding-left:2mm; padding-top:1.5mm; }
+    td.bname-main { font-family:'GothamMedium',Arial,sans-serif; font-size:7pt; color:#111; margin-bottom:0.8mm; }
+    td.bname span.eg { font-family:'GothamLight',Arial,sans-serif; font-size:5.8pt; color:#888; font-style:italic; display:block; margin-bottom:0.5mm; line-height:1.4; }
+    td.bname span.desc { font-family:'GothamLight',Arial,sans-serif; font-size:5.5pt; color:#999; display:block; line-height:1.4; }
+    td.day { text-align:center; width:6.8mm; min-width:6.8mm; vertical-align:middle; }
+    td.total { text-align:center; font-family:'GothamMedium',Arial,sans-serif; font-weight:700; background:#f0f0f0; width:9mm; min-width:9mm; font-size:8pt; vertical-align:middle; }
+    .total-row td { border-top:2.5px solid #111; font-family:'GothamMedium',Arial,sans-serif; font-size:7pt; background:#efefef; padding:1.5mm 1mm; vertical-align:middle; }
+    .total-row td.final { background:#DCFF4F; font-family:'DrukTextBold',Arial,sans-serif; font-size:10pt; text-align:center; }
+    .total-row td.name-cell { padding-left:2mm; text-transform:uppercase; letter-spacing:0.1em; font-size:6pt; }
+
+    /* FOOTER */
+    .footer { margin-top:2mm; display:grid; grid-template-columns:1fr 1fr; gap:6mm; padding-top:2mm; border-top:1px solid #ddd; }
+    .footer-col { font-family:'GothamLight',Arial,sans-serif; font-size:6pt; color:#555; line-height:1.6; }
+    .footer-col strong { font-family:'GothamMedium',Arial,sans-serif; color:#111; font-weight:600; }
+    .footer-col .url { font-family:'GothamMedium',Arial,sans-serif; color:#111; font-size:6.5pt; }
+    .cost-badge { background:#DCFF4F; padding:0.8mm 2mm; font-family:'GothamMedium',Arial,sans-serif; font-weight:600; font-size:6pt; display:inline-block; margin-top:1mm; color:#111; }
+  </style></head><body>
+
+  <div class="header">
+    <div class="header-left">
+      <div class="header-logo"><img src="${WORDMARK_B64}" alt="SSC"></div>
+      <div class="header-title">
+        <div class="header-title-main">Two-Week Defensive Behaviour Observation Scorecard${orgName ? ' &nbsp;·&nbsp; ' + orgName : ''}</div>
+        <div class="header-title-sub">Each time a defensive behaviour stops a conversation — mark it. Multiple marks per day is fine. Use tally marks, crosses, any system that works for you.</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="observer-label">Observer</div>
+      <div class="observer-line">&nbsp;</div><br>
+      <div class="date-row">Dates &nbsp;_________________ &nbsp;to &nbsp;_________________</div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="left" style="width:29%">Behaviour</th>
+        <th>M</th><th>T</th><th>W</th><th>T</th><th>F</th>
+        <th>M</th><th>T</th><th>W</th><th>T</th><th>F</th>
+        <th>Total</th>
+      </tr>
+      <tr class="wk-header">
+        <th class="left"></th>
+        <th colspan="5">WEEK 1</th>
+        <th colspan="5" class="wk2">WEEK 2</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      ${BEHAVIOURS.map(b=>`<tr>
+        <td class="bname"><div class="bname-main">${b.name}</div><span class="eg">${b.eg.replace(/['"]/g,'')}</span><span class="desc">${b.desc}</span></td>
+        ${Array(10).fill('<td class="day"></td>').join('')}
+        <td class="total"></td>
+      </tr>`).join('')}
+      <tr class="total-row">
+        <td class="name-cell">Total &nbsp;&mdash;&nbsp; all behaviours combined</td>
+        ${Array(10).fill('<td class="day"></td>').join('')}
+        <td class="final"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <div class="footer-col">
+      <strong>How to use.</strong> Observe for two working weeks. Each time you see a defensive behaviour stop a conversation, mark it in that day's column. Multiple marks per day is fine — this is not one tick per day, it is one mark per incident. Can't place it? Tick the nearest box. What matters is the flag, not the filing — the labels come into their own in a deeper diagnostic. At the end of two weeks, count each row and write the total in the Total column. Sum all rows for your grand total.<br>
+      <span class="cost-badge">Each blocked conversation = ${minCost} (Crucial Learning, n=1,100)</span>
+      &nbsp;&nbsp; <span class="url">singlesession.online/calculator</span>
+    </div>
+    <div class="footer-col">
+      <strong>Why this exists.</strong> Single Session Coaching works with organisations to remove the defensive behaviours in your leaders that are costing you money. We take what you already know — your diagnostics, 360s, and your own observations — and work 1:1 with each leader in a single 90-minute session to remove those behaviours at the pattern level. Not awareness. Change.<br><br>
+      When you have your total, visit <span class="url">singlesession.online/calculator</span> to see your organisation's estimated cost — and what SSC could recover.
+    </div>
+  </div>
+
+  </body></html>`);
+  win.document.close();
+  win.focus();
+  setTimeout(()=>{ win.print(); }, 600);
+}
+
+function wl(label, calc, val, cls) {
+  return `<div class="working-line"><span class="w-label">${label}</span><span class="w-calc">${calc}</span><span class="w-val${cls?' '+cls:''}">${val}</span></div>`;
+}
+function fmtM(n) {
+  if(!n) return '0';
+  if(n>=1e9) return (n/1e9).toFixed(1)+'B';
+  if(n>=1e6) return (n/1e6).toFixed(1)+'M';
+  if(n>=1e3) return Math.round(n/1e3)+'K';
+  return Math.round(n).toLocaleString();
+}
+function fmtN(n) { if(typeof n==='number') return Math.round(n).toLocaleString(); return n; }
+function s(id,val) { const el=document.getElementById(id); if(el) el.textContent=val; }
+
+['inp-ticks','inp-observed','inp-headcount','inp-salary','inp-leaders'].forEach(id => {
+  const el = document.getElementById(id);
+  if(el) el.addEventListener('keydown', e => { if(e.key==='Enter') calculate(); });
+});
+
+async function submitCTA() {
+  const name       = document.getElementById('cta-name').value.trim();
+  const email      = document.getElementById('cta-email').value.trim();
+  const sendReport = document.getElementById('cta-sendreport').checked;
+  const c          = lastCalc;
+  const sym        = c.sym || '$';
+  if (!email) { alert('Please enter your work email.'); return; }
+
+  // Botpoison disabled temporarily for testing — re-enable once form is confirmed working
+  let botpoisonSolution = '';
+  // try {
+  //   if (window.Botpoison) {
+  //     const bp = new window.Botpoison({ publicKey: 'pk_5641d95b-5aaa-4763-b124-e3b7e4375e63' });
+  //     const { solution } = await bp.challenge();
+  //     botpoisonSolution = solution;
+  //   }
+  // } catch(e) { console.log('Botpoison error:', e); }
+
+  try {
+    const response = await fetch(FORMSPARK_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        send_report: sendReport ? 'Yes' : 'No',
+        headcount:   c.headcount || '—',
+        currency:    c.currency  || '—',
+        cost_modelA: c.modelA    ? sym + fmtM(c.modelA)   : '—',
+        saving:      c.saving    ? sym + fmtM(c.saving)   : '—',
+        gallup:      c.gallupCost ? sym + fmtM(c.gallupCost) : '—'
+      })
+    });
+    console.log('Formspark response status:', response.status, response.statusText);
+  } catch(e) { console.log('Formspark fetch error:', e); }
+
+  document.getElementById('cta-confirm').style.display = 'block';
+  document.getElementById('cta-name').value         = '';
+  document.getElementById('cta-email').value        = '';
+  document.getElementById('cta-sendreport').checked = false;
+}
+  
+function postHeight() {
+  const h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+  try { window.parent.postMessage({ type:'ssc-height', height: h }, '*'); } catch(e){}
+}
+
+fetchRates();
 postHeight();
+setTimeout(postHeight, 500);
+setTimeout(postHeight, 1500);
+window.addEventListener('resize', postHeight);
+const _obs = new MutationObserver(postHeight);
+_obs.observe(document.body, { childList:true, subtree:true, attributes:true });
 </script>
 </body>
 </html>
