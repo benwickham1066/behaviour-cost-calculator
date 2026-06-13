@@ -203,6 +203,15 @@
   .calc-footer-note strong { font-family:'GothamMedium',Arial,sans-serif; font-weight:600; color:var(--white); }
 
   .working-divider { font-family:'GothamMedium',Arial,sans-serif; font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); padding:10px 0 6px; border-top:1px solid var(--border); margin-top:4px; }
+  /* ===== Corner consistency — match the sales calculator (7px) ===== */
+  :root{ --radius:7px; }
+  .how-to,.cost-strip,.currency-btn,.calc-block,.range-panel,.headline-panel,
+  .detail-toggle,.detail-block,.action-btn,.lead-modal,.back-btn{ border-radius:var(--radius); }
+  .how-to,.cost-strip{ overflow:hidden; }            /* clip inner cells / rotated tag to the radius */
+  .calc-field input,.lead-modal-field input,.calc-btn,.lead-submit{ border-radius:var(--radius) !important; }
+  .screen [style*="solid var(--border)"],
+  .screen [style*="solid var(--lime)"]{ border-radius:var(--radius); }
+  .screen [style*="border-radius:0"]{ border-radius:var(--radius) !important; }
 </style>
 <script src="https://unpkg.com/@botpoison/browser"></script>
 </head>
