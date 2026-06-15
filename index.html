@@ -209,6 +209,22 @@
   .cost-strip, .how-to { border-radius:var(--r); overflow:hidden; }
   .calc-block, .lead-modal, .range-panel, .headline-panel, .detail-block, .cta-block { border-radius:var(--r); }
   .currency-btn, .calc-btn, .detail-toggle, .action-btn, .cta-btn, .lead-submit { border-radius:var(--r) !important; }
+
+  /* DUAL ROUTE — mode toggle + experience sliders */
+  .mode-toggle { display:flex; gap:8px; margin-bottom:22px; flex-wrap:wrap; }
+  .mode-btn { flex:1; min-width:150px; background:var(--surface); border:1px solid var(--border); color:var(--muted); font-family:'GothamMedium',Arial,sans-serif; font-size:0.7rem; letter-spacing:0.07em; text-transform:uppercase; padding:12px 14px; cursor:pointer; transition:all 0.15s; border-radius:var(--r); text-align:center; line-height:1.35; }
+  .mode-btn:hover { border-color:var(--lime); color:var(--white); }
+  .mode-btn.active { background:var(--lime); border-color:var(--lime); color:var(--black); }
+  .est-intro { font-family:'GothamBook',Arial,sans-serif; font-size:0.85rem; color:var(--muted); line-height:1.6; margin-bottom:16px; }
+  .est-scale { display:flex; justify-content:space-between; font-family:'GothamMedium',Arial,sans-serif; font-size:0.56rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); margin-bottom:16px; gap:4px; }
+  .slider-row { margin-bottom:15px; }
+  .slider-top { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:7px; gap:12px; }
+  .slider-name { font-family:'GothamMedium',Arial,sans-serif; font-size:0.82rem; color:var(--white); }
+  .slider-word { font-family:'GothamMedium',Arial,sans-serif; font-size:0.66rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--lime); white-space:nowrap; }
+  .slider-row input[type=range] { -webkit-appearance:none; appearance:none; width:100%; height:4px; border-radius:var(--r); background:var(--border); outline:none; cursor:pointer; margin:0; }
+  .slider-row input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:18px; height:18px; border-radius:50%; background:var(--lime); cursor:pointer; border:none; }
+  .slider-row input[type=range]::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background:var(--lime); cursor:pointer; border:none; }
+  .est-note { font-family:'GothamBook',Arial,sans-serif; font-size:0.74rem; color:var(--muted); line-height:1.6; border-left:2px solid var(--lime); padding-left:12px; margin:18px 0 6px; }
 </style>
 <script src="https://unpkg.com/@botpoison/browser"></script>
 </head>
@@ -249,12 +265,28 @@
     <div class="calc-block">
       <div class="calc-title">— Calculate Your Number —</div>
       <div class="calc-intro">Enter your inputs below, for your whole organisation or a single team — just keep every figure to the same group. All outputs are estimates based on published research and your observed data. No salary or revenue data required.</div>
+      <div class="mode-toggle">
+        <button type="button" id="mode-btn-observe" class="mode-btn active" onclick="setMode('observe')">I observed it · two-week scorecard</button>
+        <button type="button" id="mode-btn-estimate" class="mode-btn" onclick="setMode('estimate')">Estimate from experience</button>
+      </div>
+
+      <div id="mode-observe">
+        <div class="inputs-grid">
+          <div class="calc-field"><label>Total defensive behaviours observed</label><input type="number" id="inp-ticks" placeholder="e.g. 18" min="0" inputmode="numeric"><div class="field-note">Your two-week total from the scorecard — all behaviours, all marks combined</div></div>
+          <div class="calc-field"><label>People you observed</label><input type="number" id="inp-observed" placeholder="e.g. 8" min="1" inputmode="numeric"><div class="field-note">How many people did you watch over two weeks?</div></div>
+        </div>
+      </div>
+
+      <div id="mode-estimate" style="display:none;">
+        <div class="est-intro">No scorecard yet? Estimate from experience. For each behaviour, slide to how often you see it stop a conversation — on a typical fortnight, across the people you lead or watch.</div>
+        <div class="est-scale"><span>Never</span><span>Rarely</span><span>Sometimes</span><span>Often</span><span>Constantly</span></div>
+        <div id="sliders"></div>
+        <div class="est-note">Rung 1 of 3 — a two-minute feel for the number, set deliberately low. Rung 2 is a real two-week observation (which usually raises it); rung 3 is four or five colleagues observing and averaging — the figure you can take to a board. Climbing the rungs is what turns a guess into evidence.</div>
+      </div>
+
       <div class="inputs-grid">
-        <div class="calc-field"><label>Total defensive behaviours observed</label><input type="number" id="inp-ticks" placeholder="e.g. 18" min="0" inputmode="numeric"><div class="field-note">Your two-week total from the scorecard — all behaviours, all marks combined</div></div>
-        <div class="calc-field"><label>People you observed</label><input type="number" id="inp-observed" placeholder="e.g. 8" min="1" inputmode="numeric"><div class="field-note">How many people did you watch over two weeks?</div></div>
         <div class="calc-field"><label>Total headcount</label><input type="number" id="inp-headcount" placeholder="e.g. 1000" min="1" inputmode="numeric"><div class="field-note">Everyone in the group you're measuring — your whole organisation, or a single team or division</div></div>
         <div class="calc-field"><label>Average annual salary (<span id="sal-lbl">$</span>)</label><input type="number" id="inp-salary" placeholder="e.g. 65000" min="1" inputmode="numeric"><div class="field-note">Used to calculate the cost of reactive leadership</div></div>
-
       </div>
       <div class="leader-field-wrap">
         <div class="calc-field"><label>Approximate number of people leaders</label><input type="number" id="inp-leaders" placeholder="e.g. 250" min="1" inputmode="numeric"><div class="field-note">Anyone who leads, manages, or influences others — across all tiers</div></div>
@@ -393,7 +425,7 @@
   <div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);text-align:center;padding-bottom:16px;">
     <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.68rem;color:var(--muted);line-height:1.9;max-width:560px;margin:0 auto;">
       This calculator is in active development. Methodology, sources, and outputs are updated as new research becomes available.<br>For questions about the calculation contact <a href="mailto:hello@singlesession.online" style="color:var(--muted);text-decoration:underline;text-underline-offset:3px;">hello@singlesession.online</a><br>
-      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v2.3
+      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v2.5
     </div>
   </div>
 
@@ -545,6 +577,41 @@ function resetAssumptions() {
   liveRecalc();
 }
 
+/* ── DUAL ROUTE: experience-estimate sliders ─────────────────────────────── */
+let estimateMode = false;
+const EST_WORDS = ['Never', 'Rarely', 'Sometimes', 'Often', 'Constantly'];
+const EST_FREQ  = [0, 0.05, 0.1, 0.2, 0.4];   // per behaviour, per person, per fortnight — tuned to sit at/just below a real observation, so measuring escalates the number rather than deflating it
+
+function buildSliders() {
+  const wrap = document.getElementById('sliders');
+  if (!wrap || typeof BEHAVIOURS === 'undefined') return;
+  wrap.innerHTML = BEHAVIOURS.map(function (b, i) {
+    return '<div class="slider-row">' +
+      '<div class="slider-top"><span class="slider-name">' + b.name + '</span>' +
+      '<span class="slider-word" id="sw-' + i + '">Never</span></div>' +
+      '<input type="range" min="0" max="4" step="1" value="0" id="sl-' + i + '" oninput="updateSliderWord(' + i + ')"></div>';
+  }).join('');
+}
+function updateSliderWord(i) {
+  var v = parseInt(document.getElementById('sl-' + i).value, 10) || 0;
+  document.getElementById('sw-' + i).textContent = EST_WORDS[v];
+}
+function sliderRate() {
+  var total = 0;
+  for (var i = 0; i < BEHAVIOURS.length; i++) {
+    var el = document.getElementById('sl-' + i);
+    if (el) total += EST_FREQ[parseInt(el.value, 10) || 0];
+  }
+  return total;   // estimated behaviours per person per fortnight
+}
+function setMode(m) {
+  estimateMode = (m === 'estimate');
+  document.getElementById('mode-observe').style.display  = estimateMode ? 'none' : 'block';
+  document.getElementById('mode-estimate').style.display = estimateMode ? 'block' : 'none';
+  document.getElementById('mode-btn-observe').classList.toggle('active', !estimateMode);
+  document.getElementById('mode-btn-estimate').classList.toggle('active', estimateMode);
+}
+
 function calculate() {
   const ticks     = parseFloat(document.getElementById('inp-ticks').value)    || 0;
   const observed  = parseFloat(document.getElementById('inp-observed').value)  || 1;
@@ -552,7 +619,8 @@ function calculate() {
   const salary    = parseFloat(document.getElementById('inp-salary').value)    || 0;
   const leaders   = parseFloat(document.getElementById('inp-leaders').value)   || 0;
 
-  if (!ticks)     { alert('Please enter your total blocked conversations observed.'); return; }
+  if (estimateMode) { if (sliderRate() <= 0) { alert('Slide at least one behaviour above \u201CNever\u201D to estimate.'); return; } }
+  else { if (!ticks) { alert('Please enter your total blocked conversations observed.'); return; } }
   if (!headcount) { alert('Please enter your organisation headcount.'); return; }
   if (!salary)    { alert('Please enter your average annual salary.'); return; }
   if (!leaders)   { alert('Please enter your approximate number of people leaders.'); return; }
@@ -581,7 +649,7 @@ function calculate() {
   const recoveryPct   = Math.round(recoveryRate * 100);
 
   const reactiveLeaders     = Math.round(leaders * reactiveRate);    // share of leaders operating reactively
-  const ratePerPerson       = ticks / observed;                      // blocked convs per person over 2 weeks
+  const ratePerPerson       = estimateMode ? sliderRate() : (ticks / observed);   // blocked convs per person over 2 weeks
   const annualisedPerPerson = ratePerPerson * annualFactor;          // per person per year
   const annualisedScaled    = annualisedPerPerson * reactiveLeaders; // scaled to all reactive leaders
   const modelA              = annualisedScaled * costPerConv;
@@ -611,7 +679,7 @@ function calculate() {
     ? Math.round((ratePerPerson / 10) * 10) / 10
     : null;
 
-  lastCalc = { ticks, observed, headcount, salary, leaders, sym,
+  lastCalc = { ticks, observed, headcount, salary, leaders, sym, estimateUsed: estimateMode,
     costPerConv, ratePerPerson, annualisedPerPerson, annualisedScaled,
     modelA, saving, savingPerLeader,
     annualFactor, reactivePct, recoveryPct, costIsDefault,
@@ -621,9 +689,14 @@ function calculate() {
     currency: selectedCurrency };
 
   // ── DISPLAY — Model A cost ───────────────────────────────────────────────
-  s('r-cost-eyebrow', 'Estimated annual cost of defensive behaviour across your ' + fmtN(reactiveLeaders) + ' reactive leaders — scaled from your two-week observation');
+  if (estimateMode) {
+    s('r-cost-eyebrow', 'Quick estimate · rung 1 of 3 — estimated annual cost across your ' + fmtN(reactiveLeaders) + ' reactive leaders, from a two-minute read of experience');
+    s('r-cost-desc', 'Deliberately conservative · ' + (Math.round(ratePerPerson * 10) / 10) + ' behaviours per person per fortnight (your slider settings) · scaled to ' + fmtN(reactiveLeaders) + ' reactive leaders · annualised ×' + annualFactor + ' · ' + sym + fmtN(costPerConv) + ' per conversation. This is rung 1 of 3 — a feel for the number, set low on purpose. Rung 2: download the scorecard and observe for two weeks — a real count usually raises this. Rung 3: have four or five colleagues observe and average — the figure you would take to a board.');
+  } else {
+    s('r-cost-eyebrow', 'Estimated annual cost of defensive behaviour across your ' + fmtN(reactiveLeaders) + ' reactive leaders — scaled from your two-week observation');
+    s('r-cost-desc', fmtN(ticks) + ' blocked conversations observed across ' + Math.round(observed) + ' people over two weeks · ' + Math.round(ratePerPerson * 10) / 10 + ' per person per fortnight · scaled to ' + fmtN(reactiveLeaders) + ' reactive leaders · annualised ×' + annualFactor + ' · ' + sym + fmtN(costPerConv) + ' per blocked conversation (Crucial Learning, n=1,100)');
+  }
   s('r-cost-num',  sym + fmtM(modelA));
-  s('r-cost-desc', fmtN(ticks) + ' blocked conversations observed across ' + Math.round(observed) + ' people over two weeks · ' + Math.round(ratePerPerson * 10) / 10 + ' per person per fortnight · scaled to ' + fmtN(reactiveLeaders) + ' reactive leaders · annualised ×' + annualFactor + ' · ' + sym + fmtN(costPerConv) + ' per blocked conversation (Crucial Learning, n=1,100)');
 
   // ── DISPLAY — Saving ─────────────────────────────────────────────────────
   s('r-saving-num',  sym + fmtM(saving));
@@ -1113,6 +1186,7 @@ function postHeight() {
 }
 
 fetchRates();
+buildSliders();
 postHeight();
 setTimeout(postHeight, 500);
 setTimeout(postHeight, 1500);
