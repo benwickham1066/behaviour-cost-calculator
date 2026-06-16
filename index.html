@@ -220,6 +220,7 @@
   .slider-row { margin-bottom:15px; }
   .slider-top { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:7px; gap:12px; }
   .slider-name { font-family:'GothamMedium',Arial,sans-serif; font-size:0.82rem; color:var(--white); }
+  .slider-self { font-family:'GothamBook',Arial,sans-serif; font-size:0.72rem; color:var(--muted); line-height:1.45; margin:-1px 0 9px; max-width:92%; }
   .slider-word { font-family:'GothamMedium',Arial,sans-serif; font-size:0.66rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--lime); white-space:nowrap; }
   .slider-row input[type=range] { -webkit-appearance:none; appearance:none; width:100%; height:4px; border-radius:var(--r); background:var(--border); outline:none; cursor:pointer; margin:0; }
   .slider-row input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:18px; height:18px; border-radius:50%; background:var(--lime); cursor:pointer; border:none; }
@@ -434,24 +435,24 @@
   <div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);text-align:center;padding-bottom:16px;">
     <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.68rem;color:var(--muted);line-height:1.9;max-width:560px;margin:0 auto;">
       This calculator is in active development. Methodology, sources, and outputs are updated as new research becomes available.<br>For questions about the calculation contact <a href="mailto:hello@singlesession.online" style="color:var(--muted);text-decoration:underline;text-underline-offset:3px;">hello@singlesession.online</a><br>
-      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v2.6
+      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v2.7
     </div>
   </div>
 
 <script>
 const BEHAVIOURS = [
-  { name:"Pleasing",                           eg:'"That sounds great" — when it doesn\'t',            stops:"Challenge, honest pushback, strategic friction",     desc:"The leader says yes when they mean no. Challenge disappears. Bad decisions go unchallenged." },
-  { name:"Softening feedback",                 eg:"Diluting the message until it carries no weight",   stops:"Growth, behavioural change, standards",              desc:"The message arrives so softened it carries no instruction. The behaviour continues unchanged." },
-  { name:"Tolerating underperformance",        eg:'"Not worth the confrontation"',                     stops:"Team standards, trust, discretionary effort",        desc:"The team sees it. Standards quietly drop. High performers disengage or leave." },
-  { name:"Silence when risk is visible",       eg:"Seeing the problem and saying nothing",             stops:"Early intervention, risk management",                desc:"The risk is known but unspoken. By the time it surfaces, the cost of fixing it has multiplied." },
-  { name:"Approval-seeking",                   eg:"Deferring every decision until the boss decides",   stops:"Independent judgement, speed, accountability",       desc:"Every decision travels upward. Speed slows. The leader stops owning outcomes." },
-  { name:"Rescheduling the hard conversation", eg:"The one that keeps getting moved. Again.",          stops:"Performance feedback, course correction",            desc:"The issue persists. The relationship deteriorates. The cost compounds with every week delayed." },
-  { name:"Cynicism or dismissal",              eg:"Shutting down the idea before it is heard",         stops:"Innovation, psychological safety, trust",            desc:"People stop bringing ideas. The team learns that speaking up carries a cost." },
-  { name:"Defensiveness to challenge",         eg:"Rebutting before listening",                        stops:"Learning, honest dialogue, course correction",       desc:"Feedback stops reaching the leader. Blind spots widen. The team stops trying." },
-  { name:"Micromanagement",                    eg:'"Send it to me before it goes anywhere"',           stops:"Initiative, ownership, speed",                       desc:"People wait for permission. Capacity concentrates at the top. Talent underneath atrophies." },
-  { name:"Delegation avoidance",               eg:'"No one else can do it right"',                     stops:"Talent development, capacity, capability",           desc:"The leader becomes the bottleneck. Development stalls. Successors never emerge." },
-  { name:"Passive in meetings",                eg:"Present in the room. Absent from it.",              stops:"Engagement, accountability, decision quality",       desc:"Decisions are made without the leader's perspective. Their silence is read as agreement — or indifference." },
-  { name:"Reactive firefighting",              eg:"Using urgency to avoid the strategic conversation", stops:"Long-term thinking, strategic dialogue",             desc:"The team operates in permanent crisis mode. Strategic work is perpetually displaced by the urgent." },
+  { name:"Pleasing", self:"I'd rather keep someone happy than say what I actually think.",                           eg:'"That sounds great" — when it doesn\'t',            stops:"Challenge, honest pushback, strategic friction",     desc:"The leader says yes when they mean no. Challenge disappears. Bad decisions go unchallenged." },
+  { name:"Softening feedback", self:"I soften the hard message so much the point goes missing.",                 eg:"Diluting the message until it carries no weight",   stops:"Growth, behavioural change, standards",              desc:"The message arrives so softened it carries no instruction. The behaviour continues unchanged." },
+  { name:"Tolerating underperformance", self:"I let it slide because the confrontation isn't worth it.",        eg:'"Not worth the confrontation"',                     stops:"Team standards, trust, discretionary effort",        desc:"The team sees it. Standards quietly drop. High performers disengage or leave." },
+  { name:"Silence when risk is visible", self:"I can see the problem coming — and I say nothing.",       eg:"Seeing the problem and saying nothing",             stops:"Early intervention, risk management",                desc:"The risk is known but unspoken. By the time it surfaces, the cost of fixing it has multiplied." },
+  { name:"Approval-seeking", self:"I wait for sign-off before I'll commit to a call.",                   eg:"Deferring every decision until the boss decides",   stops:"Independent judgement, speed, accountability",       desc:"Every decision travels upward. Speed slows. The leader stops owning outcomes." },
+  { name:"Rescheduling the hard conversation", self:"I keep finding reasons to move the difficult conversation to next week.", eg:"The one that keeps getting moved. Again.",          stops:"Performance feedback, course correction",            desc:"The issue persists. The relationship deteriorates. The cost compounds with every week delayed." },
+  { name:"Cynicism or dismissal", self:"I shut an idea down before it's really been heard.",              eg:"Shutting down the idea before it is heard",         stops:"Innovation, psychological safety, trust",            desc:"People stop bringing ideas. The team learns that speaking up carries a cost." },
+  { name:"Defensiveness to challenge", self:"I start defending myself before I've finished listening.",         eg:"Rebutting before listening",                        stops:"Learning, honest dialogue, course correction",       desc:"Feedback stops reaching the leader. Blind spots widen. The team stops trying." },
+  { name:"Micromanagement", self:"I need to see it before it goes out — just in case.",                    eg:'"Send it to me before it goes anywhere"',           stops:"Initiative, ownership, speed",                       desc:"People wait for permission. Capacity concentrates at the top. Talent underneath atrophies." },
+  { name:"Delegation avoidance", self:"I hold on to the work because it's quicker than handing it over.",               eg:'"No one else can do it right"',                     stops:"Talent development, capacity, capability",           desc:"The leader becomes the bottleneck. Development stalls. Successors never emerge." },
+  { name:"Passive in meetings", self:"I'm in the room, but I keep my real view to myself.",                eg:"Present in the room. Absent from it.",              stops:"Engagement, accountability, decision quality",       desc:"Decisions are made without the leader's perspective. Their silence is read as agreement — or indifference." },
+  { name:"Reactive firefighting", self:"I stay busy with the urgent so I can dodge the strategic.",              eg:"Using urgency to avoid the strategic conversation", stops:"Long-term thinking, strategic dialogue",             desc:"The team operates in permanent crisis mode. Strategic work is perpetually displaced by the urgent." },
 ];
 
 const counts = Array(BEHAVIOURS.length).fill(0); // retained for scorecard compat
@@ -598,6 +599,7 @@ function buildSliders() {
     return '<div class="slider-row">' +
       '<div class="slider-top"><span class="slider-name">' + b.name + '</span>' +
       '<span class="slider-word" id="sw-' + i + '">Never</span></div>' +
+      (b.self ? '<div class="slider-self">' + b.self + '</div>' : '') +
       '<input type="range" min="0" max="4" step="1" value="0" id="sl-' + i + '" oninput="updateSliderWord(' + i + ')"></div>';
   }).join('');
 }
