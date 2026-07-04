@@ -369,6 +369,11 @@
     <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.75rem;color:var(--muted);line-height:1.6;" id="r-modelb-desc"></div>
   </div>
 
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px;margin-bottom:28px;">
+    <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">The honest range — four ways to price the same problem (annual)</div>
+    <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.82rem;color:var(--white);line-height:2;" id="r-range"></div>
+  </div>
+
   <!-- SCORECARD SUBMISSION -->
   <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--border);padding:20px 22px;margin-bottom:28px;border-radius:var(--r);">
     <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Want a more precise estimate?</div>
@@ -377,10 +382,6 @@
   </div>
 
   <div class="section-divider">How we calculate this estimate</div>
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px;margin-bottom:28px;">
-    <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">The honest range — four ways to price the same problem (annual)</div>
-    <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.82rem;color:var(--white);line-height:2;" id="r-range"></div>
-  </div>
 
   <button class="detail-toggle" id="tog-a" onclick="toggleDetail('detail-a','tog-a')">+ Show full working — Model A cost, recoverable cost, Gallup triangulation</button>
   <div class="detail-block" id="detail-a"></div>
@@ -408,7 +409,7 @@
   <div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);text-align:center;padding-bottom:16px;">
     <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.68rem;color:var(--muted);line-height:1.9;max-width:560px;margin:0 auto;">
       This calculator is in active development. Methodology, sources, and outputs are updated as new research becomes available.<br>For questions about the calculation contact <a href="mailto:hello@singlesession.online" style="color:var(--muted);text-decoration:underline;text-underline-offset:3px;">hello@singlesession.online</a><br>
-      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v2.9.5
+      © 2026 Single Session Coaching Global BV. All rights reserved. &nbsp;·&nbsp; v2.9.7
     </div>
   </div>
 </div>
@@ -647,11 +648,26 @@ function calculate() {
 
   const hostileCost = modelA / 4;
   const publishedAvgCost = annualisedScaled * toLocal(COST_HIGH_USD);
-  s('r-range', 'Rate and cost both halved: ' + sym + fmtM(hostileCost) + '   ·   Gallup floor (independent method): ' + sym + fmtM(gallupCost) + '   ·   Model A at your ' + sym + fmtN(costPerConv) + ' figure: ' + sym + fmtM(modelA) + '   ·   at the 2016 published average (' + sym + fmtN(toLocal(COST_HIGH_USD)) + '): ' + sym + fmtM(publishedAvgCost) + '. Read left to right: deliberately hostile → the newest published research.');
+  const rangeParts = [
+    { label: 'Rate and cost both halved', val: hostileCost },
+    { label: 'Gallup floor (independent method)', val: gallupCost },
+    { label: 'Model A at your ' + sym + fmtN(costPerConv) + ' figure', val: modelA },
+    { label: '2016 published average (' + sym + fmtN(toLocal(COST_HIGH_USD)) + ')', val: publishedAvgCost }
+  ].sort(function(a, b) { return a.val - b.val; });
+  const rangeText = rangeParts.map(function(p) { return p.label + ': ' + sym + fmtM(p.val); }).join('   ·   ') + '. Smallest to largest — every rung sourced.';
+  const rangeHtml = rangeParts.map(function(p) { return p.label + ': <strong>' + sym + fmtM(p.val) + '</strong>'; }).join(' &nbsp;·&nbsp; ') + '. Smallest to largest — every rung sourced.';
+  const aboveFloor = modelA >= gallupCost;
+  const gapNote = aboveFloor
+    ? 'These two numbers are not designed to match — the defensive behaviour estimate typically runs a multiple of the Gallup figure. Gallup is bounded by payroll: productivity drag can never exceed a share of salary. Consequence costs have no such ceiling — one blocked decision can cost more than the salaries of everyone in the room. Read Gallup as the floor and Model A as the estimate: even a buyer who trusts only the floor is looking at a material number.'
+    : 'These two numbers are not designed to match. At your observed rate, the defensive behaviour estimate currently sits below the Gallup floor — which is the floor doing its job: it is the minimum this problem is worth by an independent method that has nothing to do with counting conversations. Fuller observation (rungs 2 and 3) typically raises the observed rate; the floor stands either way.';
+  const gapNoteShort = aboveFloor
+    ? 'These two numbers measure different things — and expect the gap: Gallup is bounded by payroll, consequence costs are not. Read Gallup as the floor and Model A as the estimate; the problem is material by any methodology.'
+    : 'These two numbers measure different things. At the observed rate, Model A currently sits below the Gallup floor — the floor doing its job as the independent minimum. Fuller observation typically raises the rate; the floor stands either way.';
+  s('r-range', rangeText);
 
   lastCalc = { ticks, observed, headcount, salary, leaders, sym, estimateUsed: estimateMode,
     costPerConv, ratePerPerson, annualisedPerPerson, annualisedScaled,
-    modelA, saving, savingPerLeader, hostileCost, publishedAvgCost,
+    modelA, saving, savingPerLeader, hostileCost, publishedAvgCost, gapNoteShort, rangeHtml,
     annualFactor, reactivePct, recoveryPct, costIsDefault,
     reactiveLeaders, observationRate,
     payroll, gallupNotEngaged, gallupActivelyDis,
@@ -660,14 +676,14 @@ function calculate() {
 
   if (estimateMode) {
     s('r-cost-eyebrow', 'Quick estimate · rung 1 of 3 — estimated annual cost across your ' + fmtN(reactiveLeaders) + ' reactive leaders, from a two-minute read of experience');
-    s('r-cost-desc', 'A first pass from experience · ' + (Math.round(ratePerPerson * 10) / 10) + ' behaviours per person per fortnight (your slider settings) · scaled to ' + fmtN(reactiveLeaders) + ' reactive leaders · annualised ×' + annualFactor + ' · ' + sym + fmtN(costPerConv) + ' per conversation. This is rung 1 of 3 — an honest estimate, not a count. Rung 2: download the scorecard and observe for two weeks. Rung 3: have four or five colleagues observe and average.');
+    s('r-cost-desc', 'A first pass from experience · ' + fmtRate(ratePerPerson) + ' behaviours per person per fortnight (your slider settings) · scaled to ' + fmtN(reactiveLeaders) + ' reactive leaders · annualised ×' + annualFactor + ' · ' + sym + fmtN(costPerConv) + ' per conversation. This is rung 1 of 3 — an honest estimate, not a count. Rung 2: download the scorecard and observe for two weeks. Rung 3: have four or five colleagues observe and average.');
   } else {
     s('r-cost-eyebrow', 'Estimated annual cost of defensive behaviour across your ' + fmtN(reactiveLeaders) + ' reactive leaders — scaled from your two-week observation');
-    s('r-cost-desc', fmtN(ticks) + ' blocked conversations observed across ' + Math.round(observed) + ' people leaders over two weeks · ' + Math.round(ratePerPerson * 10) / 10 + ' per person per fortnight · scaled to ' + fmtN(reactiveLeaders) + ' reactive leaders · annualised ×' + annualFactor + ' · ' + sym + fmtN(costPerConv) + ' per blocked conversation (VitalSmarts / Crucial Learning)');
+    s('r-cost-desc', fmtN(ticks) + ' blocked conversations observed across ' + Math.round(observed) + ' people leaders over two weeks · ' + fmtRate(ratePerPerson) + ' per person per fortnight · scaled to ' + fmtN(reactiveLeaders) + ' reactive leaders · annualised ×' + annualFactor + ' · ' + sym + fmtN(costPerConv) + ' per blocked conversation (VitalSmarts / Crucial Learning)');
   }
   s('r-cost-num',  sym + fmtM(modelA));
   s('r-saving-num',  sym + fmtM(saving));
-  s('r-saving-desc', 'Based on ' + recoveryPct + '% recovery — our planning assumption, under live before-and-after measurement. Even at half the assumption: ' + sym + fmtM(saving / 2) + '. The recovery is available to any intervention that changes behaviour at the pattern level; SSC does it in one session per leader, embedded through your existing executive coaching and diagnostics rather than around them. Recoverable per reactive leader: ' + sym + fmtN(Math.round(savingPerLeader)) + ' per year.');
+  s('r-saving-desc', 'Based on ' + recoveryPct + '% recovery — our planning assumption, under live before-and-after measurement. Even at half the assumption: ' + sym + fmtM(saving / 2) + '. The recovery is available to any intervention that changes behaviour at the pattern level; SSC does it in one session per leader, embedded through your existing executive coaching and diagnostics rather than around them. Recoverable per reactive leader: ' + sym + fmtN(Math.round(savingPerLeader)) + ' per year — annual and recurring against a one-off session, and the average across all ' + fmtN(reactiveLeaders) + ' reactive leaders; sessions are prioritised to the leaders driving the pattern, whose figures sit above it.');
 
   document.getElementById('r-payback-block').style.display = 'block';
   s('r-payback-num', sym + fmtN(Math.round(savingPerLeader)));
@@ -679,12 +695,12 @@ function calculate() {
     'Gallup (State of the Global Workplace, 2026) estimates that 80% of employees are not fully engaged — ' +
     '64% not engaged, 16% actively disengaged. ' +
     'A weighted productivity loss model applied conservatively: ' +
-    fmtN(gallupNotEngaged) + ' not-engaged employees at a 5% salary cost (SSC\'s conservative assumption — independent estimates run 13–25%; sources in the footer), plus ' +
+    fmtN(gallupNotEngaged) + ' not-engaged employees at a 5% salary cost (SSC\'s conservative assumption), plus ' +
     fmtN(gallupActivelyDis) + ' actively disengaged at an 18% salary cost (Gallup\'s published figure), ' +
     'produces ' + sym + fmtM(gallupCost) + ' — approximately ' + gallupPct + '% of your total payroll. ' +
     'Model A (' + sym + fmtM(modelA) + ') measures the cost of defensive behaviour concentrated in your ' + fmtN(reactiveLeaders) + ' reactive leaders. ' +
     'Gallup (' + sym + fmtM(gallupCost) + ') measures the cost of disengagement spread across your entire workforce. ' +
-    'These two numbers are not designed to match — expect the defensive behaviour estimate to run three to four times the Gallup figure. Gallup is bounded by payroll: productivity drag can never exceed a share of salary. Consequence costs have no such ceiling — one blocked decision can cost more than the salaries of everyone in the room. Read Gallup as the floor and Model A as the estimate: even a buyer who trusts only the floor is looking at a material number. And the floor itself is built low on purpose: our 5% weighting for the not-engaged majority sits below every independent estimate — Oxford\'s causal field study (BT, 1,793 workers) puts the happy–unhappy output gap at 13%; WHO-validated GCC data puts average lost capacity at 25%.'
+    gapNote + ' And the floor itself is built low on purpose: our 5% weighting for the not-engaged majority sits below every independent estimate — Oxford\'s causal field study (BT, 1,793 workers) puts the happy–unhappy output gap at 13%; WHO-validated GCC data puts average lost capacity at 25%.'
   );
 
   if (observationRate !== null && ticks > 0) {
@@ -693,7 +709,7 @@ function calculate() {
     const rateText = observationRate < 0.5 ? 'less than once a week per person'
       : observationRate < 1 ? (perWeek === 1 ? 'about once per person per week' : perWeek + ' times per person per week')
       : (perDayR === 1 ? 'about once per person per day' : perDayR + ' times per person per day');
-    s('g-obs-context', 'In your sample of ' + Math.round(observed) + (Math.round(observed) === 1 ? ' leader' : ' leaders') + ', defensive behaviour was observed at a rate of ' + rateText + '. Scaled across your ' + fmtN(reactiveLeaders) + ' reactive leaders, that is an estimated ' + fmtN(Math.round(annualisedScaled)) + ' blocked conversations per year.');
+    s('g-obs-context', 'In your sample of ' + Math.round(observed) + (Math.round(observed) === 1 ? ' leader' : ' leaders') + ', defensive behaviour was observed at a rate of ' + rateText + '. Scaled across your ' + fmtN(reactiveLeaders) + ' reactive leaders, that is an estimated ' + fmtN(Math.round(annualisedScaled)) + ' blocked conversations per year.' + (Math.round(observed) >= 15 ? ' One observer across ' + Math.round(observed) + ' leaders will only have witnessed a fraction of their conversations — treat this rate, and everything built on it, as a floor.' : ''));
     document.getElementById('gold-obs-block').style.display = 'block';
   } else {
     document.getElementById('gold-obs-block').style.display = 'none';
@@ -701,13 +717,14 @@ function calculate() {
 
   document.getElementById('detail-a').innerHTML =
     wl('Blocked conversations observed (two weeks)', String(ticks) + ' across ' + Math.round(observed) + ' people leaders', fmtN(ticks), '') +
-    wl('Rate per person per fortnight', ticks + ' ÷ ' + Math.round(observed), Math.round(ratePerPerson * 10) / 10, '') +
-    wl('Annualised per person (×' + annualFactor + ')', Math.round(ratePerPerson * 10) / 10 + ' × ' + annualFactor, Math.round(annualisedPerPerson * 10) / 10, '') +
+    wl('Rate per person per fortnight', ticks + ' ÷ ' + Math.round(observed), fmtRate(ratePerPerson), '') +
+    wl('Annualised per person (×' + annualFactor + ')', fmtRate(ratePerPerson) + ' × ' + annualFactor, Math.round(annualisedPerPerson * 10) / 10, '') +
     wl('Reactive leaders — ' + reactivePct + '% of ' + fmtN(leaders) + ' (default 75%, Leadership Circle)', '', fmtN(reactiveLeaders), '') +
     wl('Scaled to reactive leaders', Math.round(annualisedPerPerson * 10) / 10 + ' × ' + fmtN(reactiveLeaders), fmtN(Math.round(annualisedScaled)), '') +
     wl('Model A — cost at ' + sym + fmtN(costPerConv) + ' per conversation', fmtN(Math.round(annualisedScaled)) + ' × ' + sym + fmtN(costPerConv), sym + fmtM(modelA), 'amber') +
     wl('Recoverable cost (Model A × ' + recoveryPct + '%)', sym + fmtM(modelA) + ' × ' + recoveryPct + '%', sym + fmtM(saving), 'lime') +
     wl('Recoverable per reactive leader (annual)', sym + fmtM(saving) + ' ÷ ' + fmtN(reactiveLeaders), sym + fmtN(Math.round(savingPerLeader)), 'lime') +
+    '<div style="font-family:\'GothamBook\',Arial,sans-serif;font-size:0.68rem;color:var(--muted);padding:8px 0 2px;">Working shown rounded for readability — every calculation uses full precision.</div>' +
     '<div class="working-divider">Gallup — the independent floor (disengagement method, whole workforce)</div>' +
     wl('Not engaged (' + fmtN(gallupNotEngaged) + ' people, 64%) × 5% salary cost', fmtN(gallupNotEngaged) + ' × ' + sym + fmtN(salary) + ' × 5%', sym + fmtM(gallupNotEngagedCost), '') +
     wl('Actively disengaged (' + fmtN(gallupActivelyDis) + ' people, 16%) × 18% salary cost', fmtN(gallupActivelyDis) + ' × ' + sym + fmtN(salary) + ' × 18%', sym + fmtM(gallupActiveCost), '') +
@@ -804,14 +821,14 @@ function generateReport() {
     <div class="pr-section-label">Your Estimated Figures</div>
     <div class="pr-num-grid">
       <div class="pr-num-cell full">
-        <div class="pr-num-eyebrow">Estimated annual cost of defensive behaviour — observation scaled from ${Math.round(c.observed)} people to ${fmtN(c.reactiveLeaders)} reactive leaders</div>
+        <div class="pr-num-eyebrow">Estimated annual cost of defensive behaviour — observation scaled from ${Math.round(c.observed)} people leaders to ${fmtN(c.reactiveLeaders)} reactive leaders</div>
         <div class="pr-big amber">${sym + fmtM(c.modelA)}</div>
-        <div class="pr-num-desc">${c.estimateUsed ? (Math.round(c.ratePerPerson * 10) / 10) + ' behaviours per person per fortnight (quick estimate from your slider settings — rung 1 of 3; replace with a two-week count for a defensible figure)' : fmtN(c.ticks) + ' blocked conversations observed across ' + Math.round(c.observed) + ' people leaders · ' + (Math.round(c.ratePerPerson * 10) / 10) + ' per person per fortnight'} · scaled to ${fmtN(c.reactiveLeaders)} reactive leaders · annualised ×${c.annualFactor} · ${sym}${fmtN(c.costPerConv)} per blocked conversation (VitalSmarts / Crucial Learning research)</div>
+        <div class="pr-num-desc">${c.estimateUsed ? fmtRate(c.ratePerPerson) + ' behaviours per person per fortnight (quick estimate from your slider settings — rung 1 of 3; replace with a two-week count for a defensible figure)' : fmtN(c.ticks) + ' blocked conversations observed across ' + Math.round(c.observed) + ' people leaders · ' + fmtRate(c.ratePerPerson) + ' per person per fortnight'} · scaled to ${fmtN(c.reactiveLeaders)} reactive leaders · annualised ×${c.annualFactor} · ${sym}${fmtN(c.costPerConv)} per blocked conversation (VitalSmarts / Crucial Learning research)</div>
       </div>
       <div class="pr-num-cell full" style="border-left:4px solid #4a7a00;">
         <div class="pr-num-eyebrow" style="color:#4a7a00 !important;">Estimated annual recoverable cost — what changing these patterns is worth</div>
         <div class="pr-big lime">${sym + fmtM(c.saving)}</div>
-        <div class="pr-num-desc">Model A × ${c.recoveryPct}% recovery — ${c.recoveryPct === 70 ? 'SSC\'s conservative planning assumption, under live T0/T2/T6 measurement' : 'set by you; SSC\'s planning assumption is 70%, under live T0/T2/T6 measurement'}. Even at half the assumption, the figure is ${sym}${fmtM(c.saving / 2)}. The recovery is available to any intervention that changes behaviour at the pattern level; SSC does it in one session per leader — and the change is embedded through your existing executive coaching and diagnostics, not around them. Recoverable per reactive leader: ${sym}${fmtN(Math.round(c.savingPerLeader))} per year.</div>
+        <div class="pr-num-desc">Model A × ${c.recoveryPct}% recovery — ${c.recoveryPct === 70 ? 'SSC\'s conservative planning assumption, under live T0/T2/T6 measurement' : 'set by you; SSC\'s planning assumption is 70%, under live T0/T2/T6 measurement'}. Even at half the assumption, the figure is ${sym}${fmtM(c.saving / 2)}. The recovery is available to any intervention that changes behaviour at the pattern level; SSC does it in one session per leader — and the change is embedded through your existing executive coaching and diagnostics, not around them. Recoverable per reactive leader: ${sym}${fmtN(Math.round(c.savingPerLeader))} per year — annual and recurring against a one-off session, and the average across all ${fmtN(c.reactiveLeaders)} reactive leaders; sessions are prioritised to the leaders driving the pattern, whose figures sit above it.</div>
       </div>
     </div>
     <div class="pr-gold-grid">
@@ -823,16 +840,16 @@ function generateReport() {
       <div class="pr-gold-cell">
         <div class="pr-gold-label">The independent floor — Gallup disengagement method, whole workforce</div>
         <div class="pr-gold-num" style="color:#555 !important;">${sym + fmtM(c.gallupCost)}</div>
-        <div class="pr-gold-desc">Gallup (2026): 80% not fully engaged. ${fmtN(c.gallupNotEngaged)} not-engaged × 5% salary (SSC assumption) = ${sym}${fmtM(c.gallupNotEngagedCost)}; ${fmtN(c.gallupActivelyDis)} actively disengaged × 18% (Gallup figure) = ${sym}${fmtM(c.gallupActiveCost)}. Total: ${sym}${fmtM(c.gallupCost)} (${c.gallupPct}% of payroll). These two numbers measure different things — and expect the gap: Gallup is bounded by payroll, consequence costs are not. Read Gallup as the floor and Model A as the estimate; the problem is material by any methodology. The 5% weighting for the not-engaged majority is deliberately below every independent estimate — 13% (Oxford–BT causal field study) to 25% (WHO-validated GCC data).</div>
+        <div class="pr-gold-desc">Gallup (2026): 80% not fully engaged. ${fmtN(c.gallupNotEngaged)} not-engaged × 5% salary (SSC assumption) = ${sym}${fmtM(c.gallupNotEngagedCost)}; ${fmtN(c.gallupActivelyDis)} actively disengaged × 18% (Gallup figure) = ${sym}${fmtM(c.gallupActiveCost)}. Total: ${sym}${fmtM(c.gallupCost)} (${c.gallupPct}% of payroll). ${c.gapNoteShort} The 5% weighting for the not-engaged majority is deliberately below every independent estimate — 13% (Oxford–BT causal field study) to 25% (WHO-validated GCC data).</div>
       </div>
       <div class="pr-gold-cell" style="grid-column:1/-1;">
         <div class="pr-gold-label">The honest range — four ways to price the same problem (annual)</div>
-        <div class="pr-gold-desc">Rate and cost both halved: <strong>${sym}${fmtM(c.hostileCost)}</strong> &nbsp;·&nbsp; Gallup floor (independent method): <strong>${sym}${fmtM(c.gallupCost)}</strong> &nbsp;·&nbsp; Model A at your ${sym}${fmtN(c.costPerConv)} figure: <strong>${sym}${fmtM(c.modelA)}</strong> &nbsp;·&nbsp; at the 2016 published average: <strong>${sym}${fmtM(c.publishedAvgCost)}</strong>. Read left to right: deliberately hostile → the newest published research.</div>
+        <div class="pr-gold-desc">${c.rangeHtml}</div>
       </div>
       ${(function(){ if (!c.observationRate || !c.ticks) return '';
         const obs = Math.round(c.observed);
         const perWeek = Math.round(c.observationRate * 5); const rateText = c.observationRate < 0.2 ? 'less than once a week per person' : c.observationRate < 1 ? (perWeek === 1 ? 'about once per person per week' : perWeek + ' times per person per week') : (c.observationRate === 1 ? 'about once per person per day' : c.observationRate + ' times per person per day');
-        return '<div class="pr-gold-cell pr-obs-cell" style="grid-column:1/-1;"><div class="pr-gold-label">Your observation — what the data shows</div><div class="pr-obs-context">In your sample of ' + obs + (obs===1?' leader':' leaders') + ', defensive behaviour was observed at a rate of ' + rateText + ' on average.</div><div class="pr-gold-desc">Each of those incidents is a conversation that did not happen.</div></div>'; })()}
+        return '<div class="pr-gold-cell pr-obs-cell" style="grid-column:1/-1;"><div class="pr-gold-label">Your observation — what the data shows</div><div class="pr-obs-context">In your sample of ' + obs + (obs===1?' leader':' leaders') + ', defensive behaviour was observed at a rate of ' + rateText + ' on average.' + (obs >= 15 ? ' One observer across ' + obs + ' leaders will only have witnessed a fraction of their conversations — treat this rate as a floor.' : '') + '</div><div class="pr-gold-desc">Each of those incidents is a conversation that did not happen.</div></div>'; })()}
     </div>
     <div class="pr-section-label">Your Inputs</div>
     <table class="pr-inputs">
@@ -844,24 +861,25 @@ function generateReport() {
       <tr><td>Recovery rate</td><td>${c.recoveryPct}%${c.recoveryPct === 70 ? ' (SSC default)' : ' (adjusted)'}</td></tr>
       <tr><td>Cost per blocked conversation</td><td>${sym}${fmtN(c.costPerConv)}${c.costIsDefault ? ' ($1,500 floor at live rate)' : ' (set by you)'}</td></tr>
       <tr><td>Average annual salary</td><td>${sym}${fmtN(c.salary)}</td></tr>
-      <tr><td>${c.estimateUsed ? 'Behaviour frequency' : 'Blocked conversations observed'}</td><td>${c.estimateUsed ? (Math.round(c.ratePerPerson * 10) / 10) + ' per person per fortnight — quick estimate from slider settings' : c.ticks + ' across ' + Math.round(c.observed) + ' people leaders over two working weeks'}</td></tr>
+      <tr><td>${c.estimateUsed ? 'Behaviour frequency' : 'Blocked conversations observed'}</td><td>${c.estimateUsed ? fmtRate(c.ratePerPerson) + ' per person per fortnight — quick estimate from slider settings' : c.ticks + ' across ' + Math.round(c.observed) + ' people leaders over two working weeks'}</td></tr>
       <tr><td>Currency · Date</td><td>${c.currency} · ${date}</td></tr>
     </table>
     <div class="pr-section-label">How We Calculate These Estimates</div>
     <table class="pr-working">
-      <tr><td>Blocked conversations (two weeks)</td><td>${c.ticks} across ${Math.round(c.observed)} people</td><td>${fmtN(c.ticks)}</td></tr>
-      <tr><td>Rate per person per fortnight</td><td>${c.ticks} ÷ ${Math.round(c.observed)}</td><td>${Math.round(c.ratePerPerson * 10) / 10}</td></tr>
-      <tr><td>Annualised per person (×${c.annualFactor})</td><td>${Math.round(c.ratePerPerson * 10) / 10} × ${c.annualFactor}</td><td>${Math.round(c.annualisedPerPerson * 10) / 10}</td></tr>
+      <tr><td>Blocked conversations (two weeks)</td><td>${c.ticks} across ${Math.round(c.observed)} people leaders</td><td>${fmtN(c.ticks)}</td></tr>
+      <tr><td>Rate per person per fortnight</td><td>${c.ticks} ÷ ${Math.round(c.observed)}</td><td>${fmtRate(c.ratePerPerson)}</td></tr>
+      <tr><td>Annualised per person (×${c.annualFactor})</td><td>${fmtRate(c.ratePerPerson)} × ${c.annualFactor}</td><td>${Math.round(c.annualisedPerPerson * 10) / 10}</td></tr>
       <tr><td>Reactive leaders (${c.reactivePct}% of ${fmtN(c.leaders)})</td><td></td><td>${fmtN(c.reactiveLeaders)}</td></tr>
       <tr><td>Scaled to reactive leaders</td><td>${Math.round(c.annualisedPerPerson * 10) / 10} × ${fmtN(c.reactiveLeaders)}</td><td>${fmtN(Math.round(c.annualisedScaled))}</td></tr>
       <tr><td>Model A cost at ${sym}${fmtN(c.costPerConv)}</td><td>${fmtN(Math.round(c.annualisedScaled))} × ${sym}${fmtN(c.costPerConv)}</td><td class="amber">${sym}${fmtM(c.modelA)}</td></tr>
-      <tr><td>SSC estimated saving (×${c.recoveryPct}%)</td><td>${sym}${fmtM(c.modelA)} × ${c.recoveryPct}%</td><td class="lime">${sym}${fmtM(c.saving)}</td></tr>
-      <tr><td>Annual saving per reactive leader</td><td>${sym}${fmtM(c.saving)} ÷ ${fmtN(c.reactiveLeaders)}</td><td class="lime">${sym}${fmtN(Math.round(c.savingPerLeader))}</td></tr>
+      <tr><td>Recoverable cost (×${c.recoveryPct}%)</td><td>${sym}${fmtM(c.modelA)} × ${c.recoveryPct}%</td><td class="lime">${sym}${fmtM(c.saving)}</td></tr>
+      <tr><td>Recoverable per reactive leader (annual)</td><td>${sym}${fmtM(c.saving)} ÷ ${fmtN(c.reactiveLeaders)}</td><td class="lime">${sym}${fmtN(Math.round(c.savingPerLeader))}</td></tr>
       <tr><td colspan="3" style="font-size:7pt;letter-spacing:0.12em;text-transform:uppercase;color:#aaa;padding-top:4mm;padding-bottom:1mm;">Gallup triangulation</td></tr>
       <tr><td>Not engaged (${fmtN(c.gallupNotEngaged)}, 64%) × 5%</td><td>${fmtN(c.gallupNotEngaged)} × ${sym}${fmtN(c.salary)} × 5%</td><td>${sym}${fmtM(c.gallupNotEngagedCost)}</td></tr>
       <tr><td>Actively disengaged (${fmtN(c.gallupActivelyDis)}, 16%) × 18%</td><td>${fmtN(c.gallupActivelyDis)} × ${sym}${fmtN(c.salary)} × 18%</td><td>${sym}${fmtM(c.gallupActiveCost)}</td></tr>
       <tr><td>Total Gallup disengagement cost</td><td>${c.gallupPct}% of payroll</td><td>${sym}${fmtM(c.gallupCost)}</td></tr>
     </table>
+    <div style="font-size:7.5pt;color:#888;margin-top:2mm;">Working shown rounded for readability — every calculation uses full precision.</div>
   </div>
   <div class="pr-page">
     <div class="pr-section-label">What Single Session Coaching Does</div>
@@ -1066,10 +1084,11 @@ function toggleDetail(id, btnId) {
 function wl(label, calc, val, cls) {
   return `<div class="working-line"><span class="w-label">${label}</span><span class="w-calc">${calc}</span><span class="w-val${cls?' '+cls:''}">${val}</span></div>`;
 }
+function fmtRate(r) { return r < 1 ? Math.round(r * 100) / 100 : Math.round(r * 10) / 10; }
 function fmtM(n) {
   if(!n) return '0';
   if(n>=1e9) return (n/1e9).toFixed(1)+'B';
-  if(n>=1e6) return (n/1e6).toFixed(2)+'M';
+  if(n>=1e6 || Math.round(n/1e3) >= 1000) return (n/1e6).toFixed(2)+'M';
   if(n>=1e3) return Math.round(n/1e3)+'K';
   return Math.round(n).toLocaleString();
 }
