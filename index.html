@@ -736,6 +736,27 @@ function calculate() {
 }
 
 /* ── FULL REPORT ───────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════
+   generateReport() — mobile-safe print patch (drop-in replacement)
+   Replaces the existing generateReport() function in index.html
+   (everything from "function generateReport() {" to its closing "}",
+   just below the "FULL REPORT" comment — v2.9.8: lines ~740–911).
+
+   WHAT CHANGED
+   1. .pr-page no longer carries page-break-inside:avoid — blocks taller
+      than one page were forcing empty pages and arbitrary mid-cell splits.
+   2. Cover reduced 245mm → 225mm — iOS Safari adds its own URL/date
+      header + footer that cannot be switched off, shrinking the page.
+   3. Figures now split across two explicit pages: big numbers + honest
+      range, then observation + inputs + full working.
+   4. All 2-column grids replaced with flex rows carrying break-inside:
+      avoid — iOS WebKit ignores the rule on grid children, honours it
+      on block-level rows.
+   5. Print now fires once every image has loaded (4s safety net) —
+      the flat 700ms timeout could beat the cover PNG on mobile data.
+   Visual output on desktop is unchanged.
+   ═══════════════════════════════════════════════════════════════════════ */
+
 function generateReport() {
   const c = lastCalc;
   if (!c || !c.sym) { alert('Please calculate first.'); return; }
@@ -754,13 +775,13 @@ function generateReport() {
     @font-face { font-family:'GothamMedium'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/67c97a2fa70c204473c1f0c9/1741278511802/GothamMedium.ttf') format('truetype'); font-weight:600; font-style:normal; }
     @font-face { font-family:'GothamLight'; src:url('https://static1.squarespace.com/static/67c07a91ad784447cbc65db9/t/6830c26fc80e440c041d2ef5/1748025967908/Gotham-Light.otf') format('opentype'); font-weight:300; font-style:normal; }
     @page { size:A4 portrait; margin:12mm; }
-    *,-webkit-print-color-adjust { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+    * { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
     *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
     html,body { margin:0; padding:0; }
     body { background:white; color:#111; font-family:'GothamBook',Arial,sans-serif; font-size:10pt; line-height:1.55; }
-    .pr-page { page-break-after:always; page-break-inside:avoid; }
+    .pr-page { page-break-after:always; }
     .pr-page:last-child { page-break-after:avoid; }
-    .pr-cover { position:relative; height:245mm; max-height:245mm; display:flex; flex-direction:column; justify-content:flex-end; overflow:hidden; page-break-after:always; background:#111 !important; }
+    .pr-cover { position:relative; height:225mm; max-height:225mm; display:flex; flex-direction:column; justify-content:flex-end; overflow:hidden; page-break-after:always; background:#111 !important; }
     .pr-cover-img { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position:center top; display:block; z-index:0; }
     .pr-cover-head { position:absolute; top:0; left:0; right:0; display:flex; align-items:flex-start; justify-content:space-between; padding:6mm 10mm 0; z-index:2; }
     .pr-cover-body { position:relative; z-index:2; padding:0 10mm 7mm; }
@@ -772,20 +793,22 @@ function generateReport() {
     .pr-cover-date { font-family:'GothamBook',Arial,sans-serif; font-size:5.5pt; color:rgba(255,255,255,0.35) !important; letter-spacing:0.08em; }
     .pr-section-label { font-family:'DrukTextBold',Arial,sans-serif; font-size:7.5pt; letter-spacing:0.22em; text-transform:uppercase; color:#888 !important; border-bottom:1.5px solid #ddd; padding-bottom:2.5mm; margin-bottom:5mm; margin-top:9mm; }
     .pr-section-label:first-child { margin-top:0; }
-    .pr-num-grid { display:grid; grid-template-columns:1fr 1fr; gap:3mm; margin-bottom:6mm; }
-    .pr-num-cell { border:1px solid #e0e0e0; padding:5mm 6mm; page-break-inside:avoid; }
+    .pr-num-grid { margin-bottom:6mm; }
+    .pr-num-cell { border:1px solid #e0e0e0; padding:5mm 6mm; margin-bottom:3mm; break-inside:avoid; page-break-inside:avoid; }
     .pr-num-cell.full { grid-column:1/-1; }
     .pr-num-eyebrow { font-family:'GothamMedium',Arial,sans-serif; font-size:7pt; letter-spacing:0.1em; text-transform:uppercase; color:#888 !important; margin-bottom:2.5mm; line-height:1.4; }
     .pr-big { font-family:'DrukTextBold',Arial,sans-serif; font-size:28pt; line-height:1; text-transform:uppercase; margin-bottom:2.5mm; }
     .pr-big.amber { color:#b86a00 !important; }
     .pr-big.lime { color:#4a7a00 !important; }
     .pr-num-desc { font-family:'GothamLight',Arial,sans-serif; font-size:8.5pt; color:#555 !important; line-height:1.5; }
-    .pr-gold-grid { display:grid; grid-template-columns:1fr 1fr; gap:3mm; margin-bottom:6mm; }
-    .pr-gold-cell { border:1px solid #e0e0e0; padding:5mm 6mm; page-break-inside:avoid; }
+    .pr-gold-grid { margin-bottom:6mm; }
+    .pr-row { display:flex; gap:3mm; margin-bottom:3mm; break-inside:avoid; page-break-inside:avoid; }
+    .pr-row > .pr-gold-cell { flex:1; margin-bottom:0; }
+    .pr-gold-cell { border:1px solid #e0e0e0; padding:5mm 6mm; margin-bottom:3mm; break-inside:avoid; page-break-inside:avoid; }
     .pr-gold-label { font-family:'GothamMedium',Arial,sans-serif; font-size:6.5pt; letter-spacing:0.16em; text-transform:uppercase; color:#aaa !important; margin-bottom:2mm; }
     .pr-gold-num { font-family:'DrukTextBold',Arial,sans-serif; font-size:22pt; color:#4a7a00 !important; line-height:1; margin-bottom:2mm; text-transform:uppercase; }
     .pr-gold-desc { font-family:'GothamLight',Arial,sans-serif; font-size:8pt; color:#555 !important; line-height:1.5; }
-    .pr-obs-cell { border:1px solid #e0e0e0; border-left:4px solid #DCFF4F; padding:5mm 6mm; margin-bottom:6mm; grid-column:1/-1; page-break-inside:avoid; }
+    .pr-obs-cell { border:1px solid #e0e0e0; border-left:4px solid #DCFF4F; padding:5mm 6mm; margin-bottom:6mm; break-inside:avoid; page-break-inside:avoid; }
     .pr-obs-context { font-family:'GothamLight',Arial,sans-serif; font-size:9.5pt; color:#111 !important; line-height:1.6; margin-bottom:2mm; }
     .pr-inputs,.pr-working { width:100%; border-collapse:collapse; margin-bottom:5mm; font-size:9pt; }
     .pr-inputs tr,.pr-working tr { border-bottom:1px solid #eee; }
@@ -796,11 +819,13 @@ function generateReport() {
     .pr-working .amber { color:#b86a00 !important; }
     .pr-working .lime  { color:#4a7a00 !important; }
     .pr-body { font-family:'GothamLight',Arial,sans-serif; font-size:10pt; color:#1a1a1a !important; line-height:1.75; margin-bottom:5.5mm; }
-    .pr-research-grid { display:grid; grid-template-columns:1fr 1fr; gap:3.5mm 9mm; margin-top:2mm; }
-    .pr-research-item { padding-bottom:3.5mm; border-bottom:1px solid #eee; page-break-inside:avoid; }
+    .pr-research-grid { margin-top:2mm; }
+    .pr-research-row { display:flex; gap:9mm; margin-bottom:3.5mm; break-inside:avoid; page-break-inside:avoid; }
+    .pr-research-row > .pr-research-item { flex:1; }
+    .pr-research-item { padding-bottom:3.5mm; border-bottom:1px solid #eee; break-inside:avoid; page-break-inside:avoid; }
     .pr-research-title { font-family:'GothamMedium',Arial,sans-serif; font-size:8.5pt; color:#111 !important; margin-bottom:1.5mm; }
     .pr-research-body { font-family:'GothamLight',Arial,sans-serif; font-size:8.5pt; color:#444 !important; line-height:1.55; }
-    .pr-cta { background:#111 !important; padding:10mm 12mm; margin-top:9mm; page-break-inside:avoid; }
+    .pr-cta { background:#111 !important; padding:10mm 12mm; margin-top:9mm; break-inside:avoid; page-break-inside:avoid; }
     .pr-cta-logo { margin-bottom:5mm; }
     .pr-cta-logo img { width:20mm; height:auto; }
     .pr-cta-head { font-family:'DrukTextBold',Arial,sans-serif; font-size:20pt; color:#DCFF4F !important; text-transform:uppercase; line-height:1; margin-bottom:4mm; }
@@ -832,6 +857,7 @@ function generateReport() {
       </div>
     </div>
     <div class="pr-gold-grid">
+      <div class="pr-row">
       <div class="pr-gold-cell">
         <div class="pr-gold-label">Estimated annual return — per reactive leader</div>
         <div class="pr-gold-num">${sym}${fmtN(Math.round(c.savingPerLeader))}</div>
@@ -842,15 +868,18 @@ function generateReport() {
         <div class="pr-gold-num" style="color:#555 !important;">${sym + fmtM(c.gallupCost)}</div>
         <div class="pr-gold-desc">Gallup (2026): 80% not fully engaged. ${fmtN(c.gallupNotEngaged)} not-engaged × 5% salary (SSC assumption) = ${sym}${fmtM(c.gallupNotEngagedCost)}; ${fmtN(c.gallupActivelyDis)} actively disengaged × 18% (Gallup figure) = ${sym}${fmtM(c.gallupActiveCost)}. Total: ${sym}${fmtM(c.gallupCost)} (${c.gallupPct}% of payroll). ${c.gapNoteShort} The 5% weighting for the not-engaged majority is deliberately below every independent estimate — 13% (Oxford–BT causal field study) to 25% (WHO-validated GCC data).</div>
       </div>
-      <div class="pr-gold-cell" style="grid-column:1/-1;">
+      </div>
+      <div class="pr-gold-cell">
         <div class="pr-gold-label">The honest range — four ways to price the same problem (annual)</div>
         <div class="pr-gold-desc">${c.rangeHtml}</div>
       </div>
+    </div>
+  </div>
+  <div class="pr-page">
       ${(function(){ if (!c.observationRate || !c.ticks) return '';
         const obs = Math.round(c.observed);
         const perWeek = Math.round(c.observationRate * 5); const rateText = c.observationRate < 0.2 ? 'less than once a week per person' : c.observationRate < 1 ? (perWeek === 1 ? 'about once per person per week' : perWeek + ' times per person per week') : (c.observationRate === 1 ? 'about once per person per day' : c.observationRate + ' times per person per day');
-        return '<div class="pr-gold-cell pr-obs-cell" style="grid-column:1/-1;"><div class="pr-gold-label">Your observation — what the data shows</div><div class="pr-obs-context">In your sample of ' + obs + (obs===1?' leader':' leaders') + ', defensive behaviour was observed at a rate of ' + rateText + ' on average.' + (obs >= 15 ? ' One observer across ' + obs + ' leaders will only have witnessed a fraction of their conversations — treat this rate as a floor.' : '') + '</div><div class="pr-gold-desc">Each of those incidents is a conversation that did not happen. If your scorecard captured initials, the leaders with the most marks are your pilot cohort.</div></div>'; })()}
-    </div>
+        return '<div class="pr-gold-cell pr-obs-cell"><div class="pr-gold-label">Your observation — what the data shows</div><div class="pr-obs-context">In your sample of ' + obs + (obs===1?' leader':' leaders') + ', defensive behaviour was observed at a rate of ' + rateText + ' on average.' + (obs >= 15 ? ' One observer across ' + obs + ' leaders will only have witnessed a fraction of their conversations — treat this rate as a floor.' : '') + '</div><div class="pr-gold-desc">Each of those incidents is a conversation that did not happen. If your scorecard captured initials, the leaders with the most marks are your pilot cohort.</div></div>'; })()}
     <div class="pr-section-label">Your Inputs</div>
     <table class="pr-inputs">
       <tr><td>Organisation</td><td>${orgName || '—'}</td></tr>
@@ -887,14 +916,22 @@ function generateReport() {
     <p class="pr-body">Single Session Coaching was built on a different premise. That every pattern a leader carries made sense once — it was learned for a reason, in a context that no longer exists. The work is to make it visible, understand what it was protecting, and give the leader a genuine choice about whether to keep it. That's what Surface / Decode / Resolve does. In 90 minutes. Not through insight alone — through mechanism. The pattern becomes optional.</p>
     <div class="pr-section-label">The Research Behind These Numbers</div>
     <div class="pr-research-grid">
-      <div class="pr-research-item"><div class="pr-research-title">$340–400 billion invested annually in L&amp;D</div><div class="pr-research-body">Global corporate L&amp;D investment estimated at $395 billion in 2023. The number has grown every year. The return has not kept pace.</div></div>
-      <div class="pr-research-item"><div class="pr-research-title">Only 11% believe it works</div><div class="pr-research-body">McKinsey &amp; Company: only 11% of executives strongly agreed their leadership development programmes achieve and sustain the desired results. Training-evaluation research puts the share of L&amp;D investment that produces changed on-the-job behaviour at just 10–40% (Brinkerhoff, 2006; Saks &amp; Belcourt, 2006).</div></div>
-      <div class="pr-research-item"><div class="pr-research-title">Most behaviour is automatic</div><div class="pr-research-body">Bargh &amp; Chartrand (1999), The Unbearable Automaticity of Being. The vast majority of cognitive activity — including what we call decisions — operates below conscious awareness.</div></div>
-      <div class="pr-research-item"><div class="pr-research-title">Conscious approaches can't reach unconscious patterns</div><div class="pr-research-body">Kahneman (2011), Thinking, Fast and Slow. Van der Kolk (2014), The Body Keeps the Score. Libet et al. (1983) on neural activity preceding conscious awareness of a decision.</div></div>
-      <div class="pr-research-item"><div class="pr-research-title">$1,500 per blocked conversation</div><div class="pr-research-body">VitalSmarts' earlier avoidance study (n≈650) put the average cost of an avoided conversation at $1,500 and a full working day. Their 2016 Costly Conversations study (n=1,025) put the average at $7,500 and more than seven working days. This model defaults to the earlier, lower figure — roughly a fifth of the most recent published average.</div></div>
-      <div class="pr-research-item"><div class="pr-research-title">75% of leaders operate reactively</div><div class="pr-research-body">Leadership Circle / Anderson &amp; Adams, measured across more than two million leaders. Reactive leadership is by definition unconscious — driven by patterns formed outside the leader's awareness.</div></div>
-      <div class="pr-research-item"><div class="pr-research-title">A single session can produce lasting change</div><div class="pr-research-body">Hoyt &amp; Talmon (2014), Capturing the Moment — depth of contact matters more than duration. SSC outcome data available on request.</div></div>
-      <div class="pr-research-item"><div class="pr-research-title">Patterns form early and consolidate over time</div><div class="pr-research-body">Hebb's Law (1949) — repeated neural firing strengthens the pathways that carry a behaviour. LeDoux (2002), Synaptic Self.</div></div>
+      <div class="pr-research-row">
+        <div class="pr-research-item"><div class="pr-research-title">$340–400 billion invested annually in L&amp;D</div><div class="pr-research-body">Global corporate L&amp;D investment estimated at $395 billion in 2023. The number has grown every year. The return has not kept pace.</div></div>
+        <div class="pr-research-item"><div class="pr-research-title">Only 11% believe it works</div><div class="pr-research-body">McKinsey &amp; Company: only 11% of executives strongly agreed their leadership development programmes achieve and sustain the desired results. Training-evaluation research puts the share of L&amp;D investment that produces changed on-the-job behaviour at just 10–40% (Brinkerhoff, 2006; Saks &amp; Belcourt, 2006).</div></div>
+      </div>
+      <div class="pr-research-row">
+        <div class="pr-research-item"><div class="pr-research-title">Most behaviour is automatic</div><div class="pr-research-body">Bargh &amp; Chartrand (1999), The Unbearable Automaticity of Being. The vast majority of cognitive activity — including what we call decisions — operates below conscious awareness.</div></div>
+        <div class="pr-research-item"><div class="pr-research-title">Conscious approaches can't reach unconscious patterns</div><div class="pr-research-body">Kahneman (2011), Thinking, Fast and Slow. Van der Kolk (2014), The Body Keeps the Score. Libet et al. (1983) on neural activity preceding conscious awareness of a decision.</div></div>
+      </div>
+      <div class="pr-research-row">
+        <div class="pr-research-item"><div class="pr-research-title">$1,500 per blocked conversation</div><div class="pr-research-body">VitalSmarts' earlier avoidance study (n≈650) put the average cost of an avoided conversation at $1,500 and a full working day. Their 2016 Costly Conversations study (n=1,025) put the average at $7,500 and more than seven working days. This model defaults to the earlier, lower figure — roughly a fifth of the most recent published average.</div></div>
+        <div class="pr-research-item"><div class="pr-research-title">75% of leaders operate reactively</div><div class="pr-research-body">Leadership Circle / Anderson &amp; Adams, measured across more than two million leaders. Reactive leadership is by definition unconscious — driven by patterns formed outside the leader's awareness.</div></div>
+      </div>
+      <div class="pr-research-row">
+        <div class="pr-research-item"><div class="pr-research-title">A single session can produce lasting change</div><div class="pr-research-body">Hoyt &amp; Talmon (2014), Capturing the Moment — depth of contact matters more than duration. SSC outcome data available on request.</div></div>
+        <div class="pr-research-item"><div class="pr-research-title">Patterns form early and consolidate over time</div><div class="pr-research-body">Hebb's Law (1949) — repeated neural firing strengthens the pathways that carry a behaviour. LeDoux (2002), Synaptic Self.</div></div>
+      </div>
     </div>
     <div class="pr-cta">
       <div class="pr-cta-logo"><img src="${LOGO_WHITE}" alt="SSC"></div>
@@ -905,8 +942,13 @@ function generateReport() {
   </div>
   </body></html>`);
   win.document.close();
-  win.focus();
-  setTimeout(() => { win.print(); }, 700);
+  // Print only once every image (cover art, logos) has loaded — with a safety-net timeout.
+  let printed = false;
+  const doPrint = () => { if (printed) return; printed = true; win.focus(); win.print(); };
+  const imgs = Array.from(win.document.images);
+  Promise.all(imgs.map(img => img.complete ? Promise.resolve() : new Promise(res => { img.onload = img.onerror = res; })))
+    .then(() => setTimeout(doPrint, 150));
+  setTimeout(doPrint, 4000);
 }
 
 /* ── SCORECARD ─────────────────────────────────────────────────────────── */
