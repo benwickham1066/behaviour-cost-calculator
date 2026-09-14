@@ -227,7 +227,7 @@
   </div>
   <div class="calc-block">
     <div class="calc-title">— Calculate Your Number —</div>
-    <div class="calc-intro">Gallup (2026) puts the global cost of disengagement at $10 trillion a year — 9% of world GDP. This calculator estimates your organisation's share of a related, more specific drain: the conversations blocked by defensive leadership behaviour. Enter your inputs below, for your whole organisation or a single team, from a thirty-person scale-up to a thirty-thousand-person group — just keep every figure to the same group. All outputs are estimates based on published research and your observed data. No revenue or individual pay data required — an average salary figure is all it uses.</div>
+    <div class="calc-intro">Gallup (2026) puts the global cost of disengagement at $10 trillion a year — 9% of world GDP. Defensive behaviours are repeating patterns, and symptoms of something in the system being out of balance. This calculator puts a number on what they cost while they keep running. Enter your inputs below, for your whole organisation or a single team, from a thirty-person scale-up to a thirty-thousand-person group — just keep every figure to the same group. All outputs are estimates based on published research and your observed data. No revenue or individual pay data required — an average salary figure is all it uses.</div>
     <div class="mode-toggle">
       <button type="button" id="mode-btn-observe" class="mode-btn active" onclick="setMode('observe')">Measure it properly · two-week scorecard</button>
       <button type="button" id="mode-btn-estimate" class="mode-btn" onclick="setMode('estimate')">Estimate it now · 2 minutes</button>
@@ -268,7 +268,7 @@
   </div>
   <!-- PANEL 1 — COST -->
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r) var(--r) 0 0;padding:28px;margin-bottom:1px;">
-    <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;" id="r-cost-eyebrow">Estimated annual cost of defensive behaviour</div>
+    <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;" id="r-cost-eyebrow">Estimated annual cost of the repetition.</div>
     <div style="font-family:'DrukTextBold',Arial,sans-serif;font-size:clamp(2.8rem,7vw,4.5rem);color:var(--amber);line-height:1;text-transform:uppercase;margin-bottom:12px;" id="r-cost-num">—</div>
     <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.75rem;color:var(--muted);line-height:1.6;" id="r-cost-desc"></div>
   </div>
@@ -327,7 +327,7 @@
   <div id="gold-obs-block" style="display:none;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--lime);padding:20px 22px;margin-bottom:28px;border-radius:var(--r);">
     <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--lime);margin-bottom:8px;">Your observation — what the data shows</div>
     <div id="g-obs-context" style="font-family:'GothamBook',Arial,sans-serif;font-size:clamp(0.88rem,1.5vw,1rem);color:var(--white);line-height:1.6;"></div>
-    <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.75rem;color:var(--muted);margin-top:8px;line-height:1.5;">Each of those moments is a conversation that did not happen — and will not happen tomorrow unless something changes at the pattern level.</div>
+    <div style="font-family:'GothamBook',Arial,sans-serif;font-size:0.75rem;color:var(--muted);margin-top:8px;line-height:1.5;">Each of those moments is a conversation that did not happen. The number is the symptom. The session works on what is generating it.</div>
   </div>
   <!-- GALLUP TRIANGULATION -->
   <div style="background:var(--surface);border:1px solid var(--border);padding:22px;margin-bottom:28px;border-radius:var(--r);">
@@ -351,7 +351,7 @@
   <div class="cta-block">
     <div class="cta-heading">Let's find your savings together.</div>
     <div class="cta-body">Most organisations have cut costs to the bone. Travel. Overheads. Headcount. The one cost they have never seriously explored is the cost of human behaviour — because until now, no one had a way to see it.<br><br>This number is an estimate, based on solid published research across thousands of organisations. It will not be precise. But if it is even half right, it represents a saving worth exploring — and a conversation worth having.</div>
-    <a href="https://singlesession.online/schedule" class="cta-btn" target="_blank" rel="noopener">Book a Scoping Call</a>
+    <a href="https://singlesession.online/schedule" class="cta-btn" target="_blank" rel="noopener">Schedule a Call</a>
     <div style="margin-top:28px;padding-top:28px;border-top:1px solid rgba(0,0,0,0.15);">
       <div style="font-family:'GothamMedium',Arial,sans-serif;font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--black);margin-bottom:16px;">Or leave your details</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
@@ -610,7 +610,7 @@ function calculate() {
     s('r-cost-eyebrow', 'Quick estimate · rung 1 of 3 — estimated annual cost across your ' + fmtN(reactiveLeaders) + ' reactive leaders, from a two-minute read of experience');
     s('r-cost-desc', 'A first pass from experience · ' + fmtRate(ratePerPerson) + ' behaviours per person per fortnight (your slider settings) · scaled to ' + fmtN(reactiveLeaders) + ' reactive leaders · annualised ×' + annualFactor + ' · ' + sym + fmtN(costPerConv) + ' per conversation. This is rung 1 of 3 — an honest estimate, not a count. Rung 2: download the scorecard and observe for two weeks. Rung 3: have four or five colleagues observe and average.');
   } else {
-    s('r-cost-eyebrow', 'Estimated annual cost of defensive behaviour across your ' + fmtN(reactiveLeaders) + ' reactive leaders — scaled from your two-week observation');
+    s('r-cost-eyebrow', 'Estimated annual cost of the repetition across your ' + fmtN(reactiveLeaders) + ' reactive leaders — scaled from your two-week observation');
     s('r-cost-desc', fmtN(ticks) + ' blocked conversations observed across ' + Math.round(observed) + ' people leaders over two weeks · ' + fmtRate(ratePerPerson) + ' per person per fortnight · scaled to ' + fmtN(reactiveLeaders) + ' reactive leaders · annualised ×' + annualFactor + ' · ' + sym + fmtN(costPerConv) + ' per blocked conversation (VitalSmarts / Crucial Learning)');
   }
   s('r-cost-num',  sym + fmtM(modelA));
